@@ -6,7 +6,7 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from lib.get_config import get_gpio_config
+from lib.config import get_gpio_config
 from lib.gpio import gpio_read
 from lib.mqtt import publish
 from lib.topic import get_publish_topics
