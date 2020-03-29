@@ -6,8 +6,8 @@ TOPICS_PATH = AMS_ROOT_PATH + 'subscriber/topics.json'
 
 from .config import get_config_items
 
-ids = get_config_items(['TANK_ID', 'DEVICE_ID'])
-tank_id, device_id = ids['TANK_ID'], ids['DEVICE_ID']
+ids = get_config_items(['TANK_ID', 'CLIENT_ID'])
+tank_id, client_id = ids['TANK_ID'], ids['CLIENT_ID']
 
 class KeyNotExist(Exception):
     pass
@@ -19,17 +19,17 @@ def read_topics_file(topics_file_path):
 def get_all_topics():
     return read_topics_file(TOPICS_PATH)
 
-def apply_tank_id_and_device_id(topics):
+def apply_tank_id_and_client_id(topics):
     result = {}
     for key in topics:
-        result[key] = topics[key].format(tank_id = tank_id, device_id = device_id)
+        result[key] = topics[key].format(tank_id = tank_id, client_id = client_id)
     return result
 
 def get_publish_topics():
     publish_topics = get_all_topics()['PUBLISH']
-    return apply_tank_id_and_device_id(publish_topics)
+    return apply_tank_id_and_client_id(publish_topics)
 
 def get_subscribe_topics():
     subscribe_topics = get_all_topics()['SUBSCRIBE']
-    return apply_tank_id_and_device_id(subscribe_topics)
+    return apply_tank_id_and_client_id(subscribe_topics)
 

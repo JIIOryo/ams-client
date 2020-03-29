@@ -1,0 +1,6 @@
+[36mgit status -s[0m
+ M config/config.json
+ M lib/topic.py
+ M subscriber/topics.json
+?? client_id
+[36mgit add -A[0m
