@@ -1,0 +1,6 @@
+{
+    "PUBLISH":{},
+    "SUBSCRIBE":{
+        "TEST_TOPIC":"user/{tank_id}/test"
+    }
+}
