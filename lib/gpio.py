@@ -14,6 +14,8 @@ def gpio_write(pin, value):
     """
     cmd = 'gpio -g mode {0} out && gpio -g write {0} {1}'.format(pin, value)
     os.system(cmd)
+    # todo use subprocess
+    # subprocess.Popen(cmd.split(), shell=True)
 
 def gpio_read(pin):
     """

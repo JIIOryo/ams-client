@@ -6,6 +6,7 @@ current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
 from lib.topic import get_subscribe_topics
+from on_message.device_control import device_control
 
 subscribe_topics = get_subscribe_topics()
 
@@ -15,7 +16,7 @@ def topic_router(topic, message):
         print( 'hello' )
     
     elif topic == subscribe_topics['DEVICE_CONTROL']:
-        print('control')
+        device_control(message)
 
     # elif topic == SUBSCRIBE_DEVICE_CONTROL_TOPIC:
     #     device_control( json.loads(message) )
