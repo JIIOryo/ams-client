@@ -2,6 +2,11 @@
     "PUBLISH":{},
     "SUBSCRIBE":{
         "TEST_TOPIC":"user/{tank_id}/{client_id}/test",
-        "PING":"user/{tank_id}/{client_id}/ping"
+        "PING":"user/{tank_id}/{client_id}/ping",
+        "REBOOT":"user/{tank_id}/{client_id}/reboot",
+        "DEVICE_CONTROL":"user/{tank_id}/device/control",
+        "DEVICE_CREATE":"user/{tank_id}/device/create",
+        "DEVICE_UPDATE":"user/{tank_id}/device/update",
+        "DEVICE_DELETE":"user/{tank_id}/device/delete"
     }
 }
