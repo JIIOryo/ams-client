@@ -5,7 +5,7 @@
         "device":{
             "name":"device1",
             "description":"This is my main light!",
-            "device_type":"main_light",
+            "type":"main_light",
             "options":{
                 "continuous":false,
                 "timer":{
@@ -25,7 +25,7 @@
         "device":{
             "name":"device2",
             "description":"This is my sub light!",
-            "device_type":"sub_light",
+            "type":"sub_light",
             "options":{
                 "continuous":false,
                 "timer":{
@@ -45,7 +45,7 @@
         "device":{
             "name":"device3",
             "description":"This is my air pomp!",
-            "device_type":"air_pump",
+            "type":"air_pump",
             "options":{
                 "continuous":false,
                 "timer":{
@@ -65,7 +65,7 @@
         "device":{
             "name":"device4",
             "description":"This is my CO2!",
-            "device_type":"co2",
+            "type":"co2",
             "options":{
                 "continuous":false,
                 "timer":{

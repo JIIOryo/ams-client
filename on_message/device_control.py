@@ -8,6 +8,8 @@ sys.path.append( str(current_dir) + '/../' )
 from lib.config import get_config, get_gpio_config
 from lib.gpio import gpio_write
 
+from service.device_state import publish_device_state
+
 """
 # message 
 type: json str
@@ -40,4 +42,4 @@ def device_control(message):
                 gpio_write(BCM, int(next_state))
                 break
     
-    # publish_device_state()   
+    publish_device_state()   

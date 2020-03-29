@@ -1,5 +1,7 @@
 {
-    "PUBLISH":{},
+    "PUBLISH":{
+        "DEVICE_STATE":"tank/{tank_id}/devices/state"
+    },
     "SUBSCRIBE":{
         "TEST_TOPIC":"user/{tank_id}/{client_id}/test",
         "PING":"user/{tank_id}/{client_id}/ping",
