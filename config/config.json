@@ -1,0 +1,12 @@
+{
+    "TANK_ID": "ams-sample",
+    "MQTT": {
+        "MQTT_BROKER": "192.168.2.114",
+        "MQTT_BROKER_PORT": 18830,
+        "MQTT_BROKER_USERNAME": "user",
+        "MQTT_BROKER_PASSWORD": "password",
+        "KEEPALIVE": 60,
+        "SUBSCRIBER_QOS": 1
+    },
+    "NETWORK_CONNECTION_WAIT_TIME": 23
+}
