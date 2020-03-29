@@ -1,5 +1,6 @@
 {
-    "TANK_ID": "ams-sample",
+    "TANK_ID": "tank_id-sample",
+    "DEVICE_ID": "device_id-sample",
     "MQTT": {
         "MQTT_BROKER": "192.168.2.114",
         "MQTT_BROKER_PORT": 18830,

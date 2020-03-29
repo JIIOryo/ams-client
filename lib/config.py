@@ -18,8 +18,14 @@ def get_config():
 def get_gpio_config():
     return read_config_file(GPIO_CONFIG_PATH)
 
-def get_config_item(key):
+def get_config_items(keys):
     config = get_config()
-    if key not in config:
-        raise KeyNotExist('key: {key} does not exist.'.format(key = key))
-    return config[key]
+    result = {}
+    for key in keys:
+        if key not in config:
+            raise KeyNotExist('key: {key} does not exist.'.format(key = key))
+        result[key] = config[key]
+    return result
+
+def get_config_item(key):
+    return get_config_items([key])
