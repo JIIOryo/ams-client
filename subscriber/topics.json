@@ -1,7 +1,7 @@
 {
     "PUBLISH":{
         "DEVICE_STATE":"tank/{tank_id}/devices/state",
-        "ACK":"tank/{tank_id}/ack"
+        "ACK":"tank/{tank_id}/{client_id}/ack"
     },
     "SUBSCRIBE":{
         "PING":"user/{tank_id}/{client_id}/ping",
