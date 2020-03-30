@@ -28,18 +28,19 @@ def post_slack_by_type(text, type):
         post_slack(
             channel = slack_config['NOTIFICATION']['CHANNEL'],
             username = slack_config['NOTIFICATION']['USERNAME'],
-            text = slack_config['NOTIFICATION']['MESSAGE_FORMAT'].format(message = text)
-            icon_emoji = slack_config['NOTIFICATION']['ICON_EMOJI']
+            text = slack_config['NOTIFICATION']['MESSAGE_FORMAT'].format(message = text),
+            icon_emoji = slack_config['NOTIFICATION']['ICON_EMOJI'],
         )
 
     elif type == 'error':
         post_slack(
             channel = slack_config['ERROR']['CHANNEL'],
             username = slack_config['ERROR']['USERNAME'],
-            text = slack_config['ERROR']['MESSAGE_FORMAT'].format(message = text)
-            icon_emoji = slack_config['ERROR']['ICON_EMOJI']
+            text = slack_config['ERROR']['MESSAGE_FORMAT'].format(message = text),
+            icon_emoji = slack_config['ERROR']['ICON_EMOJI'],
         )
         
     else:
         # todo
         # throw error unknown type
+        print('This type does not exist.')
