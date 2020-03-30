@@ -26,5 +26,5 @@ def topic_router(topic, message):
         device_create(message)
     
     elif topic == subscribe_topics['DEVICE_DELETE']:
-        device_delete(nessage)
+        device_delete(message)
 
