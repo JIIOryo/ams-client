@@ -6,8 +6,15 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
+from commons.consts import (
+    SLACK_CREATE_DEVICE_NOTIFICATION_FORMAT,
+    SLACK_NOTIFICATION_TYPE,
+)
+
 from lib.config import get_config, get_gpio_config, set_gpio_config
 from lib.gpio import gpio_write
+from lib.notification import post_slack_by_type
+from lib.util import formated_str_now_date
 
 from service.device_state import publish_device_state
 
@@ -55,5 +62,17 @@ def device_create(message):
             }
             break
     
-    set_gpio_config(gpio_config) 
-    publish_device_state()   
+    set_gpio_config(gpio_config)
+
+    slack_post_text = SLACK_CREATE_DEVICE_NOTIFICATION_FORMAT.format(
+        now = formated_str_now_date(),
+        device_id = new_device_id,
+        name = new_device['name'],
+        description = new_device['description'],
+        type = new_device['type']
+    )
+    post_slack_by_type(
+        text = slack_post_text,
+        type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
+    )
+    publish_device_state()

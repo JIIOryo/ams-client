@@ -7,6 +7,9 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
+from commons.consts import (
+    SLACK_NOTIFICATION_TYPE,
+)
 from lib.config import get_config_item
 
 def post_slack(channel, username, text, icon_emoji):
@@ -24,7 +27,7 @@ def post_slack_by_type(text, type):
 
     slack_config = get_config_item('SLACK')
 
-    if type == 'notification':
+    if type == SLACK_NOTIFICATION_TYPE['NOTIFICATION']:
         post_slack(
             channel = slack_config['NOTIFICATION']['CHANNEL'],
             username = slack_config['NOTIFICATION']['USERNAME'],
@@ -32,7 +35,7 @@ def post_slack_by_type(text, type):
             icon_emoji = slack_config['NOTIFICATION']['ICON_EMOJI'],
         )
 
-    elif type == 'error':
+    elif type == SLACK_NOTIFICATION_TYPE['ERROR']:
         post_slack(
             channel = slack_config['ERROR']['CHANNEL'],
             username = slack_config['ERROR']['USERNAME'],

@@ -11,6 +11,9 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
+from commons.consts import (
+    SLACK_NOTIFICATION_TYPE,
+)
 from lib.config import get_config, get_config_item
 from lib.notification import post_slack_by_type
 
@@ -43,7 +46,7 @@ def on_message(client, userdata, msg):
         error_message = ''.join(traceback.TracebackException.from_exception(e).format())
         post_slack_by_type(
             text = error_message,
-            type = 'error',
+            type = SLACK_NOTIFICATION_TYPE['ERROR'],
         )
         print(error_message)
         pass
