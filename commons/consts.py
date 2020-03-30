@@ -43,3 +43,9 @@ description: {description}
 type: {type}
 ```
 """
+
+# SPI PIN (BCM)
+SPICLK = 11
+SPIMOSI = 10
+SPIMISO = 9
+SPICS = 8

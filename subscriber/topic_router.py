@@ -31,4 +31,16 @@ def topic_router(topic, message):
     
     elif topic == subscribe_topics['DEVICE_DELETE']:
         device_delete(message)
+    
+    elif topic == 'mcp_test':
+        from lib.notification import post_slack_by_type
+        from lib.mcp import read_mcp
+
+        data = read_mcp(0)
+        
+        post_slack_by_type(
+            text = str(data),
+            type = 'notification',
+        )
+
 
