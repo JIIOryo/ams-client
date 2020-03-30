@@ -17,6 +17,9 @@ def topic_router(topic, message):
     
     elif topic == subscribe_topics['DEVICE_CONTROL']:
         device_control(message)
+    
+    elif topic == subscribe_topics['DEVICE_CREATE']:
+        device_create(message)
 
     # elif topic == SUBSCRIBE_DEVICE_CONTROL_TOPIC:
     #     device_control( json.loads(message) )
