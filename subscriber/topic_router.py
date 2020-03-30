@@ -12,6 +12,7 @@ from on_message.device_create import device_create
 subscribe_topics = get_subscribe_topics()
 
 def topic_router(topic, message):
+    
 
     if topic == subscribe_topics['TEST_TOPIC']:
         print( 'hello' )
@@ -24,4 +25,19 @@ def topic_router(topic, message):
 
     # elif topic == SUBSCRIBE_DEVICE_CONTROL_TOPIC:
     #     device_control( json.loads(message) )
+
+
+    # except Exception as e:
+    #     error_message = ''.join(traceback.TracebackException.from_exception(exc).format())
+    #     post_slack(
+    #         channel = '#error',
+    #         username = 'error notification',
+    #         text = error_message,
+    #         icon_emoji = ':warning:'
+    #     )
+    #     print('*************************************')
+    #     print('               ERROR!                ')
+    #     print(error_message)
+    #     print('*************************************')
+    #     pass
     
