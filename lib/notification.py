@@ -7,7 +7,7 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from lib.config import get_config
+from lib.config import get_config_item
 
 def post_slack(channel, username, text, icon_emoji):
 

@@ -23,21 +23,3 @@ def topic_router(topic, message):
     elif topic == subscribe_topics['DEVICE_CREATE']:
         device_create(message)
 
-    # elif topic == SUBSCRIBE_DEVICE_CONTROL_TOPIC:
-    #     device_control( json.loads(message) )
-
-
-    # except Exception as e:
-    #     error_message = ''.join(traceback.TracebackException.from_exception(exc).format())
-    #     post_slack(
-    #         channel = '#error',
-    #         username = 'error notification',
-    #         text = error_message,
-    #         icon_emoji = ':warning:'
-    #     )
-    #     print('*************************************')
-    #     print('               ERROR!                ')
-    #     print(error_message)
-    #     print('*************************************')
-    #     pass
-    

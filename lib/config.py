@@ -28,4 +28,4 @@ def get_config_items(keys):
     return result
 
 def get_config_item(key):
-    return get_config_items([key])
+    return get_config_items([key])[key]

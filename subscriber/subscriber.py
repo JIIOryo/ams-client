@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 import time
+import traceback
 
 import paho.mqtt.client as mqtt
 
@@ -33,20 +34,26 @@ def on_message(client, userdata, msg):
     print('==========================================')
     print('topic: {0} , message: {1}'.format(msg.topic, msg.payload))
 
-    post_slack(
-        channel = '#error',
-        username = 'error notification',
-        text = 'error_message',
-        icon_emoji = ':warning:'
-    )
-
-    topic_router(
-        topic = msg.topic,
-        message = msg.payload.decode()
-    )
-
-
-
+    try:
+        topic_router(
+            topic = msg.topic,
+            message = msg.payload.decode()
+        )
+    except Exception as e:
+        error_message = ''.join(traceback.TracebackException.from_exception(e).format())
+        error_message += '------------------------------\n'
+        post_slack(
+            channel = '#error',
+            username = 'error notification',
+            text = error_message,
+            icon_emoji = ':warning:'
+        )
+        print('*************************************')
+        print('               ERROR!                ')
+        print(error_message)
+        print('*************************************')
+        pass
+    
 if __name__ == '__main__':
 
     client = mqtt.Client(protocol = protocol)
