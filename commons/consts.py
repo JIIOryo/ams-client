@@ -15,11 +15,21 @@ type: {type}
 SLACK_UPDATE_DEVICE_NOTIFICATION_FORMAT = \
 """
 This device is updated at {now}
+
+`Before`
 ```
 device_id: {device_id}
-name: {name}
-description: {description}
-type: {type}
+name: {before_name}
+description: {before_description}
+type: {before_type}
+```
+
+`After`
+```
+device_id: {device_id}
+name: {after_name}
+description: {after_description}
+type: {after_type}
 ```
 """
 

@@ -52,7 +52,7 @@ def device_update(message):
                 # todo throw error
                 return
             
-            before_device = device['device']
+            before_device = dict(device['device'])
             
             device['device']['name'] = update_device['name']
             device['device']['description'] = update_device['description']
@@ -67,9 +67,12 @@ def device_update(message):
     slack_post_text = SLACK_UPDATE_DEVICE_NOTIFICATION_FORMAT.format(
         now = formated_str_now_date(),
         device_id = update_device_id,
-        name = before_device['name'] + ' -> ' + update_device['name'],
-        description = before_device['description'] + ' -> ' + update_device['description'],
-        type = before_device['type'] + ' -> ' + update_device['type']
+        before_name = before_device['name'],
+        before_description = before_device['description'],
+        before_type = before_device['type'],
+        after_name = update_device['name'],
+        after_description = update_device['description'],
+        after_type = update_device['type'],
     )
     post_slack_by_type(
         text = slack_post_text,
