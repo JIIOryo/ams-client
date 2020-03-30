@@ -10,6 +10,19 @@
         "SUBSCRIBER_QOS": 1
     },
     "NETWORK_CONNECTION_WAIT_TIME": 23,
-    "SLACK_WEBHOOK_URL": "https://hooks.slack.com/services/.....",
-    "ERROR_MESSAGE_FORMAT": "******************************\n            ERROR!            \n{error_message}\n******************************"
+    "SLACK": {
+        "WEBHOOK_URL": "https://hooks.slack.com/services/.....",
+        "ERROR": {
+            "CHANNEL": "#error",
+            "USERNAME": "error notification",
+            "ICON_EMOJI": ":warning:",
+            "MESSAGE_FORMAT": "******************************\n            ERROR!            \n{message}\n******************************"
+        },
+        "NOTIFICATION": {
+            "CHANNEL": "#notification",
+            "USERNAME": "notification",
+            "ICON_EMOJI": ":information_desk_person:",
+            "MESSAGE_FORMAT": "------------------------------\n{message}\n------------------------------"
+        }
+    }
 }

@@ -12,7 +12,7 @@ current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
 from lib.config import get_config, get_config_item
-from lib.notification import post_slack
+from lib.notification import post_slack_by_type
 
 from topic_router import topic_router
 
@@ -40,14 +40,10 @@ def on_message(client, userdata, msg):
             message = msg.payload.decode()
         )
     except Exception as e:
-        error_message = get_config_item('ERROR_MESSAGE_FORMAT').format(
-            error_message = ''.join(traceback.TracebackException.from_exception(e).format())
-        )
-        post_slack(
-            channel = '#error',
-            username = 'error notification',
+        error_message = ''.join(traceback.TracebackException.from_exception(e).format())
+        post_slack_by_type(
             text = error_message,
-            icon_emoji = ':warning:'
+            type = 'error',
         )
         print(error_message)
         pass
