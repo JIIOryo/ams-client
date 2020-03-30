@@ -35,12 +35,15 @@ def topic_router(topic, message):
     elif topic == 'mcp_test':
         from lib.notification import post_slack_by_type
         from lib.mcp import read_mcp
+        import time
 
-        data = read_mcp(0)
-        
-        post_slack_by_type(
-            text = str(data),
-            type = 'notification',
-        )
+        for _ in range(10):
+            data = read_mcp(0)
+            
+            post_slack_by_type(
+                text = str(data),
+                type = 'notification',
+            )
+            time.sleep(1)
 
 

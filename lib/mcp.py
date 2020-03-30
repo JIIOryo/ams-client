@@ -14,10 +14,17 @@ from commons.consts import (
 )
 
 def read_mcp(n):
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(SPICLK, GPIO.OUT)
+    GPIO.setup(SPICS, GPIO.OUT)
+    GPIO.setup(SPIMISO, GPIO.IN)
+    GPIO.setup(SPIMOSI, GPIO.OUT)
+
     if n > 7 or n < 0:
         return -1
+
     GPIO.output(SPICS, GPIO.HIGH)
-    GPIO.output SPICLK, GPIO.LOW)
+    GPIO.output(SPICLK, GPIO.LOW)
     GPIO.output(SPICS, GPIO.LOW)
     
     commandout = n
@@ -29,12 +36,12 @@ def read_mcp(n):
         else:
             GPIO.output(SPIMOSI, GPIO.LOW)
         commandout <<= 1
-        GPIO.output SPICLK, GPIO.HIGH)
-        GPIO.output SPICLK, GPIO.LOW)
+        GPIO.output(SPICLK, GPIO.HIGH)
+        GPIO.output(SPICLK, GPIO.LOW)
     adcout = 0
     for i in range(13):
-        GPIO.output SPICLK, GPIO.HIGH)
-        GPIO.output SPICLK, GPIO.LOW)
+        GPIO.output(SPICLK, GPIO.HIGH)
+        GPIO.output(SPICLK, GPIO.LOW)
         adcout <<= 1
         if i>0 and GPIO.input(SPIMISO)==GPIO.HIGH:
             adcout |= 0x1
