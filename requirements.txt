@@ -1,2 +1,3 @@
 rpi.gpio
 paho-mqtt
+requests
