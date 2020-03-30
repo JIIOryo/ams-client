@@ -31,9 +31,10 @@ def device_delete(message):
     
     delete_device = json.loads(message)
     gpio_config = get_gpio_config()
+    delete_device_id = delete_device['device_id']
 
     for device in gpio_config:
-        if device['device_id'] == delete_device['device_id']:
+        if device['device_id'] == delete_device_id:
 
             if device['device'] == {}:
                 # todo throw error
@@ -49,7 +50,7 @@ def device_delete(message):
 
     slack_post_text = SLACK_DELETE_DEVICE_NOTIFICATION_FORMAT.format(
         now = formated_str_now_date(),
-        device_id = deleted_device['device_id'],
+        device_id = delete_device_id,
         name = deleted_device['name'],
         description = deleted_device['description'],
         type = deleted_device['type']
