@@ -14,8 +14,8 @@ subscribe_topics = get_subscribe_topics()
 def topic_router(topic, message):
     
 
-    if topic == subscribe_topics['TEST_TOPIC']:
-        print( 'hello' )
+    if topic == subscribe_topics['PING']:
+        publish_ack()
     
     elif topic == subscribe_topics['DEVICE_CONTROL']:
         device_control(message)

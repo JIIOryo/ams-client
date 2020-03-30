@@ -1,9 +1,9 @@
 {
     "PUBLISH":{
-        "DEVICE_STATE":"tank/{tank_id}/devices/state"
+        "DEVICE_STATE":"tank/{tank_id}/devices/state",
+        "ACK":"tank/{tank_id}/ack"
     },
     "SUBSCRIBE":{
-        "TEST_TOPIC":"user/{tank_id}/{client_id}/test",
         "PING":"user/{tank_id}/{client_id}/ping",
         "REBOOT":"user/{tank_id}/{client_id}/reboot",
         "DEVICE_CONTROL":"user/{tank_id}/device/control",
