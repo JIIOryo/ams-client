@@ -7,6 +7,7 @@ sys.path.append( str(current_dir) + '/../' )
 
 from lib.topic import get_subscribe_topics
 from on_message.device_control import device_control
+from on_message.device_create import device_create
 
 subscribe_topics = get_subscribe_topics()
 

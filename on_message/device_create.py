@@ -39,10 +39,9 @@ def device_create(message):
     new_device_id = new_device['device_id']
 
     for device in gpio_config:
-        if device['device_id'] == target_device_id:
+        if device['device_id'] == new_device_id:
 
             if device['device']:
-                print('device already exist')
                 return
             
             device['device'] = {
@@ -55,6 +54,7 @@ def device_create(message):
             }
             break
     
+    # todo write to gpio_config
     print(gpio_config)
     
     publish_device_state()   
