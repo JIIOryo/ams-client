@@ -6,7 +6,7 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from lib.config import get_config, get_gpio_config
+from lib.config import get_config, get_gpio_config, set_gpio_config
 from lib.gpio import gpio_write
 
 from service.device_state import publish_device_state
@@ -42,6 +42,7 @@ def device_create(message):
         if device['device_id'] == new_device_id:
 
             if device['device']:
+                # todo throw error
                 return
             
             device['device'] = {
@@ -54,7 +55,5 @@ def device_create(message):
             }
             break
     
-    # todo write to gpio_config
-    print(gpio_config)
-    
+    set_gpio_config(gpio_config) 
     publish_device_state()   

@@ -29,3 +29,7 @@ def get_config_items(keys):
 
 def get_config_item(key):
     return get_config_items([key])[key]
+
+def set_gpio_config(new_gpio_config):
+    with open(GPIO_CONFIG_PATH, 'w') as f:
+        json.dump(new_gpio_config, f, indent = 4)
