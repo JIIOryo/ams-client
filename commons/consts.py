@@ -12,8 +12,15 @@ description: {description}
 type: {type}
 """
 
-SLACK_UPDATE_DEVICE_NOTIFICATION_FORMAT = """
-Your device settings were updated.
+SLACK_UPDATE_DEVICE_NOTIFICATION_FORMAT = \
+"""
+This device is updated at {now}
+```
+device_id: {device_id}
+name: {name}
+description: {description}
+type: {type}
+```
 """
 
 SLACK_DELETE_DEVICE_NOTIFICATION_FORMAT = \

@@ -8,6 +8,7 @@ sys.path.append( str(current_dir) + '/../' )
 from lib.topic import get_subscribe_topics
 from on_message.device_control import device_control
 from on_message.device_create import device_create
+from on_message.device_update import device_update
 from on_message.device_delete import device_delete
 from on_message.publish_ack import publish_ack
 
@@ -24,6 +25,9 @@ def topic_router(topic, message):
     
     elif topic == subscribe_topics['DEVICE_CREATE']:
         device_create(message)
+    
+    elif topic == subscribe_topics['DEVICE_UPDATE']:
+        device_update(message)
     
     elif topic == subscribe_topics['DEVICE_DELETE']:
         device_delete(message)
