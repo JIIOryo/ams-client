@@ -34,11 +34,23 @@ def on_message(client, userdata, msg):
     print('==========================================')
     print('topic: {0} , message: {1}'.format(msg.topic, msg.payload))
 
+    topic_router(
+        topic = msg.topic,
+        message = msg.payload.decode()
+    )
+
+
+
+if __name__ == '__main__':
+
+    client = mqtt.Client(protocol = protocol)
+    client.username_pw_set(username, password)
+    client.on_connect = on_connect
+    client.on_message = on_message
+
+    client.connect(host, port = port, keepalive = keepalive)
     try:
-        topic_router(
-            topic = msg.topic,
-            message = msg.payload.decode()
-        )
+        client.loop_forever()
     except Exception as e:
         error_message = ''.join(traceback.TracebackException.from_exception(exc).format())
         post_slack(
@@ -52,14 +64,3 @@ def on_message(client, userdata, msg):
         print(error_message)
         print('*************************************')
         pass
-
-
-if __name__ == '__main__':
-
-    client = mqtt.Client(protocol = protocol)
-    client.username_pw_set(username, password)
-    client.on_connect = on_connect
-    client.on_message = on_message
-
-    client.connect(host, port = port, keepalive = keepalive)
-    client.loop_forever()
