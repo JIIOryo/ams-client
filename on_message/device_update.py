@@ -64,7 +64,7 @@ def device_update(message):
     
     set_gpio_config(gpio_config)
 
-    slack_post_text = SLACK_UPDATED_DEVICE_NOTIFICATION_FORMAT.format(
+    slack_post_text = SLACK_UPDATE_DEVICE_NOTIFICATION_FORMAT.format(
         now = formated_str_now_date(),
         device_id = update_device_id,
         name = before_device['name'] + ' -> ' + update_device['name'],
