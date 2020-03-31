@@ -44,6 +44,32 @@ type: {type}
 ```
 """
 
+# DEVICE TYPE
+DEVICE_TYPE = {
+    'MAIN_LIGHT': 'main_light',
+    'SUB_LIGHT': 'sub_light',
+    'AIR_PUMP': 'air_pump',
+    'CO2': 'co2',
+    'FEED_PUMP': 'feed_pump',
+    'WAVE_PUMP': 'wave_pump',
+    'AUTO_FEEDER': 'auto_feeder',
+    'PROTEIN_SKIMMER': 'protein_skimmer',
+    'FILTER': 'filter',
+}
+
+# SENSOR TYPE
+SENSOR_TYPE = {
+    'WATER_TEMPERATURE': 'water_temperature',
+    'ILLUMINANCE': 'illuminance',
+    'WATER_LEVEL': 'water_level',
+    'SUB_TANK_WATER_LEVEL': 'sub_tank_water_level',
+    'ROOM_TEMPERATURE': 'room_temperature',
+    'ROOM_HUMIDITY': 'room_humidity',
+    'SALINITY': 'salinity',
+    'WATER_FLOW_RATE': 'water_flow_rate',
+    'PH': 'ph',
+}
+
 # SPI PIN (BCM)
 SPICLK = 11
 SPIMOSI = 10
