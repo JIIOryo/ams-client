@@ -55,6 +55,17 @@ type: {type}
 ```
 """
 
+SLACK_DELETE_SENSOR_NOTIFICATION_FORMAT = \
+"""
+This sensor is deleted at {now}
+```
+sensor_id: {sensor_id}
+name: {name}
+description: {description}
+type: {type}
+```
+"""
+
 # DEVICE TYPE
 DEVICE_TYPE = {
     'MAIN_LIGHT': 'main_light',

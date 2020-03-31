@@ -4,3 +4,6 @@ class SensorAlreadyExist(Exception):
 
 class SensorTypeNotExist(Exception):
     pass
+
+class SensorNotFound(Exception):
+    pass
