@@ -1,7 +1,7 @@
 {
     "PUBLISH":{
-        "DEVICE_STATE":"tank/{tank_id}/devices/state",
         "ACK":"tank/{tank_id}/{client_id}/ack",
+        "DEVICE_STATE":"tank/{tank_id}/devices/state",
         "SENSOR_DATA":"tank/{tank_id}/sensor/data"
     },
     "SUBSCRIBE":{
@@ -10,6 +10,9 @@
         "DEVICE_CONTROL":"user/{tank_id}/device/control",
         "DEVICE_CREATE":"user/{tank_id}/device/create",
         "DEVICE_UPDATE":"user/{tank_id}/device/update",
-        "DEVICE_DELETE":"user/{tank_id}/device/delete"
+        "DEVICE_DELETE":"user/{tank_id}/device/delete",
+        "SENSOR_CREATE":"user/{tank_id}/sensor/create",
+        "SENSOR_UPDATE":"user/{tank_id}/sensor/update",
+        "SENSOR_DELETE":"user/{tank_id}/sensor/delete"
     }
 }
