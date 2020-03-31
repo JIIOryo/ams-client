@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import subprocess
@@ -11,7 +12,7 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from lib.color import Color, print_color_log
+from lib.color import Color, color_text, print_color_log
 from commons.consts import (
     SLACK_NOTIFICATION_TYPE,
     LOG_TITLE,
@@ -31,7 +32,6 @@ protocol = mqtt.MQTTv311
 keepalive = config['MQTT']['KEEPALIVE']
 QOS = config['MQTT']['SUBSCRIBER_QOS']
 SUBSCRIBE_TOPICS = [(topic, QOS) for topic in get_subscribe_topics().values() ]
-print(SUBSCRIBE_TOPICS)
 
 def on_connect(client, userdata, flags, rc):
     print('Result Code: {}\n'.format(rc))
@@ -42,7 +42,11 @@ def on_message(client, userdata, msg):
     print_color_log(
         title = LOG_TITLE['SUBSCRIBER'],
         title_color = Color.CYAN,
-        text = 'topic: {0} , message: {1}'.format(msg.topic, msg.payload)
+        text = '{unixtime}: {topic}: {message}'.format(
+            unixtime = datetime.datetime.now().strftime('%s'),
+            topic = color_text(msg.topic, Color.GREEN),
+            message = msg.payload.decode(),
+        )
     )
 
     try:

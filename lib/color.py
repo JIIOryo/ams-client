@@ -23,7 +23,25 @@ class Color:
     INVISIBLE = '\033[08m'
     REVERCE   = '\033[07m'
 
-def print_color_log(title, title_color = Color.WHITE, text):
+def color_text(text, color):
+    """
+    color text
+
+    Parameters
+    ----------
+    text: str
+        text
+    title_color: str
+        color.Color
+
+    Returns
+    ----------
+    str
+        colored text
+    """
+    return color + text + Color.END
+
+def print_color_log(title, title_color, text):
     """
     print color log
 
@@ -38,4 +56,4 @@ def print_color_log(title, title_color = Color.WHITE, text):
     if len(title) > LOG_TITLE_MAX_CHAR_NUM:
         raise ValueError('Title must be smaller than {num}'.format(num = LOG_TITLE_MAX_CHAR_NUM))
     
-    print(title_color + title + ' ' * (LOG_TITLE_MAX_CHAR_NUM - len(title)) + '|' + Color.END + text)
+    print( color_text( title + ' ' * (LOG_TITLE_MAX_CHAR_NUM - len(title)) + '|', title_color) + ' ' + text)
