@@ -17,6 +17,7 @@ from lib.notification import post_slack_by_type
 from lib.util import formated_str_now_date
 
 from service.device_state import publish_device_state
+from service.timer import set_new_timer
 
 """
 # message 
@@ -61,8 +62,10 @@ def device_create(message):
                 'updated_at': int( datetime.datetime.now().strftime('%s') ),
             }
             break
-    
+
     set_gpio_config(gpio_config)
+    set_new_timer()
+    publish_device_state()
 
     slack_post_text = SLACK_CREATE_DEVICE_NOTIFICATION_FORMAT.format(
         now = formated_str_now_date(),
@@ -75,4 +78,3 @@ def device_create(message):
         text = slack_post_text,
         type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )
-    publish_device_state()
