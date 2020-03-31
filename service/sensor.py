@@ -14,7 +14,9 @@ publish_topics = get_publish_topics()
 
 def get_sensor_config_no_calibration():
     sensor_config = get_sensor_config()
-    for sensor in sensor_config: del sensor['sensor']['calibration']
+    for sensor in sensor_config:
+        if sensor['sensor']:
+            del sensor['sensor']['calibration']
     return sensor_config
 
 
