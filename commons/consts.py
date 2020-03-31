@@ -118,3 +118,17 @@ SPICLK = 11
 SPIMOSI = 10
 SPIMISO = 9
 SPICS = 8
+
+# TIMER
+CRON_START_TEXT = '# ------ AMS start -------'
+CRON_END_TEXT = '# ------ AMS end -------'
+CRON_FORMAT = \
+"""
+# device_id: {device_id}
+# device_name: {device_name}
+# on
+{on_minute} {on_hour} * * * gpio -g mode {BCM} out && gpio -g write {BCM} 1
+# off
+{off_minute} {off_hour} * * * gpio -g mode {BCM} out && gpio -g write {BCM} 0
+
+"""
