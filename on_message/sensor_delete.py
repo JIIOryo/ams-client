@@ -50,9 +50,9 @@ def sensor_delete(message):
     slack_post_text = SLACK_DELETE_SENSOR_NOTIFICATION_FORMAT.format(
         now = formated_str_now_date(),
         sensor_id = delete_sensor_id,
-        name = delete_sensor['name'],
-        description = delete_sensor['description'],
-        type = delete_sensor['type']
+        name = deleted_sensor['name'],
+        description = deleted_sensor['description'],
+        type = deleted_sensor['type']
     )
     post_slack_by_type(
         text = slack_post_text,
