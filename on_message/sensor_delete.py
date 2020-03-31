@@ -37,7 +37,7 @@ def sensor_delete(message):
         if sensor['sensor_id'] == delete_sensor_id:
 
             # Sensor does not found.
-            if sensor['sensor'] = {}:
+            if sensor['sensor'] == {}:
                 raise SensorNotFound('Sensor does not found.')
             
             deleted_sensor = sensor['sensor']
