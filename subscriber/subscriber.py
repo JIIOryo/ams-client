@@ -16,6 +16,7 @@ from commons.consts import (
 )
 from lib.config import get_config, get_config_item
 from lib.notification import post_slack_by_type
+from lib.topic import get_subscribe_topics
 
 from topic_router import topic_router
 
@@ -26,12 +27,13 @@ username = config['MQTT']['MQTT_BROKER_USERNAME']
 password = config['MQTT']['MQTT_BROKER_PASSWORD']
 protocol = mqtt.MQTTv311
 keepalive = config['MQTT']['KEEPALIVE']
-qos = config['MQTT']['SUBSCRIBER_QOS']
-sub_topic = '#' 
+QOS = config['MQTT']['SUBSCRIBER_QOS']
+SUBSCRIBE_TOPICS = [(topic, QOS) for topic in get_subscribe_topics().values() ]
+print(SUBSCRIBE_TOPICS)
 
 def on_connect(client, userdata, flags, rc):
     print('Result Code: {}\n'.format(rc))
-    client.subscribe(sub_topic)
+    client.subscribe(SUBSCRIBE_TOPICS)
 
 def on_message(client, userdata, msg):
     print('==========================================')

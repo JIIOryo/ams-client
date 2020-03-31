@@ -14,9 +14,12 @@ def main():
     # open sensor manager
 
     # open subscriber
-    network_connection_wait_time = get_config_item(NETWORK_CONNECTION_WAIT_TIME)
-    time.sleep(network_connection_wait_time)
+    network_connection_wait_time = get_config_item('NETWORK_CONNECTION_WAIT_TIME')
+    # time.sleep(network_connection_wait_time)
     subprocess.Popen(['python3', SUBSCRIBER_PATH])
+
+    while True:
+        time.sleep(10)
 
 if __name__ == '__main__':
     main()
