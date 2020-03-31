@@ -64,6 +64,8 @@ def device_update(message):
             break
     
     set_gpio_config(gpio_config)
+    set_new_timer()
+    publish_device_state()
 
     slack_post_text = SLACK_UPDATE_DEVICE_NOTIFICATION_FORMAT.format(
         now = formated_str_now_date(),
@@ -79,12 +81,3 @@ def device_update(message):
         text = slack_post_text,
         type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )
-    publish_device_state()
-
-    # temp
-    post_slack_by_type(
-        text = cron_text_generator(),
-        type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
-    )
-
-    set_new_timer()

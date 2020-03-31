@@ -134,7 +134,7 @@ CRON_FORMAT = \
 """
 
 # CRONTAB TEMP FILE PATH
-CRONTAB_TEMP_FILE_PATH = '~/ams_crontab_temp.txt'
+CRONTAB_TEMP_FILE_PATH = 'ams_crontab_temp.txt'
 
 # USER (using in command `crontab -u`)
-CRONTAB_USER = 'PI'
+CRONTAB_USER = 'pi'

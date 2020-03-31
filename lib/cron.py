@@ -39,5 +39,6 @@ def write_to_crontab(new_crontab):
     
     # write new timer setting to crontab 
     subprocess.Popen(['crontab', '-u', CRONTAB_USER, CRONTAB_TEMP_FILE_PATH])
-
-    # subprocess.Popen(['rm', CRONTAB_TEMP_FILE_PATH])
+    
+    # delete temp file
+    subprocess.Popen(['rm', CRONTAB_TEMP_FILE_PATH])
