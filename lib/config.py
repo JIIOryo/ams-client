@@ -4,6 +4,7 @@ import os
 WTMS_ROOT_PATH = os.path.join(os.path.dirname(__file__), '../')
 CONFIG_PATH = WTMS_ROOT_PATH + 'config/config.json'
 GPIO_CONFIG_PATH = WTMS_ROOT_PATH + 'config/gpio.json'
+SENSOR_CONFIG_PATH = WTMS_ROOT_PATH + 'config/sensor.json'
 
 class KeyNotExist(Exception):
     pass
@@ -17,6 +18,9 @@ def get_config():
 
 def get_gpio_config():
     return read_config_file(GPIO_CONFIG_PATH)
+
+def get_sensor_config():
+    return read_config_file(SENSOR_CONFIG_PATH)
 
 def get_config_items(keys):
     config = get_config()
@@ -33,3 +37,7 @@ def get_config_item(key):
 def set_gpio_config(new_gpio_config):
     with open(GPIO_CONFIG_PATH, 'w') as f:
         json.dump(new_gpio_config, f, indent = 4)
+
+def set_sensor_config(new_sensor_config):
+    with open(SENSOR_CONFIG_PATH, 'w') as f:
+        json.dump(new_sensor_config, f, indent = 4)

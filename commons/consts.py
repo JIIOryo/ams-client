@@ -44,6 +44,17 @@ type: {type}
 ```
 """
 
+SLACK_CREATE_SENSOR_NOTIFICATION_FORMAT = \
+"""
+New sensor is created at {now}
+```
+device_id: {sensor_id}
+name: {name}
+description: {description}
+type: {type}
+```
+"""
+
 # DEVICE TYPE
 DEVICE_TYPE = {
     'MAIN_LIGHT': 'main_light',
