@@ -2,7 +2,8 @@
     "PUBLISH":{
         "ACK":"tank/{tank_id}/{client_id}/ack",
         "DEVICE_STATE":"tank/{tank_id}/devices/state",
-        "SENSOR_DATA":"tank/{tank_id}/sensor/data"
+        "SENSOR_DATA":"tank/{tank_id}/sensor/data",
+        "SENSOR_CONFIG":"tank/{tank_id}/sensor/config"
     },
     "SUBSCRIBE":{
         "PING":"user/{tank_id}/{client_id}/ping",

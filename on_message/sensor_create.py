@@ -20,6 +20,8 @@ from lib.config import get_sensor_config, set_sensor_config
 from lib.notification import post_slack_by_type
 from lib.util import formated_str_now_date
 
+from service.sensor import publish_sensor_config
+
 
 """
 # message 
@@ -73,3 +75,5 @@ def sensor_create(message):
         text = slack_post_text,
         type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )
+
+    publish_sensor_config()
