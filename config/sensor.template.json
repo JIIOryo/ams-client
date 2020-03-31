@@ -1,0 +1,82 @@
+[
+    {
+        "sensor_id": 1,
+        "sensor": {
+            "name": "sensor1",
+            "description": "This is my sensor!",
+            "type": "water_temperature",
+            "calibration": [
+                [740, 23],
+                [750, 23.2],
+                [760, 23.34],
+                [770, 23.56]
+            ],
+            "created_at": 1585390000,
+            "updated_at": 1585390100
+        }
+    },
+    {
+        "sensor_id": 2,
+        "sensor": {
+            "name": "sensor2",
+            "description": "This is my sensor!",
+            "type": "water_temperature",
+            "calibration": [
+                [740, 23],
+                [750, 23.2],
+                [760, 23.34],
+                [770, 23.56]
+            ],
+            "created_at": 1585390000,
+            "updated_at": 1585390100
+        }
+    },
+    {
+        "sensor_id": 3,
+        "sensor": {
+            "name": "sensor3",
+            "description": "This is my sensor!",
+            "type": "water_temperature",
+            "calibration": [
+                [740, 23],
+                [750, 23.2],
+                [760, 23.34],
+                [770, 23.56]
+            ],
+            "created_at": 1585390000,
+            "updated_at": 1585390100
+        }
+    },
+    {
+        "sensor_id": 4,
+        "sensor": {
+            "name": "sensor4",
+            "description": "This is my sensor!",
+            "type": "water_temperature",
+            "calibration": [
+                [740, 23],
+                [750, 23.2],
+                [760, 23.34],
+                [770, 23.56]
+            ],
+            "created_at": 1585390000,
+            "updated_at": 1585390100
+        }
+    },
+    {
+        "sensor_id": 5,
+        "sensor": {}
+    },
+    {
+        "sensor_id": 6,
+        "sensor": {}
+    },
+    {
+        "sensor_id": 7,
+        "sensor": {}
+    },
+    {
+        "sensor_id": 8,
+        "sensor": {}
+    } 
+]
