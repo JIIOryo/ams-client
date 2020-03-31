@@ -11,8 +11,10 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
+from lib.color import Color, print_color_log
 from commons.consts import (
     SLACK_NOTIFICATION_TYPE,
+    LOG_TITLE,
 )
 from lib.config import get_config, get_config_item
 from lib.notification import post_slack_by_type
@@ -36,8 +38,12 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe(SUBSCRIBE_TOPICS)
 
 def on_message(client, userdata, msg):
-    print('==========================================')
-    print('topic: {0} , message: {1}'.format(msg.topic, msg.payload))
+    
+    print_color_log(
+        title = LOG_TITLE['SUBSCRIBER'],
+        title_color = Color.CYAN,
+        text = 'topic: {0} , message: {1}'.format(msg.topic, msg.payload)
+    )
 
     try:
         topic_router(

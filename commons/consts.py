@@ -138,3 +138,12 @@ CRONTAB_TEMP_FILE_PATH = 'ams_crontab_temp.txt'
 
 # USER (using in command `crontab -u`)
 CRONTAB_USER = 'pi'
+
+# LOG TITLE MAX CHAR
+LOG_TITLE_MAX_CHAR_NUM = 14
+
+# LOG_TITLE
+LOG_TITLE = {
+    'SUBSCRIBER': 'subscriber',
+    'SENSOR': 'sensor'
+}
