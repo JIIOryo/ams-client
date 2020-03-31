@@ -55,6 +55,27 @@ type: {type}
 ```
 """
 
+SLACK_UPDATE_SENSOR_NOTIFICATION_FORMAT = \
+"""
+This sensor is updated at {now}
+
+`Before`
+```
+sensor_id: {sensor_id}
+name: {before_name}
+description: {before_description}
+type: {before_type}
+```
+
+`After`
+```
+sensor_id: {sensor_id}
+name: {after_name}
+description: {after_description}
+type: {after_type}
+```
+"""
+
 SLACK_DELETE_SENSOR_NOTIFICATION_FORMAT = \
 """
 This sensor is deleted at {now}
