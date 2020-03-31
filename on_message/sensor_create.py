@@ -11,13 +11,15 @@ from commons.consts import (
     SLACK_CREATE_SENSOR_NOTIFICATION_FORMAT,
     SLACK_NOTIFICATION_TYPE,
 )
+from commons.errors import (
+    SensorAlreadyExist,
+    SensorTypeNotExist,
+)
 
 from lib.config import get_sensor_config, set_sensor_config
 from lib.notification import post_slack_by_type
 from lib.util import formated_str_now_date
 
-class SensorTypeNotExist(Exception):
-    pass
 
 """
 # message 
@@ -40,10 +42,9 @@ def sensor_create(message):
     for sensor in sensor_config:
         if sensor['sensor_id'] == new_sensor_id:
 
+            # Sensor already exists.
             if sensor['sensor']:
-                # todo throw error
-                # sensor already exist
-                return
+                raise SensorAlreadyExist('Sensor already exists.')
             
             # This sensor type does not exist.
             if new_sensor['type'] not in SENSOR_TYPE.values():
