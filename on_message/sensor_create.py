@@ -7,6 +7,7 @@ current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
 from commons.consts import (
+    SENSOR_TYPE,
     SLACK_CREATE_SENSOR_NOTIFICATION_FORMAT,
     SLACK_NOTIFICATION_TYPE,
 )
@@ -14,6 +15,9 @@ from commons.consts import (
 from lib.config import get_sensor_config, set_sensor_config
 from lib.notification import post_slack_by_type
 from lib.util import formated_str_now_date
+
+class SensorTypeNotExist(Exception):
+    pass
 
 """
 # message 
@@ -38,7 +42,12 @@ def sensor_create(message):
 
             if sensor['sensor']:
                 # todo throw error
+                # sensor already exist
                 return
+            
+            # This sensor type does not exist.
+            if new_sensor['type'] not in SENSOR_TYPE.values():
+                raise SensorTypeNotExist('This sensor type does not exist.')
             
             sensor['sensor'] = {
                 'name': new_sensor['name'],
