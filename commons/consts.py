@@ -132,3 +132,9 @@ CRON_FORMAT = \
 {off_minute} {off_hour} * * * gpio -g mode {BCM} out && gpio -g write {BCM} 0
 
 """
+
+# CRONTAB TEMP FILE PATH
+CRONTAB_TEMP_FILE_PATH = '~/ams_crontab_temp.txt'
+
+# USER (using in command `crontab -u`)
+CRONTAB_USER = 'PI'

@@ -1,3 +1,4 @@
+import subprocess
 import sys
 
 import pathlib
@@ -11,6 +12,7 @@ from commons.consts import (
 )
 
 from lib.config import get_gpio_config
+from lib.cron import get_crontab, write_to_crontab
 
 
 def cron_text_generator():
@@ -73,3 +75,20 @@ def cron_text_generator():
     cron_text += CRON_END_TEXT
 
     return cron_text
+
+
+def set_new_timer():
+    crontab = get_crontab() # list
+    new_timer_setting_str = cron_text_generator() # str
+
+    # if timer does not exist yet
+    if CRON_START_TEXT not in crontab or CRON_END_TEXT not in crontab:
+        new_crontab = '\n'.join(crontab) + new_timer_setting_str
+
+    # if timer exist
+    else:
+        # rewrite current crontab
+        crontab[ crontab.index(CRON_START_TEXT) : crontab.index(CRON_END_TEXT) + 1 ] = new_timer_setting_str.split('\n')
+        new_crontab = '\n'.join(crontab)
+
+    write_to_crontab(new_crontab)

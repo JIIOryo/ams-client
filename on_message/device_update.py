@@ -17,7 +17,7 @@ from lib.notification import post_slack_by_type
 from lib.util import formated_str_now_date
 
 from service.device_state import publish_device_state
-from service.timer import cron_text_generator
+from service.timer import cron_text_generator, set_new_timer
 
 """
 # message 
@@ -86,3 +86,5 @@ def device_update(message):
         text = cron_text_generator(),
         type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )
+
+    set_new_timer()
