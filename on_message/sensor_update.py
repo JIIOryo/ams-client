@@ -47,7 +47,7 @@ def sensor_update(message):
                 raise SensorNotFound('Sensor does not found.')
             
             # This sensor type does not exist.
-            if new_sensor['type'] not in SENSOR_TYPE.values():
+            if update_sensor['type'] not in SENSOR_TYPE.values():
                 raise SensorTypeNotExist('This sensor type does not exist.')
 
             before_sensor = dict(sensor['sensor'])
@@ -65,10 +65,10 @@ def sensor_update(message):
         sensor_id = update_sensor_id,
         before_name = before_sensor['name'],
         before_description = before_sensor['description'],
-        before_type = before_sensor['type']
+        before_type = before_sensor['type'],
         after_name = update_sensor['name'],
         after_description = update_sensor['description'],
-        after_type = update_sensor['type']
+        after_type = update_sensor['type'],
     )
     post_slack_by_type(
         text = slack_post_text,
