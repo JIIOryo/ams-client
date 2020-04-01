@@ -24,5 +24,9 @@
             "ICON_EMOJI": ":information_desk_person:",
             "MESSAGE_FORMAT": "------------------------------\n{message}\n------------------------------"
         }
+    },
+    "SENSING": {
+        "SENSOR_DATA_PUBLISH_PERIOD": 10,
+        "SENSING_NUMBER": 100
     }
 }

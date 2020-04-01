@@ -3,6 +3,7 @@ import subprocess
 import time
 
 from lib.config import get_config_item
+from service.sensor import publish_sensor_data
 
 PWD = os.getcwd()
 # SENSOR_MANAGER_PATH = '/'.join([PWD, ..., ])
@@ -19,7 +20,8 @@ def main():
     subprocess.Popen(['python3', SUBSCRIBER_PATH])
 
     while True:
-        time.sleep(10)
+        publish_sensor_data()
+        time.sleep(1)
 
 if __name__ == '__main__':
     main()
