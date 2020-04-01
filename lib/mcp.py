@@ -14,6 +14,7 @@ from commons.consts import (
 )
 
 def read_mcp(n):
+    n -= 1
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(SPICLK, GPIO.OUT)
     GPIO.setup(SPICS, GPIO.OUT)

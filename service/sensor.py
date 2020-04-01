@@ -78,8 +78,8 @@ def publish_sensor_data():
         publish_data['sensors'].append({
             "sensor_id": sensor['sensor_id'],
             "name": sensor['sensor']['name'],
-            "type": sensor['sensor']['type'].
-            "value": a * total_value / sensing_number + b,
+            "type": sensor['sensor']['type'],
+            "value": round( a * total_value[sensor['sensor_id']] / sensing_number + b, 2),
         })
     
 

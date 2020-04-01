@@ -21,7 +21,6 @@ def main():
 
     while True:
         publish_sensor_data()
-        time.sleep(1)
 
 if __name__ == '__main__':
     main()
