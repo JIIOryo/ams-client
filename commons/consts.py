@@ -131,6 +131,9 @@ SPIMOSI = 10
 SPIMISO = 9
 SPICS = 8
 
+# FEED PUMP DEFAULT TIME
+FEED_PUMP_DEFAULT_TIME = 30
+
 # TIMER
 CRON_START_TEXT = '# ------ AMS start -------'
 CRON_END_TEXT = '# ------ AMS end -------'
