@@ -92,6 +92,16 @@ type: {type}
 ```
 """
 
+SLACK_WATER_FEED_FORMAT = \
+"""
+:potable_water: Water feeding is now completed.
+```
+device_id: {device_id}
+name: {name}
+water feed time: {water_feed_time}
+```
+"""
+
 # DEVICE TYPE
 DEVICE_TYPE = {
     'MAIN_LIGHT': 'main_light',

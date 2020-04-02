@@ -29,10 +29,10 @@ def feed_pump(pin, water_feed_time = FEED_PUMP_DEFAULT_TIME):
     """
     is_running = gpio_read(pin)
     if is_running:
-        return false
+        return False
     
     gpio_write(pin, 1)
     time.sleep(water_feed_time)
     gpio_write(pin, 0)
 
-    return true
+    return True
