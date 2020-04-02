@@ -10,6 +10,7 @@ from commons.consts import (
     SLACK_UPDATE_DEVICE_NOTIFICATION_FORMAT,
     SLACK_NOTIFICATION_TYPE,
     DEVICE_TYPE,
+    DEVICE_RUN_TYPE,
 )
 from commons.errors import (
     DeviceNotFound,

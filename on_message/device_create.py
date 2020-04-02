@@ -10,6 +10,7 @@ from commons.consts import (
     SLACK_CREATE_DEVICE_NOTIFICATION_FORMAT,
     SLACK_NOTIFICATION_TYPE,
     DEVICE_TYPE,
+    DEVICE_RUN_TYPE,
 )
 from commons.errors import (
     DeviceAlreadyExist,
@@ -68,7 +69,7 @@ def device_create(message):
                 'name': new_device['name'],
                 'description': new_device['description'],
                 'type': new_device['type'],
-                'run_type': new_device['run_type']
+                'run_type': new_device['run_type'],
                 'options': new_device['options'],
                 'created_at': int( datetime.datetime.now().strftime('%s') ),
                 'updated_at': int( datetime.datetime.now().strftime('%s') ),

@@ -112,7 +112,7 @@ def cron_text_generator():
                     hour = one_timer['hour'],
                     cmd = 'echo todo this is temp command',
                 )
-            cron_text += '\n'
+            cron_text += '\n\n'
     
     cron_text += CRON_END_TEXT
 
