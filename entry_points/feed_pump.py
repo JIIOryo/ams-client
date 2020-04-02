@@ -9,36 +9,38 @@ from commons.consts import (
     SLACK_WATER_FEED_FORMAT,
     DEVICE_TYPE,
 )
+from commons.errors import DeviceNotFound, DeviceOtherError
 from lib.notification import post_slack_by_type
 from service.device import get_all_device_by_device_id
 from service.feed_pump import feed_pump
 
 """
-python3 feed_pump.py {pin} {water_feed_time}
+python3 feed_pump.py {device_id} {water_feed_time}
 """
 
 if __name__ == '__main__':
 
     args = sys.argv
-    pin = int(args[1])
+    device_id = int(args[1])
     water_feed_time = int(args[2])
-    # todo pin check
+    # todo device_id check
 
-    device = get_all_device_by_device_id(pin)
+    device = get_all_device_by_device_id(device_id)
+
     if device == {}:
-        sys.exit(1)
+        raise DeviceNotFound('Device does not exist.')
     
-    if device['type'] != DEVICE_TYPE['FEED_PUMP']:
-        sys.exit(1)
+    if device['device']['type'] != DEVICE_TYPE['FEED_PUMP']:
+        raise DeviceOtherError('This is not feed pump.')
 
     # feeding water
-    feed_pump(pin, water_feed_time)
+    feed_pump(device['BCM'], water_feed_time)
 
-        post_slack_by_type(
-            text = SLACK_WATER_FEED_FORMAT.format(
-                device_id = pin,
-                name = device['name'],
-                water_feed_time = water_feed_time,
-            ),
-            type = SLACK_NOTIFICATION_TYPE['NOTIFICATION'],
-        )
+    post_slack_by_type(
+        text = SLACK_WATER_FEED_FORMAT.format(
+            device_id = device_id,
+            name = device['device']['name'],
+            water_feed_time = water_feed_time,
+        ),
+        type = SLACK_NOTIFICATION_TYPE['NOTIFICATION'],
+    )

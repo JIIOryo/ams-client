@@ -19,3 +19,6 @@ class DeviceTypeUndefined(Exception):
 
 class DeviceRunTypeUndefined(Exception):
     pass
+
+class DeviceOtherError(Exception):
+    pass
