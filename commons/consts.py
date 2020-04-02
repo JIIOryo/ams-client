@@ -11,6 +11,7 @@ device_id: {device_id}
 name: {name}
 description: {description}
 type: {type}
+run_type: {run_type}
 ```
 """
 
@@ -24,6 +25,7 @@ device_id: {device_id}
 name: {before_name}
 description: {before_description}
 type: {before_type}
+run_type: {before_run_type}
 ```
 
 `After`
@@ -32,6 +34,7 @@ device_id: {device_id}
 name: {after_name}
 description: {after_description}
 type: {after_type}
+run_type: {after_run_type}
 ```
 """
 
@@ -115,6 +118,13 @@ SENSOR_TYPE = {
     'PH': 'ph',
 }
 
+# DEVICE RUN TYPE
+DEVICE_RUN_TYPE = {
+    'CONTINUOUS': 'continuous',
+    'DAILY': 'daily',
+    'DISCREATE': 'discreate',
+}
+
 # SPI PIN (BCM)
 SPICLK = 11
 SPIMOSI = 10
@@ -124,16 +134,24 @@ SPICS = 8
 # TIMER
 CRON_START_TEXT = '# ------ AMS start -------'
 CRON_END_TEXT = '# ------ AMS end -------'
-CRON_FORMAT = \
+
+CRON_COMMENT_FORMAT = \
 """
 # device_id: {device_id}
 # device_name: {device_name}
-# on
+# on"""
+
+CRON_FORMAT_DAILY = \
+"""
 {on_minute} {on_hour} * * * gpio -g mode {BCM} out && gpio -g write {BCM} 1
 # off
 {off_minute} {off_hour} * * * gpio -g mode {BCM} out && gpio -g write {BCM} 0
 
 """
+
+CRON_FORMAT_DISCREATE = \
+"""
+{minute} {hour} * * * {cmd}"""
 
 # CRONTAB TEMP FILE PATH
 CRONTAB_TEMP_FILE_PATH = 'ams_crontab_temp.txt'

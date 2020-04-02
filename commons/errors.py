@@ -7,3 +7,15 @@ class SensorTypeNotExist(Exception):
 
 class SensorNotFound(Exception):
     pass
+
+class DeviceAlreadyExist(Exception):
+    pass
+
+class DeviceNotFound(Exception):
+    pass
+
+class DeviceTypeUndefined(Exception):
+    pass
+
+class DeviceRunTypeUndefined(Exception):
+    pass

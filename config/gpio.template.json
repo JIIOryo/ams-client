@@ -6,8 +6,8 @@
             "name":"device1",
             "description":"This is my main light!",
             "type":"main_light",
+            "run_type": "daily",
             "options":{
-                "continuous":false,
                 "timer":{
                     "on_hour":10,
                     "on_minute":30,
@@ -24,30 +24,10 @@
         "BCM":19,
         "device":{
             "name":"device2",
-            "description":"This is my sub light!",
-            "type":"sub_light",
-            "options":{
-                "continuous":false,
-                "timer":{
-                    "on_hour":10,
-                    "on_minute":30,
-                    "off_hour":17,
-                    "off_minute":30
-                }
-            },
-            "created_at":1585390000,
-            "updated_at":1585390100
-        }
-    },
-    {
-        "device_id":3,
-        "BCM":13,
-        "device":{
-            "name":"device3",
-            "description":"This is my air pomp!",
+            "description":"This is my air pump!",
             "type":"air_pump",
+            "run_type": "daily",
             "options":{
-                "continuous":false,
                 "timer":{
                     "on_hour":17,
                     "on_minute":30,
@@ -60,21 +40,33 @@
         }
     },
     {
+        "device_id":3,
+        "BCM":13,
+        "device":{
+            "name":"device3",
+            "description":"This is my auto feeder!",
+            "type":"auto_feeder",
+            "run_type": "discreate",
+            "options": {
+                "timer": [
+                    {"hour": 10, "minute": 30},
+                    {"hour": 15, "minute": 0},
+                    {"hour": 22, "minute": 30}
+                ]
+            },
+            "created_at":1585390000,
+            "updated_at":1585390100
+        }
+    },
+    {
         "device_id":4,
         "BCM":21,
         "device":{
             "name":"device4",
-            "description":"This is my CO2!",
-            "type":"co2",
-            "options":{
-                "continuous":false,
-                "timer":{
-                    "on_hour":10,
-                    "on_minute":30,
-                    "off_hour":17,
-                    "off_minute":30
-                }
-            },
+            "description":"This is my wave pump!",
+            "type":"wave_pump",
+            "run_type": "continuous",
+            "options":{},
             "created_at":1585390000,
             "updated_at":1585390100
         }

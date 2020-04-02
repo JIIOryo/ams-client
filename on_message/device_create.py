@@ -9,6 +9,12 @@ sys.path.append( str(current_dir) + '/../' )
 from commons.consts import (
     SLACK_CREATE_DEVICE_NOTIFICATION_FORMAT,
     SLACK_NOTIFICATION_TYPE,
+    DEVICE_TYPE,
+)
+from commons.errors import (
+    DeviceAlreadyExist,
+    DeviceTypeUndefined,
+    DeviceRunTypeUndefined,
 )
 
 from lib.config import get_config, get_gpio_config, set_gpio_config
@@ -24,39 +30,45 @@ from service.timer import set_new_timer
 type: json str
 -----
 {
-	"device_id": 1,
-	"name": "My main light", // str
-  "description": "This is my main light!", // str
-  "type": "main_light", // str
-  "options": { // object
-  	"continuous": false, // boolean required
-    "timer": { // object required (if "continuous": false)
-   		"on_hour": 10, // int required (if "timer" exists)
-      "on_minute": 30, // int required (if "timer" exists)
-      "off_hour": 17, // int required (if "timer" exists)
-      "off_minute": 30 // int required (if "timer" exists)
+    "device_id": 1,
+    "name": "My main light",
+    "description": "This is my main light!",
+    "type": "main_light",
+    "run_type": "daily",
+    "options": {
+        "timer": {
+            "on_hour": 10,
+            "on_minute": 30,
+            "off_hour": 17,
+            "off_minute": 30
+        } 
     }
-  }
 }
 """
 
 def device_create(message):
     new_device = json.loads(message)
-    gpio_config = get_gpio_config()
 
+    if new_device['type'] not in DEVICE_TYPE.values():
+        raise DeviceTypeUndefined('This device type is undefined.')
+    
+    if new_device['run_type'] not in DEVICE_RUN_TYPE.values():
+        raise DeviceRunTypeUndefined('This run type is undefined.')
+    
+    gpio_config = get_gpio_config()
     new_device_id = new_device['device_id']
 
     for device in gpio_config:
         if device['device_id'] == new_device_id:
 
             if device['device']:
-                # todo throw error
-                return
+                raise DeviceAlreadyExist('This device id is already used.')
             
             device['device'] = {
                 'name': new_device['name'],
                 'description': new_device['description'],
                 'type': new_device['type'],
+                'run_type': new_device['run_type']
                 'options': new_device['options'],
                 'created_at': int( datetime.datetime.now().strftime('%s') ),
                 'updated_at': int( datetime.datetime.now().strftime('%s') ),
@@ -72,7 +84,8 @@ def device_create(message):
         device_id = new_device_id,
         name = new_device['name'],
         description = new_device['description'],
-        type = new_device['type']
+        type = new_device['type'],
+        run_type = new_device['run_type'],
     )
     post_slack_by_type(
         text = slack_post_text,

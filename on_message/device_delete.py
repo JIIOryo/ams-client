@@ -10,6 +10,9 @@ from commons.consts import (
     SLACK_DELETE_DEVICE_NOTIFICATION_FORMAT,
     SLACK_NOTIFICATION_TYPE,
 )
+from commons.errors import (
+    DeviceNotFound,
+)
 
 from lib.config import get_config, get_gpio_config, set_gpio_config
 from lib.gpio import gpio_write
@@ -38,8 +41,7 @@ def device_delete(message):
         if device['device_id'] == delete_device_id:
 
             if device['device'] == {}:
-                # todo throw error
-                return
+                raise DeviceNotFound('Device does not found.')
             
             deleted_device = device['device']
             
@@ -56,7 +58,8 @@ def device_delete(message):
         device_id = delete_device_id,
         name = deleted_device['name'],
         description = deleted_device['description'],
-        type = deleted_device['type']
+        type = deleted_device['type'],
+        run_type = deleted_device['run_type'],
     )
     post_slack_by_type(
         text = slack_post_text,

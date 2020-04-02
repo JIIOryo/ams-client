@@ -8,7 +8,10 @@ sys.path.append( str(current_dir) + '/../' )
 from commons.consts import (
     CRON_START_TEXT,
     CRON_END_TEXT,
-    CRON_FORMAT,
+    CRON_COMMENT_FORMAT,
+    CRON_FORMAT_DAILY,
+    CRON_FORMAT_DISCREATE,
+    DEVICE_RUN_TYPE,
 )
 
 from lib.config import get_gpio_config
@@ -37,11 +40,11 @@ def cron_text_generator():
     ...
 
     # device_id: 5
-    # device_name: my_air_pump
+    # device_name: feed_pump
     # on
-    30 17 * * * gpio -g mode 19 out && gpio -g write 19 1
-    # off
-    0 10 * * * gpio -g mode 19 out && gpio -g write 19 0
+    30 10 * * * python3 feed_pump.py [args]
+    0 15 * * * python3 feed_pump.py [args]
+    30 22 * * * python3 feed_pump.py [args]
     # ------ AMS end -------
 
     """
@@ -57,20 +60,59 @@ def cron_text_generator():
             continue
         
         # if the device runs continuously like a wave pump
-        if device['device']['options']['continuous']:
+        if device['device']['run_type'] == DEVICE_RUN_TYPE['CONTINUOUS']:
             continue
-        
+
         timer = device['device']['options']['timer']
 
-        cron_text += CRON_FORMAT.format(
-            device_id = device['device_id'],
-            device_name = device['device']['name'],
-            BCM = device['BCM'],
-            on_minute = timer['on_minute'],
-            on_hour = timer['on_hour'],
-            off_minute = timer['off_minute'],
-            off_hour = timer['off_hour'],
-        )
+        # if run type is "daily"
+        if device['device']['run_type'] == DEVICE_RUN_TYPE['DAILY']:
+            """
+            "timer":{
+                "on_hour":17,
+                "on_minute":30,
+                "off_hour":10,
+                "off_minute":0
+            }
+            """
+            # add comment
+            cron_text += CRON_COMMENT_FORMAT.format(
+                device_id = device['device_id'],
+                device_name = device['device']['name'],
+            )
+            # add cron entry
+            cron_text += CRON_FORMAT_DAILY.format(
+                BCM = device['BCM'],
+                on_minute = timer['on_minute'],
+                on_hour = timer['on_hour'],
+                off_minute = timer['off_minute'],
+                off_hour = timer['off_hour'],
+            )
+        
+        # if run type is "discreate"
+        elif device['device']['run_type'] == DEVICE_RUN_TYPE['DISCREATE']:
+            """
+            "timer": [
+                {"hour": 10, "minute": 30},
+                {"hour": 15, "minute": 0},
+                {"hour": 22, "minute": 30}
+            ]
+            """
+            if len(timer) == 0:
+                continue
+            # add comment
+            cron_text += CRON_COMMENT_FORMAT.format(
+                device_id = device['device_id'],
+                device_name = device['device']['name'],
+            )
+            # add cron entries
+            for one_timer in timer:
+                cron_text += CRON_FORMAT_DISCREATE.format(
+                    minute = one_timer['minute'],
+                    hour = one_timer['hour'],
+                    cmd = 'echo todo this is temp command',
+                )
+            cron_text += '\n'
     
     cron_text += CRON_END_TEXT
 

@@ -24,6 +24,7 @@ def get_all_device_state():
                 'name': device['device']['name'],
                 'description': device['device']['description'],
                 'type': device['device']['type'],
+                'run_type': device['device']['run_type'],
                 'options': device['device']['options'],
                 'created_at': device['device']['created_at'],
                 'updated_at': device['device']['updated_at'],
