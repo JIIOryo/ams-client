@@ -23,7 +23,6 @@ if __name__ == '__main__':
     args = sys.argv
     device_id = int(args[1])
     water_feed_time = int(args[2])
-    # todo device_id check
 
     device = get_all_device_by_device_id(device_id)
 

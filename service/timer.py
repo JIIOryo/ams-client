@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 
@@ -12,6 +13,8 @@ from commons.consts import (
     CRON_FORMAT_DAILY,
     CRON_FORMAT_DISCREATE,
     DEVICE_RUN_TYPE,
+    DEVICE_TYPE,
+    FEED_PUMP_DEFAULT_TIME,
 )
 
 from lib.config import get_gpio_config
@@ -98,8 +101,10 @@ def cron_text_generator():
                 {"hour": 22, "minute": 30}
             ]
             """
+            # There is not any timer entry.
             if len(timer) == 0:
                 continue
+            
             # add comment
             cron_text += CRON_COMMENT_FORMAT.format(
                 device_id = device['device_id'],
@@ -110,7 +115,10 @@ def cron_text_generator():
                 cron_text += CRON_FORMAT_DISCREATE.format(
                     minute = one_timer['minute'],
                     hour = one_timer['hour'],
-                    cmd = 'echo todo this is temp command',
+                    cmd = cron_cmd_generator_by_type(
+                        device['device']['type'],
+                        device_id = device['device_id'],
+                    ),
                 )
             cron_text += '\n\n'
     
@@ -134,3 +142,22 @@ def set_new_timer():
         new_crontab = '\n'.join(crontab)
 
     write_to_crontab(new_crontab)
+
+
+def cron_cmd_generator_by_type(type_, device_id):
+
+    PWD = os.getcwd()
+
+    if type_ == DEVICE_TYPE['FEED_PUMP']:
+        entry_point = '/'.join([PWD, 'entry_points', 'feed_pump.py'])
+        return 'python3 {entry_point} {device_id} {water_feed_time}'.format(
+            entry_point = entry_point,
+            device_id = device_id,
+            water_feed_time = FEED_PUMP_DEFAULT_TIME,
+        )
+    
+    # else if type_ == DEVICE_TYPE['AUTO_FEEDER']:
+    #     ...
+
+    else:
+        return 'echo todo'
