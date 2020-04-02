@@ -13,6 +13,13 @@ from lib.topic import get_publish_topics
 
 publish_topics = get_publish_topics()
 
+def get_all_device_by_device_id(device_id):
+    devices = get_gpio_config()
+    for device in devices:
+        if device['device_id'] == device_id:
+            return device
+    return {}
+
 def get_all_device_state():
     devices = get_gpio_config()
     all_device_state = []

@@ -8,7 +8,7 @@ sys.path.append( str(current_dir) + '/../' )
 from lib.config import get_config, get_gpio_config
 from lib.gpio import gpio_write
 
-from service.device_state import publish_device_state
+from service.device import publish_device_state
 
 """
 # message 

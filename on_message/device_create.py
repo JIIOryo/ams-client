@@ -23,7 +23,7 @@ from lib.gpio import gpio_write
 from lib.notification import post_slack_by_type
 from lib.util import formated_str_now_date
 
-from service.device_state import publish_device_state
+from service.device import publish_device_state
 from service.timer import set_new_timer
 
 """
