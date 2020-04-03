@@ -10,7 +10,7 @@ sys.path.append( str(current_dir) + '/../' )
 from commons.consts import (
     SLACK_NOTIFICATION_TYPE,
 )
-from commons.error import NotificationTypeUndefined
+from commons.errors import NotificationTypeUndefined
 from lib.config import get_config_item
 
 def post_slack(channel, username, text, icon_emoji):
