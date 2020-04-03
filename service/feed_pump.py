@@ -10,8 +10,9 @@ from commons.consts import (
     FEED_PUMP_DEFAULT_TIME,
 )
 from lib.gpio import gpio_write, gpio_read
+from service.device import publish_device_state
 
-def feed_pump(pin, water_feed_time = FEED_PUMP_DEFAULT_TIME):
+def feed_pump(pin: int, water_feed_time: int=FEED_PUMP_DEFAULT_TIME) -> bool:
     """
     feed water
 
@@ -31,8 +32,17 @@ def feed_pump(pin, water_feed_time = FEED_PUMP_DEFAULT_TIME):
     if is_running:
         return False
     
+    # pump on
     gpio_write(pin, 1)
+    try:
+        publish_device_state()
+    except:
+        gpio_write(pin, 0)
+        return False
+    
     time.sleep(water_feed_time)
+    # pump off
     gpio_write(pin, 0)
-
+    publish_device_state()
+    
     return True
