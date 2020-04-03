@@ -43,7 +43,7 @@ def device_feed_pump(message):
                 raise DeviceOtherError('This is not feed pump.')
             
             PWD = os.getcwd()
-            entry_point = '/'.join([PWD, '..', 'entry_points', 'feed_pump.py'])
+            entry_point = '/'.join([PWD, 'entry_points', 'feed_pump.py'])
             cmd = 'python3 {entry_point} {device_id} {water_feed_time}'.format(
                 entry_point = entry_point,
                 device_id = target_device_id,
