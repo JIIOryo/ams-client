@@ -58,10 +58,10 @@ def device_delete(message):
         device_id = delete_device_id,
         name = deleted_device['name'],
         description = deleted_device['description'],
-        type = deleted_device['type'],
+        type_ = deleted_device['type'],
         run_type = deleted_device['run_type'],
     )
     post_slack_by_type(
         text = slack_post_text,
-        type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
+        type_ = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )

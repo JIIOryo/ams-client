@@ -73,7 +73,7 @@ def sensor_update(message):
     )
     post_slack_by_type(
         text = slack_post_text,
-        type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
+        type_ = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )
 
     publish_sensor_config()

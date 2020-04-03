@@ -54,11 +54,11 @@ def sensor_delete(message):
         sensor_id = delete_sensor_id,
         name = deleted_sensor['name'],
         description = deleted_sensor['description'],
-        type = deleted_sensor['type']
+        type_ = deleted_sensor['type']
     )
     post_slack_by_type(
         text = slack_post_text,
-        type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
+        type_ = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )
 
     publish_sensor_config()

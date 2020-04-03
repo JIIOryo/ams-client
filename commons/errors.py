@@ -22,3 +22,6 @@ class DeviceRunTypeUndefined(Exception):
 
 class DeviceOtherError(Exception):
     pass
+
+class NotificationTypeUndefined(Exception):
+    pass

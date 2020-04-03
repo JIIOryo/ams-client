@@ -10,7 +10,7 @@ New device is created at {now}
 device_id: {device_id}
 name: {name}
 description: {description}
-type: {type}
+type: {type_}
 run_type: {run_type}
 ```
 """
@@ -45,7 +45,7 @@ This device is deleted at {now}
 device_id: {device_id}
 name: {name}
 description: {description}
-type: {type}
+type: {type_}
 ```
 """
 
@@ -56,7 +56,7 @@ New sensor is created at {now}
 device_id: {sensor_id}
 name: {name}
 description: {description}
-type: {type}
+type: {type_}
 ```
 """
 
@@ -88,7 +88,7 @@ This sensor is deleted at {now}
 sensor_id: {sensor_id}
 name: {name}
 description: {description}
-type: {type}
+type: {type_}
 ```
 """
 

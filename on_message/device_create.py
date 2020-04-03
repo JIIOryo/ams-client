@@ -85,10 +85,10 @@ def device_create(message):
         device_id = new_device_id,
         name = new_device['name'],
         description = new_device['description'],
-        type = new_device['type'],
+        type_ = new_device['type'],
         run_type = new_device['run_type'],
     )
     post_slack_by_type(
         text = slack_post_text,
-        type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
+        type_ = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )

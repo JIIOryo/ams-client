@@ -58,7 +58,7 @@ def on_message(client, userdata, msg):
         error_message = ''.join(traceback.TracebackException.from_exception(e).format())
         post_slack_by_type(
             text = error_message,
-            type = SLACK_NOTIFICATION_TYPE['ERROR'],
+            type_ = SLACK_NOTIFICATION_TYPE['ERROR'],
         )
         print(error_message)
         pass

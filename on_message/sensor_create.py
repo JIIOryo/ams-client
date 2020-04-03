@@ -69,11 +69,11 @@ def sensor_create(message):
         sensor_id = new_sensor_id,
         name = new_sensor['name'],
         description = new_sensor['description'],
-        type = new_sensor['type']
+        type_ = new_sensor['type']
     )
     post_slack_by_type(
         text = slack_post_text,
-        type = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
+        type_ = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )
 
     publish_sensor_config()

@@ -41,5 +41,5 @@ if __name__ == '__main__':
             name = device['device']['name'],
             water_feed_time = water_feed_time,
         ),
-        type = SLACK_NOTIFICATION_TYPE['NOTIFICATION'],
+        type_ = SLACK_NOTIFICATION_TYPE['NOTIFICATION'],
     )

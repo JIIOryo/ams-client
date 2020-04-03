@@ -58,7 +58,7 @@ def topic_router(topic, message):
             
             post_slack_by_type(
                 text = str(data),
-                type = 'notification',
+                type_ = 'notification',
             )
             time.sleep(1)
 
