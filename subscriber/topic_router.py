@@ -10,6 +10,7 @@ from on_message.device_control import device_control
 from on_message.device_create import device_create
 from on_message.device_update import device_update
 from on_message.device_delete import device_delete
+from on_message.device_feed_pump import device_feed_pump
 from on_message.sensor_create import sensor_create
 from on_message.sensor_update import sensor_update
 from on_message.sensor_delete import sensor_delete
@@ -34,6 +35,9 @@ def topic_router(topic, message):
     
     elif topic == subscribe_topics['DEVICE_DELETE']:
         device_delete(message)
+    
+    elif topic == subscribe_topics['DEVICE_FEED_PUMP']:
+        device_feed_pump(message)
     
     elif topic == subscribe_topics['SENSOR_CREATE']:
         sensor_create(message)
