@@ -81,7 +81,7 @@ def cron_text_generator() -> str:
             # add comment
             cron_text += CRON_COMMENT_FORMAT.format(
                 device_id = device['device_id'],
-                device_name = device['device']['name'],
+                device_name = device['device']['name'].replace('\n', ' '),
             )
             # add cron entry
             cron_text += CRON_FORMAT_DAILY.format(
@@ -108,7 +108,7 @@ def cron_text_generator() -> str:
             # add comment
             cron_text += CRON_COMMENT_FORMAT.format(
                 device_id = device['device_id'],
-                device_name = device['device']['name'],
+                device_name = device['device']['name'].replace('\n', ' '),
             )
             # add cron entries
             for one_timer in timer:
