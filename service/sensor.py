@@ -20,7 +20,7 @@ from lib.util import least_squares
 
 publish_topics = get_publish_topics()
 
-def get_sensor_config_no_calibration():
+def get_sensor_config_no_calibration() -> dict:
     sensor_config = get_sensor_config()
     for sensor in sensor_config:
         if sensor['sensor']:
@@ -28,7 +28,7 @@ def get_sensor_config_no_calibration():
     return sensor_config
 
 
-def publish_sensor_config():
+def publish_sensor_config() -> None:
     message = {
         "timestamp": int( datetime.datetime.now().strftime('%s') ),
         "sensors": get_sensor_config_no_calibration(),
@@ -40,7 +40,7 @@ def publish_sensor_config():
         retain = True,
     )
 
-def publish_sensor_data():
+def publish_sensor_data() -> None:
 
     sensing_config = get_config_item('SENSING')
     sensor_data_publish_period = sensing_config['SENSOR_DATA_PUBLISH_PERIOD']

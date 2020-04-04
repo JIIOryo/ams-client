@@ -31,7 +31,7 @@ type: json str
 }
 """
 
-def device_delete(message):
+def device_delete(message: dict) -> None:
     
     delete_device = json.loads(message)
     gpio_config = get_gpio_config()

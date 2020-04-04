@@ -29,7 +29,7 @@ type: json str
 }
 """
 
-def sensor_delete(message):
+def sensor_delete(message: dict) -> None:
     delete_sensor = json.loads(message)
     sensor_config = get_sensor_config()
 

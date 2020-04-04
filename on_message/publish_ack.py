@@ -11,7 +11,7 @@ from lib.topic import get_publish_topics
 
 publish_topics = get_publish_topics()
 
-def publish_ack():
+def publish_ack() -> None:
     message = {
         "timestamp": int( datetime.datetime.now().strftime('%s') ),
     }

@@ -6,10 +6,9 @@ from lib.config import get_config_item
 from service.sensor import publish_sensor_data
 
 PWD = os.getcwd()
-# SENSOR_MANAGER_PATH = '/'.join([PWD, ..., ])
 SUBSCRIBER_PATH = '/'.join([PWD, 'subscriber', 'subscriber.py'])
 
-def main():
+def main() -> None:
     # check cron to write gpio 
 
     # open sensor manager

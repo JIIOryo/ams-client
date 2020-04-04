@@ -13,7 +13,7 @@ from commons.consts import (
     SPIMOSI,
 )
 
-def read_mcp(n):
+def read_mcp(n: int) -> int:
     n -= 1
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(SPICLK, GPIO.OUT)

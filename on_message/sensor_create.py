@@ -35,7 +35,7 @@ type: json str
 }
 """
 
-def sensor_create(message):
+def sensor_create(message: dict) -> None:
     new_sensor = json.loads(message)
     sensor_config = get_sensor_config()
 

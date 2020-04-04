@@ -1,9 +1,10 @@
+from typing import List, Tuple
 import datetime
 
 def formated_str_now_date():
     return datetime.datetime.now().strftime('%m/%d %H:%M')
 
-def least_squares(data):
+def least_squares(data: List[List[int]]) -> Tuple[int, int]:
     """
     Parameters
     ----------

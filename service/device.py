@@ -20,7 +20,7 @@ def get_all_device_by_device_id(device_id):
             return device
     return {}
 
-def get_all_device_state():
+def get_all_device_state() -> list:
     devices = get_gpio_config()
     all_device_state = []
     for device in devices:
@@ -38,7 +38,7 @@ def get_all_device_state():
             })
     return all_device_state
 
-def publish_device_state():
+def publish_device_state() -> None:
     message = {
         "timestamp": int( datetime.datetime.now().strftime('%s') ),
         "devices": get_all_device_state(),

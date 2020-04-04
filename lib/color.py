@@ -23,7 +23,7 @@ class Color:
     INVISIBLE = '\033[08m'
     REVERCE   = '\033[07m'
 
-def color_text(text, color):
+def color_text(text: str, color: str) -> str:
     """
     color text
 
@@ -32,7 +32,7 @@ def color_text(text, color):
     text: str
         text
     title_color: str
-        color.Color
+        Color.color
 
     Returns
     ----------
@@ -41,7 +41,7 @@ def color_text(text, color):
     """
     return color + text + Color.END
 
-def print_color_log(title, title_color, text):
+def print_color_log(title: str, title_color: str, text: str) -> None:
     """
     print color log
 

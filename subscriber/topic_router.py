@@ -18,7 +18,7 @@ from on_message.publish_ack import publish_ack
 
 subscribe_topics = get_subscribe_topics()
 
-def topic_router(topic, message):
+def topic_router(topic: str, message: str):
     
 
     if topic == subscribe_topics['PING']:

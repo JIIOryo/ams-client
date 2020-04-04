@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-def gpio_write(pin, value):
+def gpio_write(pin: int, value: int) -> None:
     """
     update gpio state
 
@@ -17,7 +17,7 @@ def gpio_write(pin, value):
     # todo use subprocess
     # subprocess.Popen(cmd.split(), shell=True)
 
-def gpio_read(pin):
+def gpio_read(pin: int) -> bool:
     """
     get gpio state
 

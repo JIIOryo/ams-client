@@ -47,7 +47,7 @@ type: json str
 }
 """
 
-def device_create(message):
+def device_create(message: dict) -> None:
     new_device = json.loads(message)
 
     if new_device['type'] not in DEVICE_TYPE.values():

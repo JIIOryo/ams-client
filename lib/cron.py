@@ -1,3 +1,4 @@
+from typing import List
 import subprocess
 import sys
 
@@ -10,7 +11,7 @@ from commons.consts import (
     CRONTAB_USER,
 )
 
-def get_crontab():
+def get_crontab() -> List[str]:
     """
     get current crontab
 
@@ -22,7 +23,7 @@ def get_crontab():
     """
     return subprocess.check_output(['crontab', '-l']).decode().split('\n')
 
-def write_to_crontab(new_crontab):
+def write_to_crontab(new_crontab: str) -> None:
     """
     write new crontab to current crontab
 

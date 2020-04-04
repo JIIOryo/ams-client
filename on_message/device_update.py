@@ -47,7 +47,7 @@ type: json str
 }
 """
 
-def device_update(message):
+def device_update(message: dict) -> None:
     update_device = json.loads(message)
 
     if update_device['type'] not in DEVICE_TYPE.values():

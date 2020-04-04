@@ -10,7 +10,13 @@ from lib.config import get_config
 
 config = get_config()
 
-def publish(topic, message, qos = 1, retain = False, keepalive = config['MQTT']['KEEPALIVE']):
+def publish(
+        topic: str,
+        message: str,
+        qos: int = 1,
+        retain: bool = False,
+        keepalive: int = config['MQTT']['KEEPALIVE']
+    ) -> None:
     auth = {
         'username': config['MQTT']['MQTT_BROKER_USERNAME'], 
         'password': config['MQTT']['MQTT_BROKER_PASSWORD'],

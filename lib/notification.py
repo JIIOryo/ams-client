@@ -13,7 +13,7 @@ from commons.consts import (
 from commons.errors import NotificationTypeUndefined
 from lib.config import get_config_item
 
-def post_slack(channel, username, text, icon_emoji):
+def post_slack(channel: str, username: str, text: str, icon_emoji: str) -> None:
 
     post_data = {
         "channel": channel,
@@ -24,7 +24,7 @@ def post_slack(channel, username, text, icon_emoji):
     slack_webhook_url = get_config_item('SLACK')['WEBHOOK_URL']
     response = requests.post(slack_webhook_url, data=json.dumps(post_data))
 
-def post_slack_by_type(text, type_):
+def post_slack_by_type(text: str, type_: str) -> None:
 
     slack_config = get_config_item('SLACK')
 
