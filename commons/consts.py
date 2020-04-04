@@ -5,7 +5,7 @@ SLACK_NOTIFICATION_TYPE = {
 }
 
 SLACK_CREATE_DEVICE_NOTIFICATION_FORMAT = """
-New device is created at {now}
+:new: New device is created at {now}
 ```
 device_id: {device_id}
 name: {name}
@@ -17,7 +17,7 @@ run_type: {run_type}
 
 SLACK_UPDATE_DEVICE_NOTIFICATION_FORMAT = \
 """
-This device is updated at {now}
+:arrows_counterclockwise: This device is updated at {now}
 
 `Before`
 ```
@@ -40,7 +40,7 @@ run_type: {after_run_type}
 
 SLACK_DELETE_DEVICE_NOTIFICATION_FORMAT = \
 """
-This device is deleted at {now}
+:collision: This device is deleted at {now}
 ```
 device_id: {device_id}
 name: {name}
@@ -51,7 +51,7 @@ type: {type_}
 
 SLACK_CREATE_SENSOR_NOTIFICATION_FORMAT = \
 """
-New sensor is created at {now}
+:new: New sensor is created at {now}
 ```
 device_id: {sensor_id}
 name: {name}
@@ -62,7 +62,7 @@ type: {type_}
 
 SLACK_UPDATE_SENSOR_NOTIFICATION_FORMAT = \
 """
-This sensor is updated at {now}
+:arrows_counterclockwise: This sensor is updated at {now}
 
 `Before`
 ```
@@ -83,7 +83,7 @@ type: {after_type}
 
 SLACK_DELETE_SENSOR_NOTIFICATION_FORMAT = \
 """
-This sensor is deleted at {now}
+:collision: This sensor is deleted at {now}
 ```
 sensor_id: {sensor_id}
 name: {name}
