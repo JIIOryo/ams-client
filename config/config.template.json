@@ -28,5 +28,8 @@
     "SENSING": {
         "SENSOR_DATA_PUBLISH_PERIOD": 10,
         "SENSING_NUMBER": 100
+    },
+    "DEVICE": {
+        "AUTO_FEEDER_RUN_TIME": 6
     }
 }

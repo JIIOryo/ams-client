@@ -13,6 +13,7 @@
         "DEVICE_DELETE":"user/{tank_id}/device/delete",
         "DEVICE_CONTROL":"user/{tank_id}/device/control",
         "DEVICE_FEED_PUMP":"user/{tank_id}/device/feed_pump",
+        "DEVICE_AUTO_FEEDER":"user/{tank_id}/device/auto_feeder",
         "SENSOR_CREATE":"user/{tank_id}/sensor/create",
         "SENSOR_UPDATE":"user/{tank_id}/sensor/update",
         "SENSOR_DELETE":"user/{tank_id}/sensor/delete"

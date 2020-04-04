@@ -11,6 +11,7 @@ from on_message.device_create import device_create
 from on_message.device_update import device_update
 from on_message.device_delete import device_delete
 from on_message.device_feed_pump import device_feed_pump
+from on_message.device_auto_feeder import device_auto_feeder
 from on_message.sensor_create import sensor_create
 from on_message.sensor_update import sensor_update
 from on_message.sensor_delete import sensor_delete
@@ -38,6 +39,9 @@ def topic_router(topic: str, message: str):
     
     elif topic == subscribe_topics['DEVICE_FEED_PUMP']:
         device_feed_pump(message)
+
+    elif topic == subscribe_topics['DEVICE_AUTO_FEEDER']:
+        device_auto_feeder(message)
     
     elif topic == subscribe_topics['SENSOR_CREATE']:
         sensor_create(message)
@@ -48,18 +52,3 @@ def topic_router(topic: str, message: str):
     elif topic == subscribe_topics['SENSOR_DELETE']:
         sensor_delete(message)
     
-    elif topic == 'mcp_test':
-        from lib.notification import post_slack_by_type
-        from lib.mcp import read_mcp
-        import time
-
-        for _ in range(10):
-            data = read_mcp(0)
-            
-            post_slack_by_type(
-                text = str(data),
-                type_ = 'notification',
-            )
-            time.sleep(1)
-
-

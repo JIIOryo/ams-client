@@ -102,6 +102,15 @@ water feed time: {water_feed_time}
 ```
 """
 
+SLACK_AUTO_FEEDER_FORMAT = \
+"""
+:rice_ball::fish: Auto feeding is now completed.
+```
+device_id: {device_id}
+name: {name}
+```
+"""
+
 # DEVICE TYPE
 DEVICE_TYPE = {
     'MAIN_LIGHT': 'main_light',
