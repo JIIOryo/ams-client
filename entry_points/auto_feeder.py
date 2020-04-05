@@ -31,8 +31,8 @@ if __name__ == '__main__':
     if device['device']['type'] != DEVICE_TYPE['AUTO_FEEDER']:
         raise DeviceOtherError('This is not auto feeder.')
 
-    # feeding water
-    feed_pump(pin = device['BCM'])
+    # auto feeding
+    auto_feeder(pin = device['BCM'])
 
     post_slack_by_type(
         text = SLACK_AUTO_FEEDER_FORMAT.format(

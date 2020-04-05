@@ -10,9 +10,9 @@ from lib.config import get_config_item
 from lib.gpio import gpio_write, gpio_read
 from service.device import publish_device_state
 
-def feed_pump(pin: int) -> bool:
+def auto_feeder(pin: int) -> bool:
     """
-    feed water
+    auto feeder
 
     Parameters
     ----------
