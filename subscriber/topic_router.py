@@ -12,6 +12,7 @@ from on_message.device_update import device_update
 from on_message.device_delete import device_delete
 from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
+from on_message.reboot import reboot
 from on_message.sensor_create import sensor_create
 from on_message.sensor_update import sensor_update
 from on_message.sensor_delete import sensor_delete
@@ -24,6 +25,9 @@ def topic_router(topic: str, message: str):
 
     if topic == subscribe_topics['PING']:
         publish_ack()
+    
+    elif topic == subscribe_topics['REBOOT']:
+        reboot()
     
     elif topic == subscribe_topics['DEVICE_CONTROL']:
         device_control(message)

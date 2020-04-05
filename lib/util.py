@@ -39,3 +39,14 @@ def least_squares(data: List[List[int]]) -> Tuple[int, int]:
     b = (sum_x2 * sum_y - sum_xy * sum_x)/float(N * sum_x2 - sum_x ** 2)
 
     return a, b
+
+def get_now_device_should_be_on_by_timer(on_hour: int, on_minute: int, off_hour: int, off_minute: int) -> bool:
+    device_on_time = datetime.time(hour = on_hour, minute = on_minute)
+    device_off_time = datetime.time(hour = off_hour, minute = off_minute)
+    now_time = datetime.datetime.now().time()
+
+    on_and_off_times = [device_on_time, device_off_time]
+
+    if min(on_and_off_times) <= now_time < max(on_and_off_times):
+        return device_on_time < device_off_time
+    return device_off_time <= device_on_time
