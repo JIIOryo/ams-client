@@ -5,6 +5,7 @@ current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
 from lib.config import get_gpio_config
+from lib.gpio import gpio_write
 from lib.util import get_now_device_should_be_on_by_timer
 from commons.consts import DEVICE_RUN_TYPE
 
