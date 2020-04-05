@@ -11,11 +11,16 @@ SUBSCRIBER_PATH = '/'.join([PWD, 'subscriber', 'subscriber.py'])
 
 def main() -> None:
     # set initial device state
+    print('set initial device states ...')
     set_init_device_state()
+    print('OK.')
 
     # open subscriber
     network_connection_wait_time = get_config_item('NETWORK_CONNECTION_WAIT_TIME')
+    print('waiting for network connection ...')
     time.sleep(network_connection_wait_time)
+    print('OK.')
+    print('run subscriber ...')
     subprocess.Popen(['python3', SUBSCRIBER_PATH])
 
     # open sensor manager
