@@ -156,8 +156,12 @@ def cron_cmd_generator_by_type(type_: str, device_id: int) -> None:
             water_feed_time = FEED_PUMP_DEFAULT_TIME,
         )
     
-    # else if type_ == DEVICE_TYPE['AUTO_FEEDER']:
-    #     ...
+    elif type_ == DEVICE_TYPE['AUTO_FEEDER']:
+        entry_point = '/'.join([PWD, 'entry_points', 'auto_feeder.py'])
+        return 'python3 {entry_point} {device_id}'.format(
+            entry_point = entry_point,
+            device_id = device_id,
+        )
 
     else:
         return 'echo todo'
