@@ -10,7 +10,7 @@ PWD = os.getcwd()
 SUBSCRIBER_PATH = '/'.join([PWD, 'subscriber', 'subscriber.py'])
 
 def main() -> None:
-    # check cron to write gpio
+    # set initial device state
     set_init_device_state()
 
     # open subscriber
