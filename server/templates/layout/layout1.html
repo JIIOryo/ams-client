@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang=“ja”>
+  <head>
+    <meta charset=“UFT-8”>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>bandailab</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icon/favicon.ico') }}">
+    <link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename='icon/apple-touch-icon-180x180.png') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/button.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/input_area.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/table.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/box.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/datepicker.css') }}">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/header.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/datepicker.js') }}"></script>
+    <script type="text/javascript">
+      window.ontouchstart = function() {};
+      window.addEventListener('touchstart', function() {}, true);
+      window.addEventListener('touchstart', function() {}, false);
+    </script>
+    <!-- datepicker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <body>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>
