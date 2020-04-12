@@ -1,45 +1,21 @@
 {% extends "layout/layout1.html" %}
 {% block content %}
 
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
+<h1> Devices </h1>
 
+<hr>
+{% for device in device_state %}
+    <h2>device_id: {{ device['device_id'] }}</h2>
+    {% if device['state'] %}
+        ON!! <button>off</button>
+    {% else %}
+        OFF!! <button>on</button>
+    {% endif %}
+    <h2>state:  {{ device['state'] }} </h2>
+    <h2>name: {{ device['name'] }}</h2>
+    <h2>type: {{ device['type'] }}</h2>
+    <hr>
+{% endfor %}
 
-
-
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
-<h1> Hello World! </h1>
 
 {% endblock %}
