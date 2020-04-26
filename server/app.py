@@ -9,6 +9,7 @@ sys.path.append( str(current_dir) + '/../' )
 
 from lib.config import get_config_item, get_gpio_config
 from on_message.device_control import device_control
+from on_message.reboot import reboot
 from service.device import get_all_device_state
 
 app = Flask(__name__)
@@ -26,6 +27,11 @@ def index():
 def device_control_():
     print(request.json)
     device_control(message = request.data)
+    return empty_response
+
+@app.route('/reboot')
+def reboot_():
+    reboot()
     return empty_response
 
 
