@@ -35,6 +35,80 @@
       </transition>
 
 
+
+
+      {{ updateModal }}
+      <transition name="fade-modal-display">
+      <div class="modal-display" v-show="updateModal" @click.self="updateModal = false">
+          <div class="modal-box">
+            Hello
+            <button @click="updateModal = false">X</button>
+
+            <table class="update-form-table">
+                <tr>
+                    <td><p>name</p></td>
+                    <td><input type="text"></td>
+                    <!-- <td><input type="text" v-model="training.training_name"></td> -->
+                </tr>
+                <tr>
+                    <td><p>description</p></td>
+                    <td><textarea name="description" cols="20" rows="3"></textarea></td>
+                </tr>
+                <tr>
+                    <td><p>type</p></td>
+                    <td>
+                        <select name="device_type">
+                            <option value="main_light">main_light</option>
+                            <option value="sub_light">sub_light</option>
+                            <option value="air_pump">air_pump</option>
+                            <option value="co2">co2</option>
+                            <option value="feed_pump">feed_pump</option>
+                            <option value="wave_pump">wave_pump</option>
+                            <option value="auto_feeder">auto_feeder</option>
+                            <option value="protein_skimmer">protein_skimmer</option>
+                            <option value="filter">filter</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><p>run type</p></td>
+                    <td>
+                        <select name="run_type">
+                            <option value="continuous">continuous</option>
+                            <option value="daily">daily</option>
+                            <option value="discreate">discreate</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>on time</p>
+                    </td>
+                    <td>
+                        <!-- <input type="number" min="0" max="23">:<input type="number" min="0" max="59"> -->
+                        <input type="time">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>off time</p>
+                    </td>
+                    <td>
+                        <input type="time">
+                    </td>
+                </tr>
+            </table>
+            
+          </div>
+      </div>
+    </transition>
+
+
+
+
+
+
+
       <div class="device-container" v-for="device in devices" :key="device.device_id">
         <h2>device_id: {{ device.device_id }}</h2>
         <h2>name: {{ device.name }}</h2>
@@ -44,6 +118,7 @@
           <span class="switch-label" data-on="On" data-off="Off"></span>
           <span class="switch-handle"></span>
         </label>
+        <button @click="updateModal = true">update</button>
       </div>
       <br>
 
@@ -87,6 +162,7 @@
     data: {
       hasError: false,
       loading: false,
+      updateModal: false,
       devices: [],
     },
     methods: {
@@ -385,6 +461,46 @@
     }
   </style>
 
+
+
+
+
+<style>
+  .modal-display {
+    background:rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  .modal-box {
+    background:white;
+    width: 50%;
+    height: 50%;
+    position: fixed;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 2;
+  }
+
+  .update-form-table {
+      margin: auto;
+  }
+
+
+  .fade-modal-display-leave-active {
+  transition: opacity 0.1s;
+  }
+  .fade-modal-display-leave-to {
+    opacity: 0;
+  }
+
+</style>
 
 
 
