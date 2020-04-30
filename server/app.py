@@ -20,7 +20,7 @@ empty_response = json.dumps({})
 
 @app.route('/')
 def index():
-    with open('templates/index.html') as f:
+    with open('index.html') as f:
         html = f.read()
     return html
 
