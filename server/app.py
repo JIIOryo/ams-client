@@ -19,9 +19,7 @@ empty_response = json.dumps({})
 
 @app.route('/')
 def index():
-    devices = get_gpio_config()
-    device_state = get_all_device_state()
-    return render_template('index.html', devices=devices, device_state=device_state)
+    return render_template('index.html')
 
 @app.route('/devices')
 def get_devices():
