@@ -21,6 +21,7 @@
       <h1> Setting </h1>
 
 
+      {{ loading }}
       <div class="device-container" v-for="device in devices" :key="device.device_id">
         <h2>device_id: {{ device.device_id }}</h2>
         <h2>name: {{ device.name }}</h2>
@@ -72,21 +73,31 @@
     el: '#app',
     data: {
       hasError: false,
-      loading: true,
+      loading: false,
       devices: [],
     },
     methods: {
       setDeviceState: async function() {
+        this.loading = true
         const deviceState = await getDeviceState()
+        this.loading = false
+
         this.devices = deviceState
       },
       updateDeviceState: async function(deviceId, nextState) {
-        await deviceControl(deviceId, nextState)
-        await this.setDeviceState()
+        if (!this.loading) {
+          this.loading = true
+          await deviceControl(deviceId, nextState)        
+          await this.setDeviceState()
+        }
       }
     },
     mounted: async function() {
+
+      this.loading = true
       const deviceState = await getDeviceState()
+      this.loading = false
+
       this.devices = deviceState
     },
   })
