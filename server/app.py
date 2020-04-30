@@ -1,7 +1,8 @@
 import json
 import sys
+import os
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 
 import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
@@ -19,7 +20,13 @@ empty_response = json.dumps({})
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    with open('templates/index.html') as f:
+        html = f.read()
+    return html
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/devices')
 def get_devices():
