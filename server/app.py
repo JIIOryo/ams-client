@@ -23,6 +23,11 @@ def index():
     device_state = get_all_device_state()
     return render_template('index.html', devices=devices, device_state=device_state)
 
+@app.route('/devices')
+def get_devices():
+    devices = get_gpio_config()
+    return json.dumps(devices)
+
 @app.route('/device/control', methods=['POST'])
 def device_control_():
     print(request.json)

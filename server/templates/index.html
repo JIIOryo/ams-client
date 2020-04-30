@@ -6,6 +6,17 @@
     <h1> Sensors </h1>
     <h1> Setting </h1>
 
+
+    <div class="device_container" v-for="device in devices" :key="device.device_id">
+        <h2>device_id: aaaaaaa</h2>
+        <label class="switch">
+            <input type="checkbox" class="switch-input" checked>
+            <span class="switch-label" data-on="On" data-off="Off"></span>
+            <span class="switch-handle"></span>
+        </label>
+    </div>
+    <br>
+
 </div>
 
 
@@ -31,12 +42,12 @@ var app = new Vue({
     data: {
         hasError: false,
         loading: true,
-        devices: {},
+        devices: [],
     },
     mounted: function() {
         axios.get('/devices')
             .then(function(response) {
-                this.devices = response.devices
+                this.devices = response.data
                 console.log(this.devices)
             }.bind(this))
             .catch(function(error){
