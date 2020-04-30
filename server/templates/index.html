@@ -1,27 +1,12 @@
 {% extends "layout/layout1.html" %}
 {% block content %}
 
-<h1> Devices </h1>
-<h1> Sensors </h1>
-<h1> Setting </h1>
+ <div id="app">
+    <h1> Devices </h1>
+    <h1> Sensors </h1>
+    <h1> Setting </h1>
 
-
-<hr>
-{% for device in device_state %}
-    <div class="device_container">
-        <h2>device_id: {{ device['device_id'] }}</h2>
-        <label class="switch">
-            <input type="checkbox" class="switch-input"{% if device['state'] %} checked{% endif %}>
-            <span class="switch-label" data-on="On" data-off="Off"></span>
-            <span class="switch-handle"></span>
-        </label>
-        <h2>state:  {{ device['state'] }} </h2>
-        <h2>name: {{ device['name'] }}</h2>
-        <h2>type: {{ device['type'] }}</h2>
-    </div>
-    <br>
-{% endfor %}
-
+</div>
 
 
 
@@ -35,6 +20,37 @@
 }
 </style>
 
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
+
+
+<script>
+var app = new Vue({
+    el: '#app',
+    data: {
+        hasError: false,
+        loading: true,
+        devices: {},
+    },
+    mounted: function() {
+        axios.get('/devices')
+            .then(function(response) {
+                this.devices = response.devices
+                console.log(this.devices)
+            }.bind(this))
+            .catch(function(error){
+                console.log(error)
+                this.hasError = true;
+            }.bind(this))
+            .finally(function(){
+                this.loading = false;
+            }.bind(this))
+    },
+    methods: {
+    },
+})
+</script>
 
 
 
