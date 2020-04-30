@@ -20,8 +20,21 @@
       <h1> Sensors </h1>
       <h1> Setting </h1>
 
+      <transition name="fade-translate-display">
+        <div class="translate-display" v-show="loading">
+          <div class="spinner-box">
+            <div class="flower-spinner">
+              <div class="dots-container">
+                <div class="bigger-dot">
+                  <div class="smaller-dot"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
 
-      {{ loading }}
+
       <div class="device-container" v-for="device in devices" :key="device.device_id">
         <h2>device_id: {{ device.device_id }}</h2>
         <h2>name: {{ device.name }}</h2>
@@ -222,6 +235,157 @@
     background: #4fb845;
   }
   </style>
+
+
+
+
+
+
+
+
+
+
+  <!-- epic spinners -->
+  <style>
+  
+  .translate-display {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    /* background: rgba(255, 255, 255, 0.8); */
+  }
+
+  .fade-translate-display-leave-active {
+  transition: opacity .5s;
+  }
+  .fade-translate-display-leave-to {
+    opacity: 0;
+  }
+
+  .spinner-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+
+  .flower-spinner,  .flower-spinner * {
+      box-sizing: border-box;
+    }
+
+    .flower-spinner {
+      height: 70px;
+      width: 70px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flower-spinner .dots-container {
+      height: calc(70px / 7);
+      width: calc(70px / 7);
+    }
+
+    .flower-spinner .smaller-dot {
+      background: rgb(0, 150, 220);
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      animation: flower-spinner-smaller-dot-animation 1.0s 0s infinite both;
+
+    }
+
+    .flower-spinner .bigger-dot {
+      background: rgb(0, 150, 220);
+      height: 100%;
+      width: 100%;
+      padding: 10%;
+      border-radius: 50%;
+      animation: flower-spinner-bigger-dot-animation 1.0s 0s infinite both;
+    }
+
+    @keyframes flower-spinner-bigger-dot-animation {
+      0%, 100% {
+        box-shadow: rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px;
+      }
+
+      50% {
+        transform: rotate(180deg);
+      }
+
+      25%, 75% {
+        box-shadow: rgb(0, 150, 220) 26px 0px 0px,
+        rgb(0, 150, 220) -26px 0px 0px,
+        rgb(0, 150, 220) 0px 26px 0px,
+        rgb(0, 150, 220) 0px -26px 0px,
+        rgb(0, 150, 220) 19px -19px 0px,
+        rgb(0, 150, 220) 19px 19px 0px,
+        rgb(0, 150, 220) -19px -19px 0px,
+        rgb(0, 150, 220) -19px 19px 0px;
+      }
+
+      100% {
+        transform: rotate(360deg);
+        box-shadow: rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px;
+      }
+    }
+
+    @keyframes flower-spinner-smaller-dot-animation {
+      0%, 100% {
+        box-shadow: rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px;
+      }
+
+      25%, 75% {
+        box-shadow: rgb(0, 150, 220) 14px 0px 0px,
+        rgb(0, 150, 220) -14px 0px 0px,
+        rgb(0, 150, 220) 0px 14px 0px,
+        rgb(0, 150, 220) 0px -14px 0px,
+        rgb(0, 150, 220) 10px -10px 0px,
+        rgb(0, 150, 220) 10px 10px 0px,
+        rgb(0, 150, 220) -10px -10px 0px,
+        rgb(0, 150, 220) -10px 10px 0px;
+      }
+
+      100% {
+        box-shadow: rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px,
+        rgb(0, 150, 220) 0px 0px 0px;
+      }
+    }
+  </style>
+
+
 
 
   </body>
