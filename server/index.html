@@ -78,24 +78,45 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <p>on time</p>
-                    </td>
-                    <td>
-                        <!-- <input type="number" min="0" max="23">:<input type="number" min="0" max="59"> -->
-                        <input type="time">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>off time</p>
-                    </td>
-                    <td>
-                        <input type="time">
-                    </td>
-                </tr>
-            </table>
+              </table>
+
+              <div>
+                <table class="update-form-table" v-if="selectedDevice.run_type == 'daily'">
+                  <tr>
+                      <td>
+                          <p>on time</p>
+                      </td>
+                      <td>
+                          <!-- <input type="number" min="0" max="23">:<input type="number" min="0" max="59"> -->
+                          <input type="time">
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <p>off time</p>
+                      </td>
+                      <td>
+                          <input type="time">
+                      </td>
+                  </tr>
+              </table>
+                <div v-else-if="selectedDevice.run_type == 'discreate'">
+                  <table class="update-form-table">
+                    <tr v-for="(timer, index) of selectedDevice.options.timer" :key="index">
+                      <td>
+                        <p>timer {{index + 1}}</p>
+                      </td>
+                      <td>
+                        <input type="number" min="0" max="23" v-model="timer.hour">:<input type="number" min="0" max="59" v-model="timer.minute"> 
+                      </td>
+                      <td>
+                        <button @click="selectedDevice.options.timer.splice(index, 1)">x</button>
+                      </td>
+                    </tr>
+                </table>
+                <button @click="selectedDevice.options.timer.push({hour: 0, minute: 0})">+</button>
+                </div>
+            </div>
             
           </div>
       </div>
