@@ -38,35 +38,33 @@
 
 
       {{ updateModal }}
+      <br>
+      {{ selectedDevice }}
+      <br>
+      {{ selectedDevice.type }}
+
+
       <transition name="fade-modal-display">
-      <div class="modal-display" v-show="updateModal" @click.self="updateModal = false">
+      <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
           <div class="modal-box">
             Hello
-            <button @click="updateModal = false">X</button>
+            <button @click="closeUpdateDeviceModal">X</button>
 
             <table class="update-form-table">
                 <tr>
                     <td><p>name</p></td>
-                    <td><input type="text"></td>
+                    <td><input type="text" v-model="selectedDevice.name"></td>
                     <!-- <td><input type="text" v-model="training.training_name"></td> -->
                 </tr>
                 <tr>
                     <td><p>description</p></td>
-                    <td><textarea name="description" cols="20" rows="3"></textarea></td>
+                    <td><textarea name="description" cols="20" rows="3" v-model="selectedDevice.description"></textarea></td>
                 </tr>
                 <tr>
                     <td><p>type</p></td>
                     <td>
-                        <select name="device_type">
-                            <option value="main_light">main_light</option>
-                            <option value="sub_light">sub_light</option>
-                            <option value="air_pump">air_pump</option>
-                            <option value="co2">co2</option>
-                            <option value="feed_pump">feed_pump</option>
-                            <option value="wave_pump">wave_pump</option>
-                            <option value="auto_feeder">auto_feeder</option>
-                            <option value="protein_skimmer">protein_skimmer</option>
-                            <option value="filter">filter</option>
+                        <select name="device_type" v-model="selectedDevice.type">
+                          <option v-for="deviceType of deviceTypes" v-bind:value="deviceType.deviceType">{{ deviceType.deviceType }}</option>
                         </select>
                     </td>
                 </tr>
@@ -118,7 +116,7 @@
           <span class="switch-label" data-on="On" data-off="Off"></span>
           <span class="switch-handle"></span>
         </label>
-        <button @click="updateModal = true">update</button>
+        <button @click="clickUpdateDeviceButton(device)">update</button>
       </div>
       <br>
 
@@ -164,6 +162,36 @@
       loading: false,
       updateModal: false,
       devices: [],
+      selectedDevice: {},
+      deviceTypes: [
+        {
+          deviceType: "main_light"
+        },
+        {
+          deviceType: "sub_light"
+        },
+        {
+          deviceType: "air_pump"
+        },
+        {
+          deviceType: "co2"
+        },
+        {
+          deviceType: "feed_pump"
+        },
+        {
+          deviceType: "wave_pump"
+        },
+        {
+          deviceType: "auto_feeder"
+        },
+        {
+          deviceType: "protein_skimmer"
+        },
+        {
+          deviceType: "filter"
+        },
+      ],
     },
     methods: {
       setDeviceState: async function() {
@@ -179,6 +207,14 @@
           await deviceControl(deviceId, nextState)        
           await this.setDeviceState()
         }
+      },
+      clickUpdateDeviceButton: function(selectedDevice) {
+        this.updateModal = true;
+        this.selectedDevice = JSON.parse(JSON.stringify(selectedDevice));
+      },
+      closeUpdateDeviceModal: function() {
+        this.updateModal = false;
+        this.selectedDevice = {};
       }
     },
     mounted: async function() {
