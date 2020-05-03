@@ -71,10 +71,8 @@
                 <tr>
                     <td><p>run type</p></td>
                     <td>
-                        <select name="run_type">
-                            <option value="continuous">continuous</option>
-                            <option value="daily">daily</option>
-                            <option value="discreate">discreate</option>
+                        <select name="run_type" v-model="selectedDevice.run_type">
+                            <option v-for="deviceRunType of deviceRunTypes" v-bind:value="deviceRunType">{{deviceRunType}}</option>
                         </select>
                     </td>
                 </tr>
@@ -213,6 +211,11 @@
           deviceType: "filter"
         },
       ],
+      deviceRunTypes: [
+        "daily",
+        "discreate",
+        "continuous",
+      ]
     },
     methods: {
       setDeviceState: async function() {
