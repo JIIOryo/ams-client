@@ -38,6 +38,12 @@ def get_all_device_state_():
     devices = get_all_device_state()
     return json.dumps(devices)
 
+@app.route('/device/update', methods=['POST'])
+def update_device():
+    print(request.json)
+    # updated_device = get_all_device_state()
+    return empty_response
+
 @app.route('/device/control', methods=['POST'])
 def device_control_():
     print(request.json)

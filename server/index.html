@@ -144,7 +144,7 @@
                         </tr>
                     </table>
 
-                    <button>update</button>
+                    <button @click="updateDevice()">update</button>
                 </div>
             </div>
         </transition>
@@ -207,6 +207,11 @@
             });
         }
 
+        const updateDeviceRequest = async updatedDevice => {
+            console.log(updatedDevice)
+            await axios.post('/device/update', updatedDevice);
+        }
+
         var app = new Vue({
             el: '#app',
             data: {
@@ -266,6 +271,11 @@
                         await deviceControl(deviceId, nextState)
                         await this.setDeviceState()
                     }
+                },
+                updateDevice: async function () {
+                    this.loading = true
+                    const deviceState = await updateDeviceRequest(this.selectedDevice);
+                    this.loading = false
                 },
                 clickUpdateDeviceButton: function (selectedDevice) {
                     this.updateModal = true;
