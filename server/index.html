@@ -144,7 +144,7 @@
                         </tr>
                     </table>
 
-
+                    <button>update</button>
                 </div>
             </div>
         </transition>
@@ -293,6 +293,9 @@
                             off_hour: 19,
                             off_minute: 0,
                         };
+                    }
+                    if (val == "continuous") {
+                        this.selectedDevice.options = {};
                     }
                 }
             },
