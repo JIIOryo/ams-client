@@ -94,6 +94,7 @@
 
                     <div>
                         <table class="update-form-table" v-if="selectedDevice.run_type == 'daily'">
+                            <!-- daily -->
                             <tr>
                                 <td>
                                     <p>on time</p>
@@ -113,6 +114,7 @@
                             </tr>
                         </table>
                         <div v-else-if="selectedDevice.run_type == 'discreate'">
+                            <!-- discreate -->
                             <table class="update-form-table">
                                 <tr v-for="(timer, index) of selectedDevice.options.timer" :key="index">
                                     <td>
@@ -196,7 +198,9 @@
                 loading: false,
                 updateModal: false,
                 devices: [],
-                selectedDevice: {},
+                selectedDevice: {
+                    run_type: ""
+                },
                 deviceTypes: [
                     {
                         deviceType: "main_light"
@@ -253,7 +257,24 @@
                 },
                 closeUpdateDeviceModal: function () {
                     this.updateModal = false;
-                    this.selectedDevice = {};
+                    this.selectedDevice = {
+                        run_type: "",
+                    };
+                },
+            },
+            watch: {
+                'selectedDevice.run_type': function (val, oldVal) {
+                    if (oldVal == "daily" && val == "discreate") {
+                        this.selectedDevice.options.timer = [];
+                    }
+                    if (oldVal == "discreate" && val == "daily") {
+                        this.selectedDevice.options.timer = {
+                            on_hour: 10,
+                            on_minute: 0,
+                            off_hour: 19,
+                            off_minute: 0,
+                        };
+                    }
                 }
             },
             mounted: async function () {
