@@ -10,6 +10,7 @@ sys.path.append( str(current_dir) + '/../' )
 
 from lib.config import get_config_item, get_gpio_config
 from on_message.device_control import device_control
+from on_message.device_update import device_update
 from on_message.reboot import reboot
 from service.device import get_all_device_state
 
@@ -39,9 +40,9 @@ def get_all_device_state_():
     return json.dumps(devices)
 
 @app.route('/device/update', methods=['POST'])
-def update_device():
+def device_update_():
     print(request.json)
-    # updated_device = get_all_device_state()
+    device_update(message = request.data)
     return empty_response
 
 @app.route('/device/control', methods=['POST'])

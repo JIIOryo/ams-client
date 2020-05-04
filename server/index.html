@@ -209,7 +209,14 @@
 
         const updateDeviceRequest = async updatedDevice => {
             console.log(updatedDevice)
-            await axios.post('/device/update', updatedDevice);
+            await axios.post('/device/update', {
+                device_id: updatedDevice.device_id,
+                name: updatedDevice.name,
+                description: updatedDevice.description,
+                type: updatedDevice.type,
+                run_type: updatedDevice.run_type,
+                options: updatedDevice.options,
+            });
         }
 
         var app = new Vue({
@@ -275,7 +282,9 @@
                 updateDevice: async function () {
                     this.loading = true
                     const deviceState = await updateDeviceRequest(this.selectedDevice);
-                    this.loading = false
+                    this.closeUpdateDeviceModal();
+                    // TODO not reset
+                    window.location.href = '/'
                 },
                 clickUpdateDeviceButton: function (selectedDevice) {
                     this.updateModal = true;
