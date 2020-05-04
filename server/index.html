@@ -133,6 +133,18 @@
                         </div>
                     </div>
 
+                    <table class="update-form-created-at-table">
+                        <tr>
+                            <td>crearted at:</td>
+                            <td>{{selectedDevice.created_at}}</td>
+                        </tr>
+                        <tr>
+                            <td>updated at:</td>
+                            <td>{{selectedDevice.updated_at}}</td>
+                        </tr>
+                    </table>
+
+
                 </div>
             </div>
         </transition>
@@ -174,6 +186,10 @@
 
 
     <script>
+        const getDateTime = timestamp => {
+            let dateTime = new Date(timestamp * 1000);
+            return `${dateTime.getFullYear()}/${dateTime.getMonth()}/${dateTime.getDate()} ${dateTime.toLocaleTimeString()}` 
+        }
 
         const getDeviceState = async () => {
             res = await axios.get('/devices/state')
@@ -254,6 +270,9 @@
                 clickUpdateDeviceButton: function (selectedDevice) {
                     this.updateModal = true;
                     this.selectedDevice = JSON.parse(JSON.stringify(selectedDevice));
+                    // unix timestamp -> readable date
+                    this.selectedDevice.created_at = getDateTime(this.selectedDevice.created_at)
+                    this.selectedDevice.updated_at = getDateTime(this.selectedDevice.updated_at)
                 },
                 closeUpdateDeviceModal: function () {
                     this.updateModal = false;
@@ -598,7 +617,7 @@
         .modal-box {
             background: white;
             width: 50%;
-            height: 50%;
+            height: auto;
             position: fixed;
             border-radius: 10px;
             text-align: center;
@@ -607,6 +626,11 @@
 
         .update-form-table {
             margin: auto;
+        }
+
+        .update-form-created-at-table {
+            margin: auto;
+            font-size: 5px;
         }
 
 
