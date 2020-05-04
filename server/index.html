@@ -101,7 +101,7 @@
                                 </td>
                                 <td>
                                     <!-- <input type="number" min="0" max="23">:<input type="number" min="0" max="59"> -->
-                                    <input type="time">
+                                    <input type="number" min="0" max="23" v-model="selectedDevice.options.timer.on_hour">:<input type="number" min="0" max="59" v-model="selectedDevice.options.timer.on_minute">
                                 </td>
                             </tr>
                             <tr>
@@ -109,7 +109,7 @@
                                     <p>off time</p>
                                 </td>
                                 <td>
-                                    <input type="time">
+                                    <input type="number" min="0" max="23" v-model="selectedDevice.options.timer.off_hour">:<input type="number" min="0" max="59" v-model="selectedDevice.options.timer.off_minute">
                                 </td>
                             </tr>
                         </table>
@@ -264,10 +264,10 @@
             },
             watch: {
                 'selectedDevice.run_type': function (val, oldVal) {
-                    if (oldVal == "daily" && val == "discreate") {
+                    if ((oldVal == "daily" || oldVal == "continuous") && val == "discreate") {
                         this.selectedDevice.options.timer = [];
                     }
-                    if (oldVal == "discreate" && val == "daily") {
+                    if ((oldVal == "discreate" || oldVal == "continuous") && val == "daily") {
                         this.selectedDevice.options.timer = {
                             on_hour: 10,
                             on_minute: 0,
