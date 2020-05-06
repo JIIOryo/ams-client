@@ -18,9 +18,12 @@
 
 <body>
     <div id="app">
-        <h1> Devices </h1>
-        <h1> Sensors </h1>
-        <h1> Setting </h1>
+
+        <div>
+            <h3 @click="selectedPage = 'Devices'">Devices</h3>
+            <h3 @click="selectedPage = 'Sensors'">Sensors</h3>
+            <h3 @click="selectedPage = 'Setting'">Setting</h3>
+        </div>
 
         <transition name="fade-translate-display">
             <div class="translate-display" v-show="loading">
@@ -36,135 +39,141 @@
             </div>
         </transition>
 
+        <div v-if="selectedPage == 'Devices'">
+            <h1>Devices</h1>
+
+            
 
 
+            <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
+                <div class="modal-box">
+                    Hello
+                    <button @click="closeUpdateDeviceModal">X</button>
 
-        {{ updateModal }}
-        <br>
-        {{ selectedDevice }}
-        <br>
-        {{ selectedDevice.type }}
-
-
-        <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
-            <div class="modal-box">
-                Hello
-                <button @click="closeUpdateDeviceModal">X</button>
-
-                <table class="update-form-table">
-                    <tr>
-                        <td>
-                            <p>name</p>
-                        </td>
-                        <td><input type="text" v-model="selectedDevice.name"></td>
-                        <!-- <td><input type="text" v-model="training.training_name"></td> -->
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>description</p>
-                        </td>
-                        <td><textarea name="description" cols="20" rows="3"
-                                v-model="selectedDevice.description"></textarea></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>type</p>
-                        </td>
-                        <td>
-                            <select name="device_type" v-model="selectedDevice.type">
-                                <option v-for="deviceType of deviceTypes" v-bind:value="deviceType.deviceType">
-                                    {{ deviceType.deviceType }}</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>run type</p>
-                        </td>
-                        <td>
-                            <select name="run_type" v-model="selectedDevice.run_type">
-                                <option v-for="deviceRunType of deviceRunTypes" v-bind:value="deviceRunType">
-                                    {{deviceRunType}}
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-
-                <div>
-                    <table class="update-form-table" v-if="selectedDevice.run_type == 'daily'">
-                        <!-- daily -->
+                    <table class="update-form-table">
                         <tr>
                             <td>
-                                <p>on time</p>
+                                <p>name</p>
+                            </td>
+                            <td><input type="text" v-model="selectedDevice.name"></td>
+                            <!-- <td><input type="text" v-model="training.training_name"></td> -->
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>description</p>
+                            </td>
+                            <td><textarea name="description" cols="20" rows="3"
+                                    v-model="selectedDevice.description"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>type</p>
                             </td>
                             <td>
-                                <!-- <input type="number" min="0" max="23">:<input type="number" min="0" max="59"> -->
-                                <input type="number" min="0" max="23"
-                                    v-model="selectedDevice.options.timer.on_hour">:<input type="number" min="0"
-                                    max="59" v-model="selectedDevice.options.timer.on_minute">
+                                <select name="device_type" v-model="selectedDevice.type">
+                                    <option v-for="deviceType of deviceTypes" v-bind:value="deviceType.deviceType">
+                                        {{ deviceType.deviceType }}</option>
+                                </select>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p>off time</p>
+                                <p>run type</p>
                             </td>
                             <td>
-                                <input type="number" min="0" max="23"
-                                    v-model="selectedDevice.options.timer.off_hour">:<input type="number" min="0"
-                                    max="59" v-model="selectedDevice.options.timer.off_minute">
+                                <select name="run_type" v-model="selectedDevice.run_type">
+                                    <option v-for="deviceRunType of deviceRunTypes" v-bind:value="deviceRunType">
+                                        {{deviceRunType}}
+                                    </option>
+                                </select>
                             </td>
                         </tr>
                     </table>
-                    <div v-else-if="selectedDevice.run_type == 'discreate'">
-                        <!-- discreate -->
-                        <table class="update-form-table">
-                            <tr v-for="(timer, index) of selectedDevice.options.timer" :key="index">
+
+                    <div>
+                        <table class="update-form-table" v-if="selectedDevice.run_type == 'daily'">
+                            <!-- daily -->
+                            <tr>
                                 <td>
-                                    <p>timer {{index + 1}}</p>
+                                    <p>on time</p>
                                 </td>
                                 <td>
-                                    <input type="number" min="0" max="23" v-model="timer.hour">:<input type="number"
-                                        min="0" max="59" v-model="timer.minute">
+                                    <!-- <input type="number" min="0" max="23">:<input type="number" min="0" max="59"> -->
+                                    <input type="number" min="0" max="23"
+                                        v-model="selectedDevice.options.timer.on_hour">:<input type="number" min="0"
+                                        max="59" v-model="selectedDevice.options.timer.on_minute">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>off time</p>
                                 </td>
                                 <td>
-                                    <button @click="selectedDevice.options.timer.splice(index, 1)">x</button>
+                                    <input type="number" min="0" max="23"
+                                        v-model="selectedDevice.options.timer.off_hour">:<input type="number" min="0"
+                                        max="59" v-model="selectedDevice.options.timer.off_minute">
                                 </td>
                             </tr>
                         </table>
-                        <button @click="selectedDevice.options.timer.push({hour: 0, minute: 0})">+</button>
+                        <div v-else-if="selectedDevice.run_type == 'discreate'">
+                            <!-- discreate -->
+                            <table class="update-form-table">
+                                <tr v-for="(timer, index) of selectedDevice.options.timer" :key="index">
+                                    <td>
+                                        <p>timer {{index + 1}}</p>
+                                    </td>
+                                    <td>
+                                        <input type="number" min="0" max="23" v-model="timer.hour">:<input type="number"
+                                            min="0" max="59" v-model="timer.minute">
+                                    </td>
+                                    <td>
+                                        <button @click="selectedDevice.options.timer.splice(index, 1)">x</button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <button @click="selectedDevice.options.timer.push({hour: 0, minute: 0})">+</button>
+                        </div>
                     </div>
+
+                    <table class="update-form-created-at-table">
+                        <tr>
+                            <td>crearted at:</td>
+                            <td>{{selectedDevice.created_at}}</td>
+                        </tr>
+                        <tr>
+                            <td>updated at:</td>
+                            <td>{{selectedDevice.updated_at}}</td>
+                        </tr>
+                    </table>
+
+                    <button @click="updateDevice()">update</button>
                 </div>
-
-                <table class="update-form-created-at-table">
-                    <tr>
-                        <td>crearted at:</td>
-                        <td>{{selectedDevice.created_at}}</td>
-                    </tr>
-                    <tr>
-                        <td>updated at:</td>
-                        <td>{{selectedDevice.updated_at}}</td>
-                    </tr>
-                </table>
-
-                <button @click="updateDevice()">update</button>
             </div>
+
+
+
+            <div class="device-container" v-for="device in devices" :key="device.device_id">
+                <h2>device_id: {{ device.device_id }}</h2>
+                <h2>name: {{ device.name }}</h2>
+                <h2>type: {{ device.type }}</h2>
+                <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
+                    <input type="checkbox" class="switch-input" v-model="device.state" disabled>
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                </label>
+                <button @click="clickUpdateDeviceButton(device)">update</button>
+            </div>
+            <br>
         </div>
-
-
-
-        <div class="device-container" v-for="device in devices" :key="device.device_id">
-            <h2>device_id: {{ device.device_id }}</h2>
-            <h2>name: {{ device.name }}</h2>
-            <h2>type: {{ device.type }}</h2>
-            <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
-                <input type="checkbox" class="switch-input" v-model="device.state" disabled>
-                <span class="switch-label" data-on="On" data-off="Off"></span>
-                <span class="switch-handle"></span>
-            </label>
-            <button @click="clickUpdateDeviceButton(device)">update</button>
+        <div v-else-if="selectedPage == 'Sensors'">
+            <h1>Sensors</h1>
         </div>
-        <br>
+        <div v-else-if="selectedPage == 'Setting'">
+            <h1>Setting</h1>
+        </div>
+        <div v-else>
+            <h1>Unknown Page</h1>
+        </div>
 
     </div>
 
@@ -220,6 +229,7 @@
         var app = new Vue({
             el: '#app',
             data: {
+                selectedPage: "Devices",
                 hasError: false,
                 loading: false,
                 updateModal: false,
