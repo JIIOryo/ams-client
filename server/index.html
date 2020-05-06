@@ -172,6 +172,7 @@
         </div>
         <div v-else-if="selectedPage == 'Setting'">
             <h1>Setting</h1>
+            {{setting}}
         </div>
         <div v-else>
             <h1>Unknown Page</h1>
@@ -207,6 +208,11 @@
 
         const rebootRequest = async () => {
             await axios.get('/reboot')
+        };
+
+        const getSetting = async() => {
+            res = await axios.get('/setting')
+            return res.data
         };
 
         const deviceControl = async (deviceId, nextState) => {
@@ -276,7 +282,8 @@
                     "daily",
                     "discreate",
                     "continuous",
-                ]
+                ],
+                setting: {},
             },
             methods: {
                 setDeviceState: async function () {
@@ -338,10 +345,14 @@
             mounted: async function () {
 
                 this.loading = true
-                const deviceState = await getDeviceState()
+                const [deviceState, setting] = await Promise.all([
+                    getDeviceState(),
+                    getSetting(),
+                ])
                 this.loading = false
 
                 this.devices = deviceState
+                this.setting = setting
             },
         })
     </script>

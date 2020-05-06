@@ -8,7 +8,7 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from lib.config import get_config_item, get_gpio_config
+from lib.config import get_config_item, get_gpio_config, get_config
 from on_message.device_control import device_control
 from on_message.device_update import device_update
 from on_message.reboot import reboot
@@ -28,6 +28,11 @@ def index():
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+@app.route('/setting')
+def get_setting():
+    config = get_config()
+    return json.dumps(config)
 
 @app.route('/devices')
 def get_devices():
