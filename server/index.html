@@ -19,6 +19,8 @@
 <body>
     <div id="app">
 
+        <button @click="reboot()">reboot</button>
+
         <div>
             <h3 @click="selectedPage = 'Devices'">Devices</h3>
             <h3 @click="selectedPage = 'Sensors'">Sensors</h3>
@@ -203,6 +205,10 @@
             return res.data
         };
 
+        const rebootRequest = async () => {
+            await axios.get('/reboot')
+        };
+
         const deviceControl = async (deviceId, nextState) => {
             await axios.post('/device/control', {
                 devices: [
@@ -307,6 +313,9 @@
                         run_type: "",
                     };
                 },
+                reboot: async function() {
+                    await rebootRequest();
+                }
             },
             watch: {
                 'selectedDevice.run_type': function (val, oldVal) {
