@@ -172,7 +172,185 @@
         </div>
         <div v-else-if="selectedPage == 'Setting'">
             <h1>Setting</h1>
-            {{setting}}
+
+            <div class="setting-form">
+
+                <h2 class="setting-head">Local</h2>
+                <table class="setting-form-table">
+                    <tr>
+                        <td>tank id</td>
+                        <td>
+                            <input type="text" v-model="setting.TANK_ID">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>client id</td>
+                        <td>
+                            <input type="text" v-model="setting.CLIENT_ID">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>local server port</td>
+                        <td>
+                            <input type="number" v-model="setting.LOCAL_SERVER.PORT">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Network connection wait time</td>
+                        <td>
+                            <input type="number" v-model="setting.NETWORK_CONNECTION_WAIT_TIME">
+                        </td>
+                    </tr>
+                </table>
+
+                <br>
+
+                <h2 class="setting-head">MQTT</h2>
+                <table  class="setting-form-table">
+                    <tr>
+                        <td>Broker Address</td>
+                        <td>
+                            <input type="text" v-model="setting.MQTT.MQTT_BROKER">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Broker Port</td>
+                        <td>
+                            <input type="number" v-model="setting.MQTT.MQTT_BROKER_PORT">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Broker UserName</td>
+                        <td>
+                            <input type="text" v-model="setting.MQTT.MQTT_BROKER_USERNAME">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Broker Password</td>
+                        <td>
+                            <input type="password" v-model="setting.MQTT.MQTT_BROKER_PASSWORD">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Keepalive</td>
+                        <td>
+                            <input type="number" v-model="setting.MQTT.KEEPALIVE">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Subscribe QoS</td>
+                        <td>
+                            <input type="number" v-model="setting.MQTT.SUBSCRIBER_QOS">
+                        </td>
+                    </tr>
+                </table>
+
+                <br>
+
+                <h2 class="setting-head">Slack</h2>
+                <table  class="setting-form-table">
+                    <tr>
+                        <td>Webhook URL</td>
+                        <td>
+                            <input type="text" v-model="setting.SLACK.WEBHOOK_URL">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><h3>Error</h3></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>channel</td>
+                        <td>
+                            <input type="text" v-model="setting.SLACK.ERROR.CHANNEL">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>UserName</td>
+                        <td>
+                            <input type="text" v-model="setting.SLACK.ERROR.USERNAME">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Icon Emoji</td>
+                        <td>
+                            <input type="text" v-model="setting.SLACK.ERROR.ICON_EMOJI">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>message format</td>
+                        <td>
+                            <textarea name="error-message-format" cols="30" rows="4" v-model="setting.SLACK.ERROR.MESSAGE_FORMAT"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3>Notification</h3>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>channel</td>
+                        <td>
+                            <input type="text" v-model="setting.SLACK.NOTIFICATION.CHANNEL">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>UserName</td>
+                        <td>
+                            <input type="text" v-model="setting.SLACK.NOTIFICATION.USERNAME">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Icon Emoji</td>
+                        <td>
+                            <input type="text" v-model="setting.SLACK.NOTIFICATION.ICON_EMOJI">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>message format</td>
+                        <td>
+                            <textarea name="notification-message-format" cols="30" rows="4" v-model="setting.SLACK.NOTIFICATION.MESSAGE_FORMAT"></textarea>
+                        </td>
+                    </tr>
+                </table>
+
+                <br>
+
+                <h2 class="setting-head">Sensing</h2>
+                <table  class="setting-form-table">
+                    <tr>
+                        <td>sensor data publish period</td>
+                        <td>
+                            <input type="number" v-model="setting.SENSING.SENSOR_DATA_PUBLISH_PERIOD">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>sensing number</td>
+                        <td>
+                            <input type="number" v-model="setting.SENSING.SENSING_NUMBER">
+                        </td>
+                    </tr>
+                </table>
+
+                <br>
+
+                <h2 class="setting-head">Device</h2>
+                <table  class="setting-form-table">
+                    <tr>
+                        <td>auto feeder run time</td>
+                        <td>
+                            <input type="number" v-model="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="small-space-box"></div>
+
+                <button>update setting</button>
+
+                <div class="medium-space-box"></div>
+            </div>
         </div>
         <div v-else>
             <h1>Unknown Page</h1>
@@ -681,6 +859,25 @@
         .update-form-created-at-table {
             margin: auto;
             font-size: 5px;
+        }
+    </style>
+
+
+    <style>
+        .setting-form-table {
+            margin: auto;
+        }
+        .setting-head {
+            text-align: center;
+        }
+    </style>
+
+    <style>
+        .small-space-box {
+            margin-bottom: 50px;
+        }
+        .medium-space-box {
+            margin-bottom: 220px;
         }
     </style>
 
