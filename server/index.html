@@ -347,7 +347,7 @@
 
                 <div class="small-space-box"></div>
 
-                <button>update setting</button>
+                <button @click="updateSetting()">update setting</button>
 
                 <div class="medium-space-box"></div>
             </div>
@@ -392,6 +392,10 @@
             res = await axios.get('/setting')
             return res.data
         };
+
+        const setSetting = async (setting) => {
+            await axios.post('/setting', setting)
+        }
 
         const deviceControl = async (deviceId, nextState) => {
             await axios.post('/device/control', {
@@ -500,6 +504,11 @@
                 },
                 reboot: async function() {
                     await rebootRequest();
+                },
+                updateSetting: async function() {
+                    this.loading = true;
+                    await setSetting(this.setting);
+                    this.loading = false;
                 }
             },
             watch: {
@@ -864,6 +873,9 @@
 
 
     <style>
+        .setting-form {
+            text-align: center;
+        }
         .setting-form-table {
             margin: auto;
         }

@@ -29,10 +29,16 @@ def index():
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-@app.route('/setting')
+@app.route('/setting', methods=['GET'])
 def get_setting():
     config = get_config()
     return json.dumps(config)
+
+@app.route('/setting', methods=['POST'])
+def set_setting():
+    print(request.json)
+    # update setting
+    return empty_response
 
 @app.route('/devices')
 def get_devices():
