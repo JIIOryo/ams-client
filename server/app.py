@@ -8,7 +8,7 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from lib.config import get_config_item, get_gpio_config, get_config
+from lib.config import get_config_item, get_gpio_config, get_config, set_config
 from on_message.device_control import device_control
 from on_message.device_update import device_update
 from on_message.reboot import reboot
@@ -37,7 +37,7 @@ def get_setting():
 @app.route('/setting', methods=['POST'])
 def set_setting():
     print(request.json)
-    # update setting
+    set_config(request.json)
     return empty_response
 
 @app.route('/devices')

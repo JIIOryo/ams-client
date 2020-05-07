@@ -17,6 +17,10 @@ def read_config_file(config_file_path: str) -> dict:
 def get_config() -> dict:
     return read_config_file(CONFIG_PATH)
 
+def set_config(new_config: dict) -> None:
+    with open(CONFIG_PATH, 'w') as f:
+        json.dump(new_config, f, indent = 4)
+
 def get_gpio_config() -> dict:
     return read_config_file(GPIO_CONFIG_PATH)
 
