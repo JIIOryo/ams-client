@@ -12,6 +12,7 @@ from lib.config import get_config_item, get_gpio_config, get_config, set_config
 from on_message.device_control import device_control
 from on_message.device_update import device_update
 from on_message.reboot import reboot
+from on_message.device_feed_pump import device_feed_pump
 from service.device import get_all_device_state
 
 app = Flask(__name__)
@@ -60,6 +61,20 @@ def device_update_():
 def device_control_():
     print(request.json)
     device_control(message = request.data)
+    return empty_response
+
+@app.route('/device/control/feed_pump/<int:device_id>', methods=['POST'])
+def add_water(device_id):
+    '''
+    request example
+    {"supply_time": 120}
+    '''
+    supply_time = request.json['supply_time']
+    print(supply_time)
+    device_feed_pump(json.dumps({
+        "device_id": device_id,
+        "water_feed_time": supply_time,
+    }))
     return empty_response
 
 @app.route('/reboot')
