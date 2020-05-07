@@ -18,6 +18,7 @@
 
 <body>
     <div id="app">
+        {{feedPumpsWaterSupplyTime}}
 
         <button @click="reboot()">reboot</button>
 
@@ -154,15 +155,26 @@
 
 
 
-            <div class="device-container" v-for="device in devices" :key="device.device_id">
+            <div class="device-container" v-for="(device, i) of devices" :key="device.device_id">
+                <h2>index: {{i}}</h2>
                 <h2>device_id: {{ device.device_id }}</h2>
                 <h2>name: {{ device.name }}</h2>
                 <h2>type: {{ device.type }}</h2>
-                <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
-                    <input type="checkbox" class="switch-input" v-model="device.state" disabled>
-                    <span class="switch-label" data-on="On" data-off="Off"></span>
-                    <span class="switch-handle"></span>
-                </label>
+
+                <div v-if="device.type == 'feed_pump'">
+                    <select v-model="feedPumpsWaterSupplyTime[i]">
+                        <option v-for="j in [...Array(180).keys()]" :key="j" :value="j">{{j}}</option>
+                    </select>
+                    <button @click="supplyWater(device.device_id, feedPumpsWaterSupplyTime[i])">supply</button>
+                </div>
+                <div v-else>
+                    <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
+                        <input type="checkbox" class="switch-input" v-model="device.state" disabled>
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+
                 <button @click="clickUpdateDeviceButton(device)">update</button>
             </div>
             <br>
@@ -428,6 +440,7 @@
                 loading: false,
                 updateModal: false,
                 devices: [],
+                feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
                 },
@@ -474,6 +487,9 @@
                     this.loading = false
 
                     this.devices = deviceState
+                },
+                supplyWater: async function(deviceId, feedPumpsWaterSupplyTime) {
+                    console.log(deviceId, feedPumpsWaterSupplyTime)
                 },
                 updateDeviceState: async function (deviceId, nextState) {
                     if (!this.loading) {
@@ -540,7 +556,13 @@
 
                 this.devices = deviceState
                 this.setting = setting
+                this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(0)
             },
+            filters: {
+                num: function(value) {
+                    return Number(value)
+                }
+            }
         })
     </script>
 
