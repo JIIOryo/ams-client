@@ -14,7 +14,7 @@ from commons.errors import (
     DeviceNotFound,
     DeviceOtherError,
 )
-from lib.config import get_gpio_config
+from lib.config import get_gpio_config, get_root_path
 from service.feed_pump import feed_pump
 
 """
@@ -42,8 +42,8 @@ def device_feed_pump(message: dict) -> None:
             if device['device']['type'] != DEVICE_TYPE['FEED_PUMP']:
                 raise DeviceOtherError('This is not feed pump.')
             
-            PWD = os.getcwd()
-            entry_point = '/'.join([PWD, 'entry_points', 'feed_pump.py'])
+            ams_root_path = get_root_path()
+            entry_point = '/'.join([ams_root_path, 'entry_points', 'feed_pump.py'])
             cmd = 'python3 {entry_point} {device_id} {water_feed_time}'.format(
                 entry_point = entry_point,
                 device_id = target_device_id,

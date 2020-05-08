@@ -46,3 +46,6 @@ def set_gpio_config(new_gpio_config: dict) -> None:
 def set_sensor_config(new_sensor_config: dict) -> None:
     with open(SENSOR_CONFIG_PATH, 'w') as f:
         json.dump(new_sensor_config, f, indent = 4)
+
+def get_root_path() -> str:
+    return get_config_item('ROOT_PATH').rstrip('/')
