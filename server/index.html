@@ -19,7 +19,7 @@
 <body>
     <div id="app">
 
-        <button @click="reboot()">reboot</button>
+        <button @click="rebootConfirm = true">reboot</button>
 
         <div>
             <h3 @click="selectedPage = 'Devices'">Devices</h3>
@@ -40,6 +40,20 @@
                 </div>
             </div>
         </transition>
+
+        <!-- reboot confirm modal -->
+        <div class="modal-display" v-show="rebootConfirm" @click.self="rebootConfirm = false">
+            <div class="modal-box">
+                <div class="reboot-confirm-box">
+                    <img src="/static/icon/x.png" class="modal-close-x-icon" @click="rebootConfirm = false">
+                    <h3>Confirmation</h3>
+                    <hr>
+                    <p>Are you sure to reboot AMS?</p>
+                    <button @click="rebootConfirm = false">cancel</button>
+                    <button @click="reboot()">reboot</button>
+                </div>
+            </div>
+        </div>
 
         <div v-if="selectedPage == 'Devices'">
             <h1>Devices</h1>
@@ -473,6 +487,7 @@
                 hasError: false,
                 loading: false,
                 updateModal: false,
+                rebootConfirm: false,
                 devices: [],
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
@@ -560,6 +575,8 @@
                     };
                 },
                 reboot: async function() {
+                    this.rebootConfirm = false;
+                    this.loading = true;
                     await rebootRequest();
                 },
                 updateSetting: async function() {
@@ -924,6 +941,14 @@
             z-index: 2;
         }
 
+        .modal-close-x-icon {
+            position: absolute;
+            right: 15px;
+            top: 12px;
+            width: 17px;
+            cursor: pointer;
+        }
+
         .update-form-table {
             margin: auto;
         }
@@ -931,6 +956,13 @@
         .update-form-created-at-table {
             margin: auto;
             font-size: 5px;
+        }
+    </style>
+
+
+    <style>
+        .reboot-confirm-box {
+            margin: 30px 15px;
         }
     </style>
 
