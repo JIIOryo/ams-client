@@ -92,13 +92,13 @@ type: {type_}
 ```
 """
 
-SLACK_WATER_FEED_FORMAT = \
+SLACK_WATER_SUPPLY_FORMAT = \
 """
 :potable_water: Water feeding is now completed.
 ```
 device_id: {device_id}
 name: {name}
-water feed time: {water_feed_time}
+water supply time: {water_supply_time}
 ```
 """
 
@@ -151,7 +151,7 @@ SPIMISO = 9
 SPICS = 8
 
 # FEED PUMP DEFAULT TIME
-FEED_PUMP_DEFAULT_TIME = 30
+FEED_PUMP_WATER_SUPPLY_DEFAULT_TIME = 30
 
 # TIMER
 CRON_START_TEXT = '# ------ AMS start -------'

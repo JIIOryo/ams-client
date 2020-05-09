@@ -425,9 +425,9 @@
             });
         }
 
-        const supplyWaterRequest = async (deviceId, supplyTime) => {
+        const supplyWaterRequest = async (deviceId, waterSupplyTime) => {
             await axios.post(`/device/control/feed_pump/${deviceId}`, {
-                supply_time: supplyTime,
+                water_supply_time: waterSupplyTime,
             })
         };
 

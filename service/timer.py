@@ -14,7 +14,7 @@ from commons.consts import (
     CRON_FORMAT_DISCREATE,
     DEVICE_RUN_TYPE,
     DEVICE_TYPE,
-    FEED_PUMP_DEFAULT_TIME,
+    FEED_PUMP_WATER_SUPPLY_DEFAULT_TIME,
 )
 
 from lib.config import get_gpio_config
@@ -150,10 +150,10 @@ def cron_cmd_generator_by_type(type_: str, device_id: int) -> None:
 
     if type_ == DEVICE_TYPE['FEED_PUMP']:
         entry_point = '/'.join([PWD, 'entry_points', 'feed_pump.py'])
-        return 'python3 {entry_point} {device_id} {water_feed_time}'.format(
+        return 'python3 {entry_point} {device_id} {water_supply_time}'.format(
             entry_point = entry_point,
             device_id = device_id,
-            water_feed_time = FEED_PUMP_DEFAULT_TIME,
+            water_supply_time = FEED_PUMP_WATER_SUPPLY_DEFAULT_TIME,
         )
     
     elif type_ == DEVICE_TYPE['AUTO_FEEDER']:

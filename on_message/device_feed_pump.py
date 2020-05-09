@@ -23,7 +23,7 @@ type: json str
 -----
 {
     "device_id": 1,
-    "water_feed_time": 30
+    "water_supply_time": 30
 }
 """
 
@@ -44,10 +44,10 @@ def device_feed_pump(message: dict) -> None:
             
             ams_root_path = get_root_path()
             entry_point = '/'.join([ams_root_path, 'entry_points', 'feed_pump.py'])
-            cmd = 'python3 {entry_point} {device_id} {water_feed_time}'.format(
+            cmd = 'python3 {entry_point} {device_id} {water_supply_time}'.format(
                 entry_point = entry_point,
                 device_id = target_device_id,
-                water_feed_time = feed_pump_action['water_feed_time'],
+                water_supply_time = feed_pump_action['water_supply_time'],
             )
             subprocess.Popen(cmd.split())
             

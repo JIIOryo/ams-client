@@ -6,7 +6,7 @@ sys.path.append( str(current_dir) + '/../' )
 
 from commons.consts import (
     SLACK_NOTIFICATION_TYPE,
-    SLACK_WATER_FEED_FORMAT,
+    SLACK_WATER_SUPPLY_FORMAT,
     DEVICE_TYPE,
 )
 from commons.errors import DeviceNotFound, DeviceOtherError
@@ -15,14 +15,14 @@ from service.device import get_all_device_by_device_id
 from service.feed_pump import feed_pump
 
 """
-python3 feed_pump.py {device_id} {water_feed_time}
+python3 feed_pump.py {device_id} {water_supply_time}
 """
 
 if __name__ == '__main__':
 
     args = sys.argv
     device_id = int(args[1])
-    water_feed_time = int(args[2])
+    water_supply_time = int(args[2])
 
     device = get_all_device_by_device_id(device_id)
 
@@ -33,13 +33,13 @@ if __name__ == '__main__':
         raise DeviceOtherError('This is not feed pump.')
 
     # feeding water
-    feed_pump(device['BCM'], water_feed_time)
+    feed_pump(device['BCM'], water_supply_time)
 
     post_slack_by_type(
-        text = SLACK_WATER_FEED_FORMAT.format(
+        text = SLACK_WATER_SUPPLY_FORMAT.format(
             device_id = device_id,
             name = device['device']['name'],
-            water_feed_time = water_feed_time,
+            water_supply_time = water_supply_time,
         ),
         type_ = SLACK_NOTIFICATION_TYPE['NOTIFICATION'],
     )

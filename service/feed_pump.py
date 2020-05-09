@@ -7,12 +7,12 @@ current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
 from commons.consts import (
-    FEED_PUMP_DEFAULT_TIME,
+    FEED_PUMP_WATER_SUPPLY_DEFAULT_TIME,
 )
 from lib.gpio import gpio_write, gpio_read
 from service.device import publish_device_state
 
-def feed_pump(pin: int, water_feed_time: int=FEED_PUMP_DEFAULT_TIME) -> bool:
+def feed_pump(pin: int, water_supply_time: int=FEED_PUMP_WATER_SUPPLY_DEFAULT_TIME) -> bool:
     """
     feed water
 
@@ -20,7 +20,7 @@ def feed_pump(pin: int, water_feed_time: int=FEED_PUMP_DEFAULT_TIME) -> bool:
     ----------
     pin : int
         target gpio (BCM)
-    water_feed_time : int
+    water_supply_time : int
         water feeding time
     
     Returns
@@ -40,7 +40,7 @@ def feed_pump(pin: int, water_feed_time: int=FEED_PUMP_DEFAULT_TIME) -> bool:
         gpio_write(pin, 0)
         return False
     
-    time.sleep(water_feed_time)
+    time.sleep(water_supply_time)
     # pump off
     gpio_write(pin, 0)
     publish_device_state()

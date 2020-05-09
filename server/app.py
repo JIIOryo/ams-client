@@ -67,13 +67,12 @@ def device_control_():
 def add_water(device_id):
     '''
     request example
-    {"supply_time": 120}
+    {"warter_supply_time": 120}
     '''
-    supply_time = request.json['supply_time']
-    print(supply_time)
+    water_supply_time = request.json['water_supply_time']
     device_feed_pump(json.dumps({
         "device_id": device_id,
-        "water_feed_time": supply_time,
+        "water_supply_time": water_supply_time,
     }))
     return empty_response
 
