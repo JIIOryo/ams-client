@@ -6,13 +6,13 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from commons.consts import (
-    FEED_PUMP_WATER_SUPPLY_DEFAULT_TIME,
-)
+from lib.config import get_config_item
 from lib.gpio import gpio_write, gpio_read
 from service.device import publish_device_state
 
-def feed_pump(pin: int, water_supply_time: int=FEED_PUMP_WATER_SUPPLY_DEFAULT_TIME) -> bool:
+FEED_PUMP_DEFAULT_TIME = get_config_item('DEVICE')['FEED_PUMP_DEFAULT_TIME']
+
+def feed_pump(pin: int, water_supply_time: int=FEED_PUMP_DEFAULT_TIME) -> bool:
     """
     feed water
 

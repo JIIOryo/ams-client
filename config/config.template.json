@@ -31,7 +31,8 @@
         "SENSING_NUMBER": 100
     },
     "DEVICE": {
-        "AUTO_FEEDER_RUN_TIME": 6
+        "AUTO_FEEDER_RUN_TIME": 6,
+        "FEED_PUMP_DEFAULT_TIME": 30
     },
     "LOCAL_SERVER": {
         "PORT": 3321

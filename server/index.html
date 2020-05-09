@@ -49,7 +49,6 @@
 
             <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
                 <div class="modal-box">
-                    Hello
                     <button @click="closeUpdateDeviceModal">X</button>
 
                     <table class="update-form-table">
@@ -58,7 +57,6 @@
                                 <p>name</p>
                             </td>
                             <td><input type="text" v-model="selectedDevice.name"></td>
-                            <!-- <td><input type="text" v-model="training.training_name"></td> -->
                         </tr>
                         <tr>
                             <td>
@@ -100,10 +98,6 @@
                                     <p>on time</p>
                                 </td>
                                 <td>
-                                    <!-- <input type="number" min="0" max="23">:<input type="number" min="0" max="59"> -->
-                                    <!-- <input type="number" min="0" max="23"
-                                        v-model="selectedDevice.options.timer.on_hour">:<input type="number" min="0"
-                                        max="59" v-model="selectedDevice.options.timer.on_minute"> -->
                                     <select v-model="selectedDevice.options.timer.on_hour">
                                         <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
                                     </select>
@@ -118,9 +112,6 @@
                                     <p>off time</p>
                                 </td>
                                 <td>
-                                    <!-- <input type="number" min="0" max="23"
-                                        v-model="selectedDevice.options.timer.off_hour">:<input type="number" min="0"
-                                        max="59" v-model="selectedDevice.options.timer.off_minute"> -->
                                     <select v-model="selectedDevice.options.timer.off_hour">
                                         <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
                                     </select>
@@ -382,6 +373,12 @@
                             <input type="number" v-model.number="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
                         </td>
                     </tr>
+                    <tr>
+                        <td>feed pump default time</td>
+                        <td>
+                            <input type="number" v-model.number="setting.DEVICE.FEED_PUMP_DEFAULT_TIME">
+                        </td>
+                    </tr>
                 </table>
 
                 <div class="small-space-box"></div>
@@ -526,10 +523,14 @@
                     this.devices = deviceState
                 },
                 supplyWater: async function(deviceId, feedPumpsWaterSupplyTime) {
+                    this.loading = true
                     await supplyWaterRequest(deviceId, feedPumpsWaterSupplyTime)
+                    this.loading = false
                 },
                 feed: async function(deviceId) {
+                    this.loading = true
                     await feedRequest(deviceId);
+                    this.loading = false
                 },
                 updateDeviceState: async function (deviceId, nextState) {
                     if (!this.loading) {
@@ -596,7 +597,7 @@
 
                 this.devices = deviceState
                 this.setting = setting
-                this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(0)
+                this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(this.setting.DEVICE.FEED_PUMP_DEFAULT_TIME)
             },
             filters: {
                 num: function(value) {
