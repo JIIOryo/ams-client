@@ -13,6 +13,7 @@ from on_message.device_control import device_control
 from on_message.device_update import device_update
 from on_message.reboot import reboot
 from on_message.device_feed_pump import device_feed_pump
+from on_message.device_auto_feeder import device_auto_feeder
 from service.device import get_all_device_state
 
 app = Flask(__name__)
@@ -73,6 +74,17 @@ def add_water(device_id):
     device_feed_pump(json.dumps({
         "device_id": device_id,
         "water_supply_time": water_supply_time,
+    }))
+    return empty_response
+
+@app.route('/device/control/auto_feeder/<int:device_id>', methods=['POST'])
+def feed(device_id):
+    '''
+    request example
+    {}
+    '''
+    device_auto_feeder(json.dumps({
+        "device_id": device_id,
     }))
     return empty_response
 

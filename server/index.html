@@ -185,6 +185,9 @@
                     </select>
                     <button @click="supplyWater(device.device_id, feedPumpsWaterSupplyTime[i])">supply</button>
                 </div>
+                <div v-else-if="device.type == 'auto_feeder'">
+                    <button @click="feed(device.device_id)">feed</button>
+                </div>
                 <div v-else>
                     <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
                         <input type="checkbox" class="switch-input" v-model="device.state" disabled>
@@ -376,7 +379,7 @@
                     <tr>
                         <td>auto feeder run time</td>
                         <td>
-                            <input type="number" v-model="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
+                            <input type="number" v-model.number="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
                         </td>
                     </tr>
                 </table>
@@ -450,6 +453,10 @@
             })
         };
 
+        const feedRequest = async (deviceId) => {
+            await axios.post(`/device/control/auto_feeder/${deviceId}`, {});
+        }
+
         const updateDeviceRequest = async updatedDevice => {
             console.log(updatedDevice)
             await axios.post('/device/update', {
@@ -520,6 +527,9 @@
                 },
                 supplyWater: async function(deviceId, feedPumpsWaterSupplyTime) {
                     await supplyWaterRequest(deviceId, feedPumpsWaterSupplyTime)
+                },
+                feed: async function(deviceId) {
+                    await feedRequest(deviceId);
                 },
                 updateDeviceState: async function (deviceId, nextState) {
                     if (!this.loading) {

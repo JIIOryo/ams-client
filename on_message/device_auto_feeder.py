@@ -14,7 +14,7 @@ from commons.errors import (
     DeviceNotFound,
     DeviceOtherError,
 )
-from lib.config import get_gpio_config
+from lib.config import get_gpio_config, get_root_path
 
 """
 # message 
@@ -40,8 +40,8 @@ def device_auto_feeder(message: dict) -> None:
             if device['device']['type'] != DEVICE_TYPE['AUTO_FEEDER']:
                 raise DeviceOtherError('This is not auto feeder.')
             
-            PWD = os.getcwd()
-            entry_point = '/'.join([PWD, 'entry_points', 'auto_feeder.py'])
+            ams_root_path = get_root_path()
+            entry_point = '/'.join([ams_root_path, 'entry_points', 'auto_feeder.py'])
             cmd = 'python3 {entry_point} {device_id}'.format(
                 entry_point = entry_point,
                 device_id = target_device_id,
