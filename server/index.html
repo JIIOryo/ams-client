@@ -231,13 +231,13 @@
                     <tr>
                         <td>local server port</td>
                         <td>
-                            <input type="number" v-model="setting.LOCAL_SERVER.PORT">
+                            <input type="number" v-model.number="setting.LOCAL_SERVER.PORT">
                         </td>
                     </tr>
                     <tr>
                         <td>Network connection wait time</td>
                         <td>
-                            <input type="number" v-model="setting.NETWORK_CONNECTION_WAIT_TIME">
+                            <input type="number" v-model.number="setting.NETWORK_CONNECTION_WAIT_TIME">
                         </td>
                     </tr>
                 </table>
@@ -255,7 +255,7 @@
                     <tr>
                         <td>Broker Port</td>
                         <td>
-                            <input type="number" v-model="setting.MQTT.MQTT_BROKER_PORT">
+                            <input type="number" v-model.number="setting.MQTT.MQTT_BROKER_PORT">
                         </td>
                     </tr>
                     <tr>
@@ -273,13 +273,13 @@
                     <tr>
                         <td>Keepalive</td>
                         <td>
-                            <input type="number" v-model="setting.MQTT.KEEPALIVE">
+                            <input type="number" v-model.number="setting.MQTT.KEEPALIVE">
                         </td>
                     </tr>
                     <tr>
                         <td>Subscribe QoS</td>
                         <td>
-                            <input type="number" v-model="setting.MQTT.SUBSCRIBER_QOS">
+                            <input type="number" v-model.number="setting.MQTT.SUBSCRIBER_QOS">
                         </td>
                     </tr>
                 </table>
@@ -361,13 +361,13 @@
                     <tr>
                         <td>sensor data publish period</td>
                         <td>
-                            <input type="number" v-model="setting.SENSING.SENSOR_DATA_PUBLISH_PERIOD">
+                            <input type="number" v-model.number="setting.SENSING.SENSOR_DATA_PUBLISH_PERIOD">
                         </td>
                     </tr>
                     <tr>
                         <td>sensing number</td>
                         <td>
-                            <input type="number" v-model="setting.SENSING.SENSING_NUMBER">
+                            <input type="number" v-model.number="setting.SENSING.SENSING_NUMBER">
                         </td>
                     </tr>
                 </table>
