@@ -50,8 +50,17 @@
                     <h3>Confirmation</h3>
                     <hr>
                     <p>Are you sure to reboot AMS?</p>
-                    <button @click="rebootConfirm = false">cancel</button>
-                    <button @click="reboot()">reboot</button>
+                    
+                    <div class="button-container">
+                        <div class="cancel-button" @click="rebootConfirm = false">
+                            <p>Cancel</p>
+                        </div>
+                        <div class="dangerous-button" @click="reboot()">
+                            <p>Reboot</p>
+                        </div>
+                    </div>
+                    <div class="small-medium-space-box"></div>
+                    
                 </div>
             </div>
         </div>
@@ -992,9 +1001,70 @@
         .small-space-box {
             margin-bottom: 50px;
         }
+
+        .small-medium-space-box {
+            margin-bottom: 80px;
+        }
+
         .medium-space-box {
             margin-bottom: 220px;
         }
+    </style>
+
+    <style>
+
+        .button-container {
+            position: absolute;
+            right: 30px;
+        }
+
+        /* cancel button */
+        .cancel-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 0px 20px;
+            text-decoration: none;
+            color: #999;
+            border: solid 2px #999;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .cancel-button:hover{
+            color: #6cf;
+            border: solid 2px #6cf;
+        }
+
+        .cancel-button p {
+            font-size: 1em;
+            margin: 5px 0px;
+        }
+
+
+        /* dangerous button */
+        .dangerous-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 0px 20px;
+            text-decoration: none;
+            color: white;
+            border: solid 2px #F00;
+            background: #F00;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .dangerous-button:hover{
+            border: solid 2px #A00;
+            background: #A00;
+        }
+
+        .dangerous-button p {
+            font-size: 1em;
+            margin: 5px 0px;
+        }
+
+        
     </style>
 
 
