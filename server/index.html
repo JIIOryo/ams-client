@@ -46,6 +46,7 @@
             <div class="modal-box">
                 <div class="reboot-confirm-box">
                     <img src="/static/icon/x.png" class="modal-close-x-icon" @click="rebootConfirm = false">
+                    <img src="/static/icon/alert.png" class="modal-alert-icon">
                     <h3>Confirmation</h3>
                     <hr>
                     <p>Are you sure to reboot AMS?</p>
@@ -947,6 +948,11 @@
             top: 12px;
             width: 17px;
             cursor: pointer;
+        }
+
+        .modal-alert-icon {
+            width: 70px;
+            margin-bottom: -20px;
         }
 
         .update-form-table {
