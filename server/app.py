@@ -93,6 +93,21 @@ def get_sensors():
     sensors = get_sensor_config()
     return jsonify(sensors)
 
+@app.route('/sensors/value')
+def get_sensor_value():
+    return jsonify(
+        [
+            {
+                "sensor_id": 1,
+                "value": 123
+            },
+            {
+                "sensor_id": 2,
+                "value": 456
+            }
+        ]
+    )
+
 @app.route('/reboot')
 def reboot_():
     reboot()

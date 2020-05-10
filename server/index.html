@@ -218,6 +218,8 @@
         <div v-else-if="selectedPage == 'Sensors'">
             <h1>Sensors</h1>
             {{ sensors }}
+            <br>
+            {{sensorValues}}
             <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
                 <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
                     <h2>index: {{i}}</h2>
@@ -521,6 +523,7 @@
                 rebootConfirm: false,
                 devices: [],
                 sensors: [],
+                sensorValues: [],
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
@@ -615,6 +618,24 @@
                     this.loading = true;
                     await setSetting(this.setting);
                     this.loading = false;
+                },
+                setSensorValue: function() {
+
+                    const getSensorValue = function() {
+                        axios.get('/sensors/value')
+                            .then(function (res) {
+                                console.log('get')
+                                this.sensorValues = res.data
+                            }.bind(this));
+                    }.bind(this)
+
+                    // Run the first time immediately
+                    getSensorValue();
+                    
+                    setInterval(function() {
+                        getSensorValue()
+                    }.bind(this), 5000);
+                    // TODO 5000 -> interval * 1000
                 }
             },
             watch: {
@@ -649,6 +670,8 @@
                 this.sensors = sensors;
                 this.setting = setting;
                 this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(this.setting.DEVICE.FEED_PUMP_DEFAULT_TIME);
+
+                this.setSensorValue();
             },
             filters: {
                 num: function(value) {
