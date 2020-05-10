@@ -2,13 +2,13 @@ import json
 import os
 import sys
 
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, jsonify
 
 import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from lib.config import get_config_item, get_gpio_config, get_config, set_config
+from lib.config import get_config_item, get_gpio_config, get_config, set_config, get_sensor_config
 from on_message.device_control import device_control
 from on_message.device_update import device_update
 from on_message.reboot import reboot
@@ -87,6 +87,11 @@ def feed(device_id):
         "device_id": device_id,
     }))
     return empty_response
+
+@app.route('/sensors')
+def get_sensors():
+    sensors = get_sensor_config()
+    return jsonify(sensors)
 
 @app.route('/reboot')
 def reboot_():

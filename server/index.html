@@ -217,6 +217,15 @@
         </div>
         <div v-else-if="selectedPage == 'Sensors'">
             <h1>Sensors</h1>
+            {{ sensors }}
+            <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
+                <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
+                    <h2>index: {{i}}</h2>
+                    <h2>sensor_id: {{ sensor.sensor_id }}</h2>
+                    <h2>name: {{ sensor.sensor.name }}</h2>
+                    <h2>type: {{ sensor.sensor.type }}</h2>
+                </div>
+            </div>
         </div>
         <div v-else-if="selectedPage == 'Setting'">
             <h1>Setting</h1>
@@ -426,6 +435,13 @@
             background: #EFFFFF;
             border-radius: 20px;
         }
+
+        .sensor-container {
+            margin: auto;
+            width: 80%;
+            background: #EFFFFF;
+            border-radius: 20px;
+        }
     </style>
 
 
@@ -443,6 +459,11 @@
             res = await axios.get('/devices/state')
             return res.data
         };
+
+        const getSensors = async () => {
+            res = await axios.get('/sensors');
+            return res.data
+        }
 
         const rebootRequest = async () => {
             await axios.get('/reboot')
@@ -499,6 +520,7 @@
                 updateModal: false,
                 rebootConfirm: false,
                 devices: [],
+                sensors: [],
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
@@ -616,15 +638,17 @@
             mounted: async function () {
 
                 this.loading = true
-                const [deviceState, setting] = await Promise.all([
+                const [deviceState, sensors, setting] = await Promise.all([
                     getDeviceState(),
+                    getSensors(),
                     getSetting(),
                 ])
                 this.loading = false
 
-                this.devices = deviceState
-                this.setting = setting
-                this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(this.setting.DEVICE.FEED_PUMP_DEFAULT_TIME)
+                this.devices = deviceState;
+                this.sensors = sensors;
+                this.setting = setting;
+                this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(this.setting.DEVICE.FEED_PUMP_DEFAULT_TIME);
             },
             filters: {
                 num: function(value) {
