@@ -226,6 +226,7 @@
                     <h2>sensor_id: {{ sensor.sensor_id }}</h2>
                     <h2>name: {{ sensor.sensor.name }}</h2>
                     <h2>type: {{ sensor.sensor.type }}</h2>
+                    <h2>values: {{ sensor.value }}</h2>
                 </div>
             </div>
         </div>
@@ -625,7 +626,18 @@
                         axios.get('/sensors/value')
                             .then(function (res) {
                                 console.log('get')
-                                this.sensorValues = res.data
+                                // this.sensorValues = res.data
+                                const sensorValues = res.data;
+                                
+                                // set sensor value by sensor_id
+                                for (sensorData of sensorValues) {
+                                    for (let i = 0; i < this.sensors.length; i++) {
+                                        if (this.sensors[i].sensor_id === sensorData.sensor_id) {
+                                            this.sensors[i].value = sensorData.value;
+                                        }
+                                    }
+                                }
+
                             }.bind(this));
                     }.bind(this)
 
@@ -667,7 +679,10 @@
                 this.loading = false
 
                 this.devices = deviceState;
-                this.sensors = sensors;
+                this.sensors = sensors.map(sensor => {
+                    sensor.value = 0;
+                    return sensor;
+                });
                 this.setting = setting;
                 this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(this.setting.DEVICE.FEED_PUMP_DEFAULT_TIME);
 

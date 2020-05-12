@@ -102,7 +102,7 @@ def get_sensor_value():
                 "value": 123
             },
             {
-                "sensor_id": 2,
+                "sensor_id": 3,
                 "value": 456
             }
         ]
