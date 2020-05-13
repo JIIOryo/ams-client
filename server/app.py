@@ -15,6 +15,7 @@ from on_message.reboot import reboot
 from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
 from service.device import get_all_device_state
+from service.sensor import get_current_sensor_values
 
 app = Flask(__name__)
 server_config = get_config_item('LOCAL_SERVER')
@@ -95,18 +96,8 @@ def get_sensors():
 
 @app.route('/sensors/value')
 def get_sensor_value():
-    return jsonify(
-        [
-            {
-                "sensor_id": 1,
-                "value": 123
-            },
-            {
-                "sensor_id": 3,
-                "value": 456
-            }
-        ]
-    )
+    current_sensor_values = get_current_sensor_values()
+    return jsonify(current_sensor_values)
 
 @app.route('/reboot')
 def reboot_():

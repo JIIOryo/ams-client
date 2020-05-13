@@ -20,6 +20,8 @@ from lib.util import least_squares
 
 publish_topics = get_publish_topics()
 ams_root_path = get_root_path()
+current_sensor_value_file_path = '/'.join([ams_root_path, 'log', 'current_sensor_value.json'])
+
 
 def get_sensor_config_no_calibration() -> dict:
     sensor_config = get_sensor_config()
@@ -41,8 +43,12 @@ def publish_sensor_config() -> None:
         retain = True,
     )
 
+def get_current_sensor_values() -> str:
+    with open(current_sensor_value_file_path) as f:
+        current_sensor_values = json.load(f)
+    return current_sensor_values
+
 def write_current_sensor_values(sensor_data_json: str) -> None:
-    current_sensor_value_file_path = '/'.join([ams_root_path, 'log', 'current_sensor_value.json'])
     with open(current_sensor_value_file_path, 'w') as f:
         f.write(sensor_data_json)
 

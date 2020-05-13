@@ -219,7 +219,6 @@
             <h1>Sensors</h1>
             {{ sensors }}
             <br>
-            {{sensorValues}}
             <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
                 <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
                     <h2>index: {{i}}</h2>
@@ -524,7 +523,6 @@
                 rebootConfirm: false,
                 devices: [],
                 sensors: [],
-                sensorValues: [],
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
@@ -625,9 +623,7 @@
                     const getSensorValue = function() {
                         axios.get('/sensors/value')
                             .then(function (res) {
-                                console.log('get')
-                                // this.sensorValues = res.data
-                                const sensorValues = res.data;
+                                const sensorValues = res.data.sensors;
                                 
                                 // set sensor value by sensor_id
                                 for (sensorData of sensorValues) {
