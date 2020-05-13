@@ -533,6 +533,7 @@
                 devices: [],
                 sensors: [],
                 sensorDataLastUpdatedAt: '',
+                sensorDataPollingPeriod: 5,
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
@@ -653,7 +654,7 @@
                     
                     setInterval(function() {
                         getSensorValue()
-                    }.bind(this), 5000);
+                    }.bind(this), this.sensorDataPollingPeriod * 1000);
                     // TODO 5000 -> interval * 1000
                 }
             },
@@ -691,6 +692,7 @@
                     return sensor;
                 });
                 this.setting = setting;
+                this.sensorDataPollingPeriod = this.setting.SENSING.WEB_SENSOR_DATA_POLLING_PERIOD;
                 this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(this.setting.DEVICE.FEED_PUMP_DEFAULT_TIME);
 
                 this.setSensorValue();
