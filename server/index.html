@@ -457,7 +457,7 @@
     <script>
         const getDateTime = timestamp => {
             let dateTime = new Date(timestamp * 1000);
-            return `${dateTime.getFullYear()}/${dateTime.getMonth()}/${dateTime.getDate()} ${dateTime.toLocaleTimeString()}`
+            return `${dateTime.getFullYear()}/${dateTime.getMonth() + 1}/${dateTime.getDate()} ${dateTime.toLocaleTimeString()}`
         }
 
         const getDeviceState = async () => {
