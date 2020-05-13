@@ -1,0 +1,1 @@
+{"timestamp": 1589327711, "sensors": [{"sensor_id": 1, "name": "my temperature sensor", "type": "water_temperature", "value": 32.79}, {"sensor_id": 3, "name": "my light sensor", "type": "illuminance", "value": 3571.62}]}

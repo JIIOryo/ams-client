@@ -12,13 +12,14 @@ from commons.consts import (
     LOG_TITLE,
 )
 
-from lib.config import get_sensor_config, get_config_item
+from lib.config import get_sensor_config, get_config_item, get_root_path
 from lib.mcp import read_mcp
 from lib.mqtt import publish
 from lib.topic import get_publish_topics
 from lib.util import least_squares
 
 publish_topics = get_publish_topics()
+ams_root_path = get_root_path()
 
 def get_sensor_config_no_calibration() -> dict:
     sensor_config = get_sensor_config()
@@ -39,6 +40,11 @@ def publish_sensor_config() -> None:
         qos = 1,
         retain = True,
     )
+
+def write_current_sensor_values(sensor_data_json: str) -> None:
+    current_sensor_value_file_path = '/'.join([ams_root_path, 'log', 'current_sensor_value.json'])
+    with open(current_sensor_value_file_path, 'w') as f:
+        f.write(sensor_data_json)
 
 def publish_sensor_data() -> None:
 
@@ -85,6 +91,8 @@ def publish_sensor_data() -> None:
 
     publish_topic = publish_topics['SENSOR_DATA'] 
     publish_data_json = json.dumps(publish_data)
+
+    write_current_sensor_values(publish_data_json)
 
     publish(
         topic = publish_topic,
