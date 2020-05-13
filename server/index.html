@@ -237,47 +237,52 @@
             {{selectedSensor.sensor}}
             <div class="modal-display" v-show="updateSensorModal" @click.self="closeUpdateSensorModal()">
                 <div class="modal-box">
-                    <button @click="closeUpdateSensorModal">X</button>
-            
-                    <table class="update-form-table">
-                        <tr>
-                            <td>
-                                <p>name</p>
-                            </td>
-                            <td><input type="text" v-model="selectedSensor.sensor.name"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>description</p>
-                            </td>
-                            <td><textarea name="description" cols="20" rows="3" v-model="selectedSensor.sensor.description"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>type</p>
-                            </td>
-                            <td>
-                                <select name="sensor_type" v-model="selectedSensor.sensor.type">
-                                    <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
-                                        {{ sensorType.sensorType }}</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-            
-                    <table class="update-form-created-at-table">
-                        <tr>
-                            <td>crearted at:</td>
-                            <td>{{selectedSensor.sensor.created_at}}</td>
-                        </tr>
-                        <tr>
-                            <td>updated at:</td>
-                            <td>{{selectedSensor.sensor.updated_at}}</td>
-                        </tr>
-                    </table>
-            
-                    <button @click="updateSensor()">update</button>
+                    <div class="update-confirm-box">
+                        <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateSensorModal">
+                        <img src="/static/icon/update.png" class="modal-update-icon">
+                        <h3>Update sensor</h3>
+                        <hr>
+                
+                        <table class="update-form-table">
+                            <tr>
+                                <td>
+                                    <p>name</p>
+                                </td>
+                                <td><input type="text" v-model="selectedSensor.sensor.name"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>description</p>
+                                </td>
+                                <td><textarea name="description" cols="20" rows="3" v-model="selectedSensor.sensor.description"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>type</p>
+                                </td>
+                                <td>
+                                    <select name="sensor_type" v-model="selectedSensor.sensor.type">
+                                        <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
+                                            {{ sensorType.sensorType }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                
+                        <table class="update-form-created-at-table">
+                            <tr>
+                                <td>crearted at:</td>
+                                <td>{{selectedSensor.sensor.created_at}}</td>
+                            </tr>
+                            <tr>
+                                <td>updated at:</td>
+                                <td>{{selectedSensor.sensor.updated_at}}</td>
+                            </tr>
+                        </table>
+                
+                        <button @click="updateSensor()">update</button>
+                    </div>
                 </div>
             </div>
             <!-- update sensor modal end -->
@@ -1132,6 +1137,11 @@
             margin-bottom: -20px;
         }
 
+        .modal-update-icon {
+            width: 70px;
+            margin-bottom: -20px;
+        }
+
         .update-form-table {
             margin: auto;
         }
@@ -1145,6 +1155,10 @@
 
     <style>
         .reboot-confirm-box {
+            margin: 30px 15px;
+        }
+
+        .update-confirm-box {
             margin: 30px 15px;
         }
     </style>
