@@ -219,6 +219,9 @@
             <h1>Sensors</h1>
             {{ sensors }}
             <br>
+            <br>
+            <br>
+            Sensor data last updated at: {{ sensorDataLastUpdatedAt }}
             <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
                 <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
                     <h2>index: {{i}}</h2>
@@ -523,6 +526,7 @@
                 rebootConfirm: false,
                 devices: [],
                 sensors: [],
+                sensorDataLastUpdatedAt: '',
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
@@ -624,6 +628,7 @@
                         axios.get('/sensors/value')
                             .then(function (res) {
                                 const sensorValues = res.data.sensors;
+                                this.sensorDataLastUpdatedAt = getDateTime(res.data.timestamp);
                                 
                                 // set sensor value by sensor_id
                                 for (sensorData of sensorValues) {
