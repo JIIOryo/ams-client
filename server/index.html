@@ -280,9 +280,23 @@
                                 <td>{{selectedSensor.sensor.updated_at}}</td>
                             </tr>
                         </table>
-                
-                        <button @click="updateSensor()">update</button>
+
+                        <div style="margin-bottom: 30px;"></div>
+                        
+                    
+                        <div class="button-container">
+                            <div class="cancel-button" @click="closeUpdateSensorModal()">
+                                <p>Cancel</p>
+                            </div>
+                            <div class="update-button" @click="updateSensor()">
+                                <p>Update</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 100px;"></div>
+                        
                     </div>
+
                 </div>
             </div>
             <!-- update sensor modal end -->
@@ -1242,6 +1256,30 @@
         }
 
         .dangerous-button p {
+            font-size: 1em;
+            margin: 5px 0px;
+        }
+
+
+        /* update button */
+        .update-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 0px 20px;
+            text-decoration: none;
+            color: white;
+            border: solid 2px #00aa69;
+            background: #00aa69;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .update-button:hover{
+            border: solid 2px #01ce7f;
+            background: #01ce7f;
+        }
+
+        .update-button p {
             font-size: 1em;
             margin: 5px 0px;
         }
