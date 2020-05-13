@@ -229,8 +229,59 @@
                     <h2>name: {{ sensor.sensor.name }}</h2>
                     <h2>type: {{ sensor.sensor.type }}</h2>
                     <h2>values: {{ sensor.value }}</h2>
+                    <button @click="clickUpdateSensorButton(sensor)">update</button>
                 </div>
             </div>
+
+            <!-- update sensor modal start -->
+            {{selectedSensor.sensor}}
+            <div class="modal-display" v-show="updateSensorModal" @click.self="closeUpdateSensorModal()">
+                <div class="modal-box">
+                    <button @click="closeUpdateSensorModal">X</button>
+            
+                    <table class="update-form-table">
+                        <tr>
+                            <td>
+                                <p>name</p>
+                            </td>
+                            <td><input type="text" v-model="selectedSensor.sensor.name"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>description</p>
+                            </td>
+                            <td><textarea name="description" cols="20" rows="3" v-model="selectedSensor.sensor.description"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>type</p>
+                            </td>
+                            <td>
+                                <select name="sensor_type" v-model="selectedSensor.sensor.type">
+                                    <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
+                                        {{ sensorType.sensorType }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+            
+                    <table class="update-form-created-at-table">
+                        <tr>
+                            <td>crearted at:</td>
+                            <td>{{selectedSensor.sensor.created_at}}</td>
+                        </tr>
+                        <tr>
+                            <td>updated at:</td>
+                            <td>{{selectedSensor.sensor.updated_at}}</td>
+                        </tr>
+                    </table>
+            
+                    <button @click="updateSensor()">update</button>
+                </div>
+            </div>
+            <!-- update sensor modal end -->
+
         </div>
         <div v-else-if="selectedPage == 'Setting'">
             <h1>Setting</h1>
@@ -529,6 +580,7 @@
                 hasError: false,
                 loading: false,
                 updateModal: false,
+                updateSensorModal: false,
                 rebootConfirm: false,
                 devices: [],
                 sensors: [],
@@ -537,6 +589,9 @@
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
+                },
+                selectedSensor: {
+                    sensor: {}
                 },
                 deviceTypes: [
                     {
@@ -565,6 +620,35 @@
                     },
                     {
                         deviceType: "filter"
+                    },
+                ],
+                sensorTypes: [
+                    {
+                        sensorType: "water_temperature"
+                    },
+                    {
+                        sensorType: "illuminance"
+                    },
+                    {
+                        sensorType: "water_level"
+                    },
+                    {
+                        sensorType: "sub_tank_water_level"
+                    },
+                    {
+                        sensorType: "room_temperature"
+                    },
+                    {
+                        sensorType: "room_humidity"
+                    },
+                    {
+                        sensorType: "salinity"
+                    },
+                    {
+                        sensorType: "water_flow_rate"
+                    },
+                    {
+                        sensorType: "ph"
                     },
                 ],
                 deviceRunTypes: [
@@ -617,6 +701,19 @@
                     this.updateModal = false;
                     this.selectedDevice = {
                         run_type: "",
+                    };
+                },
+                clickUpdateSensorButton: function (selectedSensor) {
+                    this.updateSensorModal = true;
+                    this.selectedSensor = JSON.parse(JSON.stringify(selectedSensor));
+                    // unix timestamp -> readable date
+                    this.selectedSensor.sensor.created_at = getDateTime(this.selectedSensor.sensor.created_at)
+                    this.selectedSensor.sensor.updated_at = getDateTime(this.selectedSensor.sensor.updated_at)
+                },
+                closeUpdateSensorModal: function () {
+                    this.updateSensorModal = false;
+                    this.selectedSensor = {
+                        sensor: {}
                     };
                 },
                 reboot: async function() {
