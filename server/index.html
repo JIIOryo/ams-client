@@ -592,6 +592,15 @@
             });
         }
 
+        const updateSensorRequest = async updatedSensor => {
+            await axios.post('/sensor/update', {
+                sensor_id: updatedSensor.sensor_id,
+                name: updatedSensor.sensor.name,
+                description: updatedSensor.sensor.description,
+                type: updatedSensor.sensor.type,
+            });
+        }
+
         var app = new Vue({
             el: '#app',
             data: {
@@ -706,6 +715,13 @@
                     this.loading = true
                     const deviceState = await updateDeviceRequest(this.selectedDevice);
                     this.closeUpdateDeviceModal();
+                    // TODO not reset
+                    window.location.href = '/'
+                },
+                updateSensor: async function () {
+                    this.loading = true
+                    const sensorState = await updateSensorRequest(this.selectedSensor);
+                    this.closeUpdateSensorModal();
                     // TODO not reset
                     window.location.href = '/'
                 },

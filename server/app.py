@@ -14,6 +14,7 @@ from on_message.device_update import device_update
 from on_message.reboot import reboot
 from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
+from on_message.sensor_update import sensor_update
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
 
@@ -98,6 +99,12 @@ def get_sensors():
 def get_sensor_value():
     current_sensor_values = get_current_sensor_values()
     return jsonify(current_sensor_values)
+
+@app.route('/sensor/update', methods=['POST'])
+def sensor_update_():
+    print(request.json)
+    sensor_update(message = request.data)
+    return empty_response
 
 @app.route('/reboot')
 def reboot_():
