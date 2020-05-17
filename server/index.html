@@ -325,12 +325,12 @@
                     <span class="focus_line"></span>
                 </div>
                 <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model="setting.LOCAL_SERVER.PORT">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.LOCAL_SERVER.PORT">
                     <label>Local server port</label>
                     <span class="focus_line"></span>
                 </div>
                 <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model="setting.NETWORK_CONNECTION_WAIT_TIME">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.NETWORK_CONNECTION_WAIT_TIME">
                     <label>Network connection wait time [sec]</label>
                     <span class="focus_line"></span>
                 </div>
@@ -345,7 +345,7 @@
                     <span class="focus_line"></span>
                 </div>
                 <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model="setting.MQTT.MQTT_BROKER_PORT">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.MQTT.MQTT_BROKER_PORT">
                     <label>Broker Port</label>
                     <span class="focus_line"></span>
                 </div>
@@ -360,12 +360,12 @@
                     <span class="focus_line"></span>
                 </div>
                 <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model="setting.MQTT.KEEPALIVE">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.MQTT.KEEPALIVE">
                     <label>Broker Keepalive</label>
                     <span class="focus_line"></span>
                 </div>
                 <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model="setting.MQTT.SUBSCRIBER_QOS">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.MQTT.SUBSCRIBER_QOS">
                     <label>Subscribe QoS</label>
                     <span class="focus_line"></span>
                 </div>
@@ -373,126 +373,92 @@
                 <br>
 
                 <h2 class="setting-head">Slack <img src="/static/img/slack_icon.png" class="setting-head-icon"></h2>
-                <table  class="setting-form-table">
-                    <tr>
-                        <td>Webhook URL</td>
-                        <td>
-                            <input type="text" v-model="setting.SLACK.WEBHOOK_URL">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><h3>Error</h3></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>channel</td>
-                        <td>
-                            <input type="text" v-model="setting.SLACK.ERROR.CHANNEL">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>UserName</td>
-                        <td>
-                            <input type="text" v-model="setting.SLACK.ERROR.USERNAME">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Icon Emoji</td>
-                        <td>
-                            <input type="text" v-model="setting.SLACK.ERROR.ICON_EMOJI">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>message format</td>
-                        <td>
-                            <textarea name="error-message-format" cols="30" rows="4" v-model="setting.SLACK.ERROR.MESSAGE_FORMAT"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h3>Notification</h3>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>channel</td>
-                        <td>
-                            <input type="text" v-model="setting.SLACK.NOTIFICATION.CHANNEL">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>UserName</td>
-                        <td>
-                            <input type="text" v-model="setting.SLACK.NOTIFICATION.USERNAME">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Icon Emoji</td>
-                        <td>
-                            <input type="text" v-model="setting.SLACK.NOTIFICATION.ICON_EMOJI">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>message format</td>
-                        <td>
-                            <textarea name="notification-message-format" cols="30" rows="4" v-model="setting.SLACK.NOTIFICATION.MESSAGE_FORMAT"></textarea>
-                        </td>
-                    </tr>
-                </table>
+
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.WEBHOOK_URL">
+                    <label>Webhook URL</label>
+                    <span class="focus_line"></span>
+                </div>
+
+                <h3>Error</h3>
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.CHANNEL">
+                    <label>Channel</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.USERNAME">
+                    <label>UserName</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.ICON_EMOJI">
+                    <label>Icon Emoji</label>
+                    <span class="focus_line"></span>
+                </div>
+                message format
+                <textarea name="error-message-format" cols="30" rows="4" v-model="setting.SLACK.ERROR.MESSAGE_FORMAT"></textarea>
+                
+                <h3>Notification</h3>
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.CHANNEL">
+                    <label>Channel</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.USERNAME">
+                    <label>UserName</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.ICON_EMOJI">
+                    <label>Icon Emoji</label>
+                    <span class="focus_line"></span>
+                </div>
+                message format
+                <textarea name="notification-message-format" cols="30" rows="4"
+                    v-model="setting.SLACK.NOTIFICATION.MESSAGE_FORMAT"></textarea>
 
                 <br>
 
                 <h2 class="setting-head">Sensing</h2>
-                <table  class="setting-form-table">
-                    <tr>
-                        <td>sensor data publish period</td>
-                        <td>
-                            <input type="number" v-model.number="setting.SENSING.SENSOR_DATA_PUBLISH_PERIOD">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>sensing number</td>
-                        <td>
-                            <input type="number" v-model.number="setting.SENSING.SENSING_NUMBER">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>sensor data polling period</td>
-                        <td>
-                            <input type="number" v-model.number="setting.SENSING.WEB_SENSOR_DATA_POLLING_PERIOD">
-                        </td>
-                    </tr>
-                </table>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.SENSOR_DATA_PUBLISH_PERIOD">
+                    <label>Sensor data publish period</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.SENSING_NUMBER">
+                    <label>Sensing number</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.WEB_SENSOR_DATA_POLLING_PERIOD">
+                    <label>Sensor data polling period</label>
+                    <span class="focus_line"></span>
+                </div>
+
 
                 <br>
 
                 <h2 class="setting-head">Device</h2>
-                <table  class="setting-form-table">
-                    <tr>
-                        <td>auto feeder run time</td>
-                        <td>
-                            <input type="number" v-model.number="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>feed pump default time</td>
-                        <td>
-                            <input type="number" v-model.number="setting.DEVICE.FEED_PUMP_DEFAULT_TIME">
-                        </td>
-                    </tr>
-                </table>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
+                    <label>Auto feeder run time</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model.number="setting.DEVICE.FEED_PUMP_DEFAULT_TIME">
+                    <label>Feed pump default time</label>
+                    <span class="focus_line"></span>
+                </div>
 
                 <div class="small-space-box"></div>
 
                 <button @click="updateSetting()">update setting</button>
 
                 <div class="medium-space-box"></div>
-            </div>
 
-            <div class="cp_iptxt">
-                <input class="ef" type="text" placeholder="">
-                <label>お名前</label>
-                <span class="focus_line"></span>
             </div>
 
         </div>
