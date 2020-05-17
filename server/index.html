@@ -308,80 +308,67 @@
             <div class="setting-form">
 
                 <h2 class="setting-head">Local</h2>
-                <table class="setting-form-table">
-                    <tr>
-                        <td>tank id</td>
-                        <td>
-                            <input type="text" v-model="setting.TANK_ID">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>client id</td>
-                        <td>
-                            <input type="text" v-model="setting.CLIENT_ID">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>ams root path</td>
-                        <td>
-                            <input type="text" v-model="setting.ROOT_PATH">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>local server port</td>
-                        <td>
-                            <input type="number" v-model.number="setting.LOCAL_SERVER.PORT">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Network connection wait time</td>
-                        <td>
-                            <input type="number" v-model.number="setting.NETWORK_CONNECTION_WAIT_TIME">
-                        </td>
-                    </tr>
-                </table>
+
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.TANK_ID">
+                    <label>Tank id</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.CLIENT_ID">
+                    <label>Client id</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.ROOT_PATH">
+                    <label>AMS root path</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model="setting.LOCAL_SERVER.PORT">
+                    <label>Local server port</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model="setting.NETWORK_CONNECTION_WAIT_TIME">
+                    <label>Network connection wait time [sec]</label>
+                    <span class="focus_line"></span>
+                </div>
 
                 <br>
 
                 <h2 class="setting-head">MQTT</h2>
-                <table  class="setting-form-table">
-                    <tr>
-                        <td>Broker Address</td>
-                        <td>
-                            <input type="text" v-model="setting.MQTT.MQTT_BROKER">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Broker Port</td>
-                        <td>
-                            <input type="number" v-model.number="setting.MQTT.MQTT_BROKER_PORT">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Broker UserName</td>
-                        <td>
-                            <input type="text" v-model="setting.MQTT.MQTT_BROKER_USERNAME">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Broker Password</td>
-                        <td>
-                            <input type="password" v-model="setting.MQTT.MQTT_BROKER_PASSWORD">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Keepalive</td>
-                        <td>
-                            <input type="number" v-model.number="setting.MQTT.KEEPALIVE">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Subscribe QoS</td>
-                        <td>
-                            <input type="number" v-model.number="setting.MQTT.SUBSCRIBER_QOS">
-                        </td>
-                    </tr>
-                </table>
+
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.MQTT.MQTT_BROKER">
+                    <label>Broker Address</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model="setting.MQTT.MQTT_BROKER_PORT">
+                    <label>Broker Port</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="text" placeholder="" v-model="setting.MQTT.MQTT_BROKER_USERNAME">
+                    <label>Broker UserName</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="password" placeholder="" v-model="setting.MQTT.MQTT_BROKER_PASSWORD">
+                    <label>Broker Password</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model="setting.MQTT.KEEPALIVE">
+                    <label>Broker Keepalive</label>
+                    <span class="focus_line"></span>
+                </div>
+                <div class="cp_iptxt">
+                    <input class="ef" type="number" placeholder="" v-model="setting.MQTT.SUBSCRIBER_QOS">
+                    <label>Subscribe QoS</label>
+                    <span class="focus_line"></span>
+                </div>
 
                 <br>
 
@@ -501,6 +488,13 @@
 
                 <div class="medium-space-box"></div>
             </div>
+
+            <div class="cp_iptxt">
+                <input class="ef" type="text" placeholder="">
+                <label>お名前</label>
+                <span class="focus_line"></span>
+            </div>
+
         </div>
         <div v-else>
             <h1>Unknown Page</h1>
@@ -1196,7 +1190,8 @@
 
     <style>
         .setting-form {
-            text-align: center;
+            width: 60%;
+            margin: auto;
         }
         .setting-form-table {
             margin: auto;
@@ -1304,6 +1299,64 @@
     </style>
 
 
+    <!-- form -->
+    <style>
+        .cp_iptxt {
+        position: relative;
+        width: 80%;
+        margin: 40px 3%;
+        }
+        .cp_iptxt input[type='text'], input[type='number'], input[type='password'] {
+        font: 20px/30px sans-serif;
+        box-sizing: border-box;
+        width: 100%;
+        letter-spacing: 1px;
+        padding-left: 4em;
+        }
+        .cp_iptxt input[type='password'] {
+            font-weight: 900;
+        }
+        .cp_iptxt input[type='text'], input[type='number'], input[type='password']:focus {
+        outline: none;
+        }
+        .ef {
+        padding: 4px 0;
+        border: 0;
+        border-bottom: 2px solid #1b2538;
+        background-color: transparent;
+        }
+        .ef ~ .focus_line {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        transition: 0.4s;
+        background-color: #44ACF0;
+        }
+        .ef:focus ~ .focus_line,
+        .cp_iptxt.ef ~ .focus_line {
+        width: 100%;
+        transition: 0.4s;
+        }
+
+        .ef ~ label {
+        position: absolute;
+        z-index: -1;
+        top: -16px;
+        font-size: 14px;
+        font-weight: 400;
+        left: 30px;
+        width: 100%;
+        transition: 0.1s;
+        letter-spacing: 0.5px;
+        color: #aaaaaa;
+        }
+        .ef:focus ~ label, .cp_iptxt.ef ~ label {
+        transition: 0.1s;
+        color: #44ACF0;
+        }
+    </style>
 
 </body>
 
