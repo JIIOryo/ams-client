@@ -304,11 +304,10 @@
         </div>
         <div v-else-if="selectedPage == 'Setting'">
             <h1>Setting</h1>
-
+            
             <div class="setting-form">
-
+            
                 <h2 class="setting-head">Local</h2>
-
                 <div class="cp_iptxt">
                     <input class="ef" type="text" placeholder="" v-model="setting.TANK_ID">
                     <label>Tank id</label>
@@ -334,11 +333,10 @@
                     <label>Network connection wait time [sec]</label>
                     <span class="focus_line"></span>
                 </div>
-
+            
                 <br>
-
+            
                 <h2 class="setting-head">MQTT</h2>
-
                 <div class="cp_iptxt">
                     <input class="ef" type="text" placeholder="" v-model="setting.MQTT.MQTT_BROKER">
                     <label>Broker Address</label>
@@ -369,17 +367,16 @@
                     <label>Subscribe QoS</label>
                     <span class="focus_line"></span>
                 </div>
-
+            
                 <br>
-
+            
                 <h2 class="setting-head">Slack <img src="/static/img/slack_icon.png" class="setting-head-icon"></h2>
-
                 <div class="cp_iptxt">
                     <input class="ef" type="text" placeholder="" v-model="setting.SLACK.WEBHOOK_URL">
                     <label>Webhook URL</label>
                     <span class="focus_line"></span>
                 </div>
-
+            
                 <h3>Error</h3>
                 <div class="cp_iptxt">
                     <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.CHANNEL">
@@ -396,9 +393,15 @@
                     <label>Icon Emoji</label>
                     <span class="focus_line"></span>
                 </div>
-                message format
-                <textarea name="error-message-format" cols="30" rows="4" v-model="setting.SLACK.ERROR.MESSAGE_FORMAT"></textarea>
-                
+                <div class="cp_form">
+                    <textarea required="required" v-model="setting.SLACK.ERROR.MESSAGE_FORMAT" name="error-message-format" cols="30"
+                        rows="4"></textarea>
+                    <label class="cp_label" for="textarea">Message format</label>
+                    <i class="bar"></i>
+                </div>
+
+                <br>
+            
                 <h3>Notification</h3>
                 <div class="cp_iptxt">
                     <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.CHANNEL">
@@ -415,12 +418,15 @@
                     <label>Icon Emoji</label>
                     <span class="focus_line"></span>
                 </div>
-                message format
-                <textarea name="notification-message-format" cols="30" rows="4"
-                    v-model="setting.SLACK.NOTIFICATION.MESSAGE_FORMAT"></textarea>
-
+                <div class="cp_form">
+                    <textarea required="required" v-model="setting.SLACK.NOTIFICATION.MESSAGE_FORMAT"
+                        name="notification-message-format" cols="30" rows="4"></textarea>
+                    <label class="cp_label" for="textarea">Message format</label>
+                    <i class="bar"></i>
+                </div>
+            
                 <br>
-
+            
                 <h2 class="setting-head">Sensing</h2>
                 <div class="cp_iptxt">
                     <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.SENSOR_DATA_PUBLISH_PERIOD">
@@ -437,10 +443,9 @@
                     <label>Sensor data polling period</label>
                     <span class="focus_line"></span>
                 </div>
-
-
+            
                 <br>
-
+            
                 <h2 class="setting-head">Device</h2>
                 <div class="cp_iptxt">
                     <input class="ef" type="number" placeholder="" v-model.number="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
@@ -452,16 +457,16 @@
                     <label>Feed pump default time</label>
                     <span class="focus_line"></span>
                 </div>
-
+            
                 <div class="small-space-box"></div>
-
+            
                 <button @click="updateSetting()">update setting</button>
-
+            
                 <div class="medium-space-box"></div>
-
+            
             </div>
-
-        </div>
+            
+            </div>
         <div v-else>
             <h1>Unknown Page</h1>
         </div>
@@ -1322,6 +1327,103 @@
         transition: 0.1s;
         color: #44ACF0;
         }
+    </style>
+
+
+    <style>
+        .cp_form {
+            /* position: relative; */
+            /* width: 60%; */
+            position: relative;
+        width: 80%;
+        margin: 40px 3%;
+        }
+
+            .cp_form textarea　{
+            font-family: inherit;
+            }
+            .cp_form textarea {
+            resize: vertical;
+            }
+
+            .cp_form:focus {
+            outline: none;
+            border-bottom: 2px solid rgba(0,0,0, 0);
+            }
+            /* .cp_form {
+            -webkit-appearance: none;
+            appearance: none;
+            }
+             */
+
+            .cp_form .cp_label {
+            position: absolute;
+            top: 0.25rem;
+            pointer-events: none;
+            padding-left: 0.125rem;
+            top: -1rem;
+            z-index: 1;
+            left: 30px;
+            color: #b3b3b3;
+            font-size: 14px;
+            font-weight: normal;
+            -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+            }
+            .cp_form .bar {
+            position: relative;
+            /* border-bottom: 0.0625rem solid #000000; */
+            border-bottom: 2px solid #000000;
+            display: block;
+            }
+            .cp_form .bar::before {
+            content: '';
+            height: 0.125rem;
+            /* height: 2px; */
+            width: 0;
+            left: 0;
+            bottom: -2px;
+            position: absolute;
+            background: #44ACF0;
+            -webkit-transition: left 0.4s ease, width 0.4s ease;
+            transition: left 0.4s ease, width 0.4s ease;
+            z-index: 2;
+            }
+
+            .cp_form textarea {
+            display: block;
+            background: none;
+            padding: 0.125rem 0.125rem 2px;
+            font-size: 1rem;
+            border-width: 0;
+            border-color: transparent;
+            line-height: 1.9;
+            width: 100%;
+            color: transparent;
+            -webkit-transition: all 0.4s ease;
+            transition: all 0.4s ease;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            }
+
+            .cp_form textarea:focus,
+            .cp_form textarea:valid {
+            color: #333333;
+            }
+
+            .cp_form textarea:focus {
+            outline: none;
+            }
+
+            .cp_form textarea:focus ~ .cp_label {
+            color: #44ACF0;
+            }
+
+            .cp_form textarea:focus ~ .bar::before {
+            width: 100%;
+            left: 0;
+            }
+
     </style>
 
 </body>
