@@ -510,7 +510,7 @@
             
                 <br>
             
-                <h2 class="setting-head">MQTT</h2>
+                <h2 class="setting-head">MQTT <img src="/static/icon/cloud_network.png" class="setting-head-icon"></h2>
                 <div class="cp_iptxt">
                     <input class="ef" type="text" placeholder="" v-model="setting.MQTT.MQTT_BROKER">
                     <label>Broker Address</label>
@@ -551,7 +551,7 @@
                     <span class="focus_line"></span>
                 </div>
             
-                <h3>Error</h3>
+                <h3 class="setting-sub-head">Error <img src="/static/icon/error.png" class="setting-sub-head-icon"></h3>
                 <div class="cp_iptxt">
                     <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.CHANNEL">
                     <label>Channel</label>
@@ -576,7 +576,7 @@
 
                 <br>
             
-                <h3>Notification</h3>
+                <h3 class="setting-sub-head">Notification <img src="/static/icon/notification.png" class="setting-sub-head-icon"></h3>
                 <div class="cp_iptxt">
                     <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.CHANNEL">
                     <label>Channel</label>
@@ -601,7 +601,7 @@
             
                 <br>
             
-                <h2 class="setting-head">Sensing</h2>
+                <h2 class="setting-head">Sensing <img src="/static/icon/sensor.png" class="setting-head-icon"></h2>
                 <div class="cp_iptxt">
                     <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.SENSOR_DATA_PUBLISH_PERIOD">
                     <label>Sensor data publish period</label>
@@ -620,7 +620,7 @@
             
                 <br>
             
-                <h2 class="setting-head">Device</h2>
+                <h2 class="setting-head">Device <img src="/static/icon/device.png" class="setting-head-icon"></h2>
                 <div class="cp_iptxt">
                     <input class="ef" type="number" placeholder="" v-model.number="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
                     <label>Auto feeder run time</label>
@@ -633,9 +633,13 @@
                 </div>
             
                 <div class="small-space-box"></div>
-            
-                <button @click="updateSetting()">update setting</button>
-            
+                
+                <div class="centering-wrapper">
+                    <div class="setting-update-button" @click="updateSetting()">
+                        <p>Update setting</p>
+                    </div>
+                </div>
+
                 <div class="medium-space-box"></div>
             
             </div>
@@ -1335,17 +1339,28 @@
 
     <style>
         .setting-form {
-            width: 60%;
+            width: 70%;
             margin: auto;
+            padding-left: 10%;
         }
-        .setting-form-table {
-            margin: auto;
-        }
+
         .setting-head {
             text-align: center;
+            font-size: 35px;
+            margin-left: -15%;
         }
         .setting-head-icon {
-            width: 25px;
+            width: 30px;
+        }
+
+        .setting-sub-head {
+            text-align: center;
+            font-size: 25px;
+            margin-left: -15%;
+        }
+        .setting-sub-head-icon {
+            width: 20px;
+            margin-bottom: -3px;
         }
     </style>
 
@@ -1437,6 +1452,34 @@
 
         .update-button p {
             font-size: 1em;
+            margin: 5px 0px;
+        }
+
+        .centering-wrapper {
+            text-align: center;
+        }
+
+        /* update setting button */
+        .setting-update-button {
+            cursor: pointer;
+            margin-left: -15%;
+            display: inline-block;
+            padding: 5px 35px;
+            text-decoration: none;
+            color: white;
+            border: solid 2px #00aa69;
+            background: #00aa69;
+            border-radius: 9px;
+            transition: 0.3s;
+        }
+
+        .setting-update-button:hover{
+            border: solid 2px #01ce7f;
+            background: #01ce7f;
+        }
+
+        .setting-update-button p {
+            font-size: 1.2em;
             margin: 5px 0px;
         }
 
