@@ -92,6 +92,7 @@ def publish_sensor_data() -> None:
             "name": sensor['sensor']['name'],
             "type": sensor['sensor']['type'],
             "value": round( a * total_value[sensor['sensor_id']] / sensing_number + b, 2),
+            "raw_value": round(total_value[sensor['sensor_id']] / sensing_number, 1),
         })
     
 
