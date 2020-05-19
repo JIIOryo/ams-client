@@ -226,7 +226,7 @@
                     <p>Are you sure to reboot AMS?</p>
                     
                     <div class="button-container">
-                        <div class="cancel-button" @click="rebootConfirm = false">
+                        <div class="modal-cancel-button" @click="rebootConfirm = false">
                             <p>Cancel</p>
                         </div>
                         <div class="dangerous-button" @click="reboot()">
@@ -416,42 +416,45 @@
                         <img src="/static/icon/update.png" class="modal-update-icon">
                         <h3>Update sensor</h3>
                         <hr>
-                
-                        <table class="update-form-table">
-                            <tr>
-                                <td>
-                                    <p>name</p>
-                                </td>
-                                <td><input type="text" v-model="selectedSensor.sensor.name"></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>description</p>
-                                </td>
-                                <td><textarea name="description" cols="20" rows="3" v-model="selectedSensor.sensor.description"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>type</p>
-                                </td>
-                                <td>
-                                    <select name="sensor_type" v-model="selectedSensor.sensor.type">
-                                        <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
-                                            {{ sensorType.sensorType }}</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                
+
+                        <div class="modal-form-container">
+                            <div class="cp_iptxt">
+                                <input class="ef" type="text" placeholder="" v-model="selectedSensor.sensor.name">
+                                <label>Name</label>
+                                <span class="focus_line"></span>
+                            </div>
+    
+                            <div class="cp_form">
+                                <textarea required="required" v-model="selectedSensor.sensor.description" name="error-message-format" cols="20"
+                                    rows="2"></textarea>
+                                <label class="cp_label" for="textarea">Description</label>
+                                <i class="bar"></i>
+                            </div>
+                        </div>
+
+                        <div class="modal-select-container">
+                            <label class="select-label">Sensor type</label>
+                            <div class="select-box select-box-simple">
+                                <select name="sensor_type" v-model="selectedSensor.sensor.type">
+                                    <option value="" hidden>Choose</option>
+                                    <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
+                                        {{ sensorType.sensorType }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <br>
+
                         <table class="update-form-created-at-table">
                             <tr>
                                 <td>crearted at:</td>
-                                <td>{{selectedSensor.sensor.created_at}}</td>
+                                <td>  {{selectedSensor.sensor.created_at}}</td>
                             </tr>
                             <tr>
                                 <td>updated at:</td>
-                                <td>{{selectedSensor.sensor.updated_at}}</td>
+                                <td>  {{selectedSensor.sensor.updated_at}}</td>
                             </tr>
                         </table>
 
@@ -459,10 +462,10 @@
                         
                     
                         <div class="button-container">
-                            <div class="cancel-button" @click="closeUpdateSensorModal()">
+                            <div class="modal-cancel-button" @click="closeUpdateSensorModal()">
                                 <p>Cancel</p>
                             </div>
-                            <div class="update-button" @click="updateSensor()">
+                            <div class="modal-update-button" @click="updateSensor()">
                                 <p>Update</p>
                             </div>
                         </div>
@@ -1289,12 +1292,17 @@
 
         .modal-box {
             background: white;
-            width: 50%;
+            width: 600px;
             height: auto;
             position: fixed;
             border-radius: 10px;
             text-align: center;
             z-index: 2;
+        }
+        @media screen and (max-width: 480px) {
+            .modal-box {
+                width: 90%;
+            }
         }
 
         .modal-close-x-icon {
@@ -1321,7 +1329,10 @@
 
         .update-form-created-at-table {
             margin: auto;
-            font-size: 5px;
+            font-size: 15px;
+        }
+        .update-form-created-at-table td {
+            padding: 5px;
         }
     </style>
 
@@ -1386,10 +1397,10 @@
         }
 
         /* cancel button */
-        .cancel-button {
+        .modal-cancel-button {
             cursor: pointer;
             display: inline-block;
-            padding: 0px 20px;
+            padding: 3px 30px;
             text-decoration: none;
             color: #999;
             border: solid 2px #999;
@@ -1397,12 +1408,12 @@
             transition: 0.3s;
         }
 
-        .cancel-button:hover{
+        .modal-cancel-button:hover{
             color: #6cf;
             border: solid 2px #6cf;
         }
 
-        .cancel-button p {
+        .modal-cancel-button p {
             font-size: 1em;
             margin: 5px 0px;
         }
@@ -1433,10 +1444,10 @@
 
 
         /* update button */
-        .update-button {
+        .modal-update-button {
             cursor: pointer;
             display: inline-block;
-            padding: 0px 20px;
+            padding: 3px 30px;
             text-decoration: none;
             color: white;
             border: solid 2px #00aa69;
@@ -1445,12 +1456,12 @@
             transition: 0.3s;
         }
 
-        .update-button:hover{
+        .modal-update-button:hover{
             border: solid 2px #01ce7f;
             background: #01ce7f;
         }
 
-        .update-button p {
+        .modal-update-button p {
             font-size: 1em;
             margin: 5px 0px;
         }
@@ -1641,7 +1652,84 @@
             left: 0;
             }
 
+
+
+
+            /* update sensor で使われるやつ */
+            .modal-form-container {
+                text-align: left;
+                margin-left: 50px;
+            }
+
+            .modal-select-container {
+                text-align: left;
+                margin: auto;
+                width: 80%;
+            }
+            .select-label {
+                font-size: 14px;
+                font-weight: normal;
+                color: #b3b3b3;
+                margin-left: 40px;
+            }
+
     </style>
+
+
+
+<style>
+    .select-box {
+        overflow: hidden;
+        width: 90%;
+        margin: 2em auto;
+        text-align: center;
+    }
+
+    .select-box select {
+        width: 100%;
+        padding-right: 1em;
+        cursor: pointer;
+        text-indent: 0.01px;
+        text-overflow: ellipsis;
+        border: none;
+        outline: none;
+        background: transparent;
+        background-image: none;
+        box-shadow: none;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .select-box select::-ms-expand {
+        display: none;
+    }
+
+    .select-box.select-box-simple {
+        position: relative;
+        border: 1px solid #bbbbbb;
+        border-radius: 2px;
+        background: #ffffff;
+    }
+
+    .select-box.select-box-simple::before {
+        position: absolute;
+        top: 0.8em;
+        right: 0.9em;
+        width: 0;
+        height: 0;
+        padding: 0;
+        content: '';
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #666666;
+        pointer-events: none;
+    }
+
+    .select-box.select-box-simple select {
+        padding: 8px 38px 8px 8px;
+        color: #666666;
+    }
+</style>
 
 </body>
 
