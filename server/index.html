@@ -223,8 +223,9 @@
                     <img src="/static/icon/alert.png" class="modal-alert-icon">
                     <h3>Confirmation</h3>
                     <hr>
-                    <p>Are you sure to reboot AMS?</p>
-                    
+                    <div class="small-space-box"></div>
+                    <p class="modal-confirm-text">Are you sure to reboot AMS?</p>
+                    <div class="small-space-box"></div>
                     <div class="button-container">
                         <div class="modal-cancel-button" @click="rebootConfirm = false">
                             <p>Cancel</p>
@@ -1340,10 +1341,15 @@
     <style>
         .reboot-confirm-box {
             margin: 30px 15px;
+            padding-bottom: 10px;
         }
 
         .update-confirm-box {
             margin: 30px 15px;
+        }
+
+        .modal-confirm-text {
+            font-size: 22px;
         }
     </style>
 
@@ -1423,7 +1429,7 @@
         .dangerous-button {
             cursor: pointer;
             display: inline-block;
-            padding: 0px 20px;
+            padding: 3px 30px;
             text-decoration: none;
             color: white;
             border: solid 2px #F00;
@@ -1691,6 +1697,7 @@
         cursor: pointer;
         text-indent: 0.01px;
         text-overflow: ellipsis;
+        font-size: 17px;
         border: none;
         outline: none;
         background: transparent;
