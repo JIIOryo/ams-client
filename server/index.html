@@ -480,6 +480,27 @@
             </div>
             <!-- update sensor modal end -->
 
+            <!-- update sensor calibration modal start -->
+            <div class="modal-display" v-show="updateSensorCalibrationModal" @click.self="closeUpdateSensorCalibrationModal()">
+                <div class="modal-box">
+                    <div class="update-confirm-box">
+                        <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateSensorCalibrationModal()">
+                        <img src="/static/icon/update.png" class="modal-update-icon">
+                        <h3>Update sensor calibration</h3>
+                        <hr>
+                        <h1>aaa</h1>
+                        <div v-for="(oneCalibrationData, index) of selectedSensor.sensor.calibration" v-bind:value="index">
+                            {{index}} {{ oneCalibrationData[0] }}: {{ oneCalibrationData[1] }} <button @click="selectedSensor.sensor.calibration.splice(index, 1)">x</button>
+                        </div>
+                        <div>
+                            <input type="number" v-model.number="selectedSensorNewCalibrationValue">
+                            <button @click="selectedSensor.sensor.calibration.push([123, selectedSensorNewCalibrationValue])">add</button>
+                        </div>
+                        {{this.selectedSensorNewCalibrationValue}}
+                        {{ this.selectedSensor.sensor.calibration }}
+                    </div>
+                </div>
+            </div>
         </div>
         <div v-else-if="selectedPage == 'Setting'">
             <h1>Setting</h1>
@@ -757,6 +778,7 @@
                 loading: false,
                 updateModal: false,
                 updateSensorModal: false,
+                updateSensorCalibrationModal: false,
                 rebootConfirm: false,
                 devices: [],
                 sensors: [],
@@ -769,6 +791,7 @@
                 selectedSensor: {
                     sensor: {}
                 },
+                selectedSensorNewCalibrationValue: 10,
                 deviceTypes: [
                     {
                         deviceType: "main_light"
@@ -893,8 +916,18 @@
                     this.selectedSensor.sensor.created_at = getDateTime(this.selectedSensor.sensor.created_at)
                     this.selectedSensor.sensor.updated_at = getDateTime(this.selectedSensor.sensor.updated_at)
                 },
+                clickUpdateSensorCalibrationButton: function (selectedSensor) {
+                    this.updateSensorCalibrationModal = true;
+                    this.selectedSensor = JSON.parse(JSON.stringify(selectedSensor));
+                },
                 closeUpdateSensorModal: function () {
                     this.updateSensorModal = false;
+                    this.selectedSensor = {
+                        sensor: {}
+                    };
+                },
+                closeUpdateSensorCalibrationModal: function() {
+                    this.updateSensorCalibrationModal = false;
                     this.selectedSensor = {
                         sensor: {}
                     };
