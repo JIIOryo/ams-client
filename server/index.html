@@ -410,7 +410,7 @@
             </div>
 
             <!-- update sensor modal start -->
-            {{selectedSensor.sensor}}
+            {{selectedSensor}}
             <div class="modal-display" v-show="updateSensorModal" @click.self="closeUpdateSensorModal()">
                 <div class="modal-box">
                     <div class="update-confirm-box">
@@ -489,13 +489,32 @@
                         <h3>Update sensor calibration</h3>
                         <hr>
                         <h1>aaa</h1>
-                        <div v-for="(oneCalibrationData, index) of selectedSensor.sensor.calibration" v-bind:value="index">
-                            {{index}} {{ oneCalibrationData[0] }}: {{ oneCalibrationData[1] }} <button @click="selectedSensor.sensor.calibration.splice(index, 1)">x</button>
-                        </div>
+                        <table>
+                            <tr>
+                                <th>
+                                    <p>Raw</p>
+                                </th>
+                                <th>
+                                    <p>Real</p>
+                                </th>
+                                <th></th>
+                            </tr>
+                            <tr v-for="(oneCalibrationData, index) of selectedSensor.sensor.calibration" v-bind:value="index">
+                                <td>
+                                    <input type="number" v-model.number="oneCalibrationData[0]">
+                                </td>
+                                <td>
+                                    <input type="number" v-model.number="oneCalibrationData[1]">
+                                </td>
+                                <td>
+                                    <button @click="selectedSensor.sensor.calibration.splice(index, 1)">x</button>
+                                </td>
+                            </tr>
+                        </table>
                         <div>
-                            <input type="number" v-model.number="selectedSensorNewCalibrationValue">
-                            <button @click="selectedSensor.sensor.calibration.push([123, selectedSensorNewCalibrationValue])">add</button>
+                            {{selectedSensor.raw_value}}<input type="number" v-model.number="selectedSensorNewCalibrationValue">
                         </div>
+                        <button @click="selectedSensor.sensor.calibration.push([selectedSensor.raw_value, selectedSensorNewCalibrationValue])">add</button>
                         {{this.selectedSensorNewCalibrationValue}}
                         {{ this.selectedSensor.sensor.calibration }}
                     </div>
@@ -953,9 +972,18 @@
                                 // set sensor value by sensor_id
                                 for (sensorData of sensorValues) {
                                     for (let i = 0; i < this.sensors.length; i++) {
+                                        // set sensor data to sensors
                                         if (this.sensors[i].sensor_id === sensorData.sensor_id) {
                                             this.sensors[i].value = sensorData.value;
                                             this.sensors[i].raw_value = sensorData.raw_value;
+                                        }
+                                        // set sensor data to selected sensor
+                                        // if selected sensor is not {}
+                                        if (!!Object.keys(this.selectedSensor).length) {
+                                            if (this.selectedSensor.sensor_id === sensorData.sensor_id) {
+                                                this.selectedSensor.raw_value = sensorData.raw_value;
+                                                this.selectedSensor.value = sensorData.value;
+                                            }
                                         }
                                     }
                                 }
