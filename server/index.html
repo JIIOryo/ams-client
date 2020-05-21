@@ -488,35 +488,68 @@
                         <img src="/static/icon/update.png" class="modal-update-icon">
                         <h3>Update sensor calibration</h3>
                         <hr>
-                        <h1>aaa</h1>
-                        <table>
+                        <div style="margin-bottom: 20px;"></div>
+                        <div class="vertical-scroll-table">
+                            <table class="calibration-form-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <p>No.</p>
+                                        </th>
+                                        <th>
+                                            <p>Raw</p>
+                                        </th>
+                                        <th>
+                                            <p>Real</p>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tr v-for="(oneCalibrationData, index) of selectedSensor.sensor.calibration" v-bind:value="index">
+                                    <td>
+                                        <p>{{ index + 1 }}</p>
+                                    </td>
+                                    <td>
+                                        <input type="number" v-model.number="oneCalibrationData[0]" class="calibration-number-form">
+                                    </td>
+                                    <td>
+                                        <input type="number" v-model.number="oneCalibrationData[1]" class="calibration-number-form">
+                                    </td>
+                                    <td>
+                                        <img src="/static/icon/delete.png" @click="selectedSensor.sensor.calibration.splice(index, 1)" class="delete-icon">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;"></div>
+
+                        <table class="new-calibration-value-table">
                             <tr>
-                                <th>
-                                    <p>Raw</p>
-                                </th>
-                                <th>
-                                    <p>Real</p>
-                                </th>
-                                <th></th>
-                            </tr>
-                            <tr v-for="(oneCalibrationData, index) of selectedSensor.sensor.calibration" v-bind:value="index">
                                 <td>
-                                    <input type="number" v-model.number="oneCalibrationData[0]">
+                                    <p>Now</p>
                                 </td>
                                 <td>
-                                    <input type="number" v-model.number="oneCalibrationData[1]">
+                                    <p class="raw-sensor-value">
+                                        {{selectedSensor.raw_value}}
+                                    </p>
                                 </td>
                                 <td>
-                                    <button @click="selectedSensor.sensor.calibration.splice(index, 1)">x</button>
+                                    <input type="number" v-model.number="selectedSensorNewCalibrationValue"  class="calibration-number-form more-small">
+                                </td>
+                                <td>
+                                    <div class="add-new-calibration-button" @click="selectedSensor.sensor.calibration.push([selectedSensor.raw_value, selectedSensorNewCalibrationValue])">
+                                        <p>Add</p>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
-                        <div>
-                            {{selectedSensor.raw_value}}<input type="number" v-model.number="selectedSensorNewCalibrationValue">
+
+                        <div class="calibration-update-button" @click="updateCalibration()">
+                            <p>Update</p>
                         </div>
-                        <button @click="selectedSensor.sensor.calibration.push([selectedSensor.raw_value, selectedSensorNewCalibrationValue])">add</button>
-                        {{this.selectedSensorNewCalibrationValue}}
-                        {{ this.selectedSensor.sensor.calibration }}
+
+
                     </div>
                 </div>
             </div>
@@ -1442,6 +1475,13 @@
             width: 20px;
             margin-bottom: -3px;
         }
+
+        .delete-icon {
+            /* background: black; */
+            width: 40px;
+            margin-bottom: -20px;
+            cursor: pointer;
+        }
     </style>
 
     <style>
@@ -1563,6 +1603,52 @@
             margin: 5px 0px;
         }
 
+        /* new calibration data button */
+        .add-new-calibration-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 0px 20px;
+            text-decoration: none;
+            color: white;
+            border: solid 2px #0080ff;
+            background: #0080ff;
+            border-radius: 16px;
+            transition: 0.3s;
+        }
+
+        .add-new-calibration-button:hover{
+            border: solid 2px #41a0ff;
+            background: #41a0ff;
+        }
+
+        .add-new-calibration-button p {
+            font-size: 1.2em;
+            margin: 5px 0px;
+        }
+
+        /* Calibration update button */
+        .calibration-update-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 5px 35px;
+            text-decoration: none;
+            color: white;
+            border: solid 2px #00aa69;
+            background: #00aa69;
+            border-radius: 9px;
+            transition: 0.3s;
+        }
+
+        .calibration-update-button:hover{
+            border: solid 2px #01ce7f;
+            background: #01ce7f;
+        }
+
+        .calibration-update-button p {
+            font-size: 1.2em;
+            margin: 5px 0px;
+        }
+
         
     </style>
 
@@ -1574,7 +1660,7 @@
         width: 80%;
         margin: 40px 3%;
         }
-        .cp_iptxt input[type='text'], input[type='number'], input[type='password'] {
+        .cp_iptxt input[type='text'], .cp_iptxt input[type='number'], .cp_iptxt input[type='password'] {
         font: 20px/30px sans-serif;
         box-sizing: border-box;
         width: 100%;
@@ -1584,7 +1670,7 @@
         .cp_iptxt input[type='password'] {
             font-weight: 900;
         }
-        .cp_iptxt input[type='text'], input[type='number'], input[type='password']:focus {
+        .cp_iptxt input[type='text'], .cp_iptxt input[type='number'], .cp_iptxt input[type='password']:focus {
         outline: none;
         }
         .ef {
@@ -1719,6 +1805,73 @@
             .cp_form textarea:focus ~ .bar::before {
             width: 100%;
             left: 0;
+            }
+
+
+
+
+            .vertical-scroll-table{
+                max-height: 300px;
+                overflow: auto;
+                overflow-x: hidden;
+            }
+
+            .vertical-scroll-table thead th {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 0;
+                z-index: 1;
+                background: white;
+            }
+
+            .calibration-form-table {
+                border-collapse: separate;
+                border-spacing: 2px 8px;
+                margin: auto;
+                width: 90%;
+            }
+
+            .calibration-number-form-td {
+                /* width: 40%; */
+                height: 30px;
+            }
+            .calibration-number-form {
+                outline: none;
+
+                border:0;
+                padding:10px;
+                font-size:1.3em;
+                color:#777;
+                border:solid 1px #ccc;
+                margin:0 0 20px;
+                width:70%;
+
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+            }
+
+            .calibration-number-form:focus {
+                outline-offset: -10px;
+                border:solid 2px #44ACF0;
+            }
+
+            .more-small {
+                width: 30%;
+            }
+
+            .new-calibration-value-table {
+                width: 100%;
+                margin: auto;
+            }
+
+            .new-calibration-value-table td {
+                text-align: center;
+            }
+
+            .raw-sensor-value {
+                font-size: 1.3em;
+                color:#777;
             }
 
 
