@@ -1,6 +1,7 @@
 import datetime
 import json
 import sys
+from typing import List
 
 import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
@@ -20,7 +21,7 @@ from lib.config import get_sensor_config, set_sensor_config
 from lib.notification import post_slack_by_type
 from lib.util import formated_str_now_date
 
-from service.sensor import publish_sensor_config
+from service.sensor import publish_sensor_config, calibration_format
 
 """
 # message 
@@ -75,5 +76,33 @@ def sensor_update(message: dict) -> None:
         text = slack_post_text,
         type_ = SLACK_NOTIFICATION_TYPE['NOTIFICATION']
     )
+
+    publish_sensor_config()
+
+"""
+# message 
+type: json str
+-----
+{
+  "calibration": [[1900, 21], [1910, 21.3], [2010, 23.8]]
+}
+"""
+
+def sensor_calibration_update(sensor_id: int, calibration: List[List[int]]) -> None:
+    sensor_config = get_sensor_config()
+
+    for sensor in sensor_config:
+        if sensor['sensor_id'] == sensor_id:
+
+            # Sensor does not found.
+            if sensor['sensor'] == {}:
+                raise SensorNotFound('Sensor does not found.')
+
+            before_sensor = dict(sensor['sensor'])
+            
+            sensor['sensor']['calibration'] = calibration_format(calibration)
+            break
+    
+    set_sensor_config(sensor_config)
 
     publish_sensor_config()

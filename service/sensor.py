@@ -2,6 +2,7 @@ import datetime
 import json
 import sys
 import time
+from typing import List
 
 import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
@@ -118,4 +119,12 @@ def publish_sensor_data() -> None:
         )
     )
     
-    
+def calibration_format(calibration: List[List[int]]) -> List[List[int]]:
+
+    def float_str_value(value: any) -> float:
+        if value == "":
+            return float(0)
+        return float(value)
+
+    return [[float_str_value(v) for v in c] for c in calibration]
+

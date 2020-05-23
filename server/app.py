@@ -14,7 +14,7 @@ from on_message.device_update import device_update
 from on_message.reboot import reboot
 from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
-from on_message.sensor_update import sensor_update
+from on_message.sensor_update import sensor_update, sensor_calibration_update
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
 
@@ -114,7 +114,10 @@ def sensor_calibration_update_(sensor_id):
         "calibration": [[1900, 21], [1910, 21.3], [2010, 23.8]]
     }
     '''
-    print(request.json['calibration'])
+    sensor_calibration_update(
+        sensor_id = sensor_id,
+        calibration = request.json['calibration']
+    )
     return empty_response
 
 @app.route('/reboot')
