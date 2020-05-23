@@ -193,13 +193,22 @@
 <body>
     <div id="app">
 
-        <button @click="rebootConfirm = true">reboot</button>
-
-        <div>
-            <h3 @click="selectedPage = 'Devices'">Devices</h3>
-            <h3 @click="selectedPage = 'Sensors'">Sensors</h3>
-            <h3 @click="selectedPage = 'Setting'">Setting</h3>
-        </div>
+        
+        <!-- header for pc -->
+        <header class="pc-header">
+            <img src="/static/ams_logo/ams_logo_white.png" class="header-ams-icon" @click="window.location.href = '/'">
+            <div class="pc-header-top">
+                <div @click="rebootConfirm = true" class="reboot-button">reboot</div>
+            </div>
+            <nav class="pc-header-bottom">
+                <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
+                <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'" v-bind:class="{ 'active-sensor' : selectedPage == 'Sensors' }"><p>Sensor</p></div>
+                <div class="header-nav header-nav-camera" @click="selectedPage = 'Camera'" v-bind:class="{ 'active-camera' : selectedPage == 'Camera' }"><p>Camera</p></div>
+                <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'" v-bind:class="{ 'active-setting' : selectedPage == 'Setting' }"><p>Setting</p></div>
+            </nav>
+        </header>
+        <!-- header for pc end -->
+        
 
         <transition name="fade-translate-display">
             <div class="translate-display" v-show="loading">
@@ -241,10 +250,7 @@
         </div>
 
         <div v-if="selectedPage == 'Devices'">
-            <h1>Devices</h1>
-
-            
-
+            <!-- Device -->
 
             <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
                 <div class="modal-box">
@@ -411,8 +417,7 @@
             <br>
         </div>
         <div v-else-if="selectedPage == 'Sensors'">
-            <h1>Sensors</h1>
-            {{ sensors }}
+            <!-- Sensor -->
             <br>
             <br>
             <br>
@@ -575,7 +580,7 @@
             </div>
         </div>
         <div v-else-if="selectedPage == 'Setting'">
-            <h1>Setting</h1>
+            <!-- Setting -->
             
             <div class="setting-form">
             
@@ -754,7 +759,7 @@
         .device-container {
             margin: auto;
             margin-bottom: 40px;
-            width: 60%;
+            width: 700px;
             background: #FFFFFF;
             box-shadow: 10px 10px 20px 0 rgba(60, 194, 235, 0.2);
             border-radius: 20px;
@@ -1320,6 +1325,200 @@
         })
     </script>
 
+
+    <!-- header -->
+    <style>
+        body {
+            padding-top: 150px;
+        }
+
+        .pc-header {
+            background: #BBBBBBDD;
+            height:　180px;
+            width: 100%;
+            color: #FFFFFF;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            top: 0px;
+            z-index: 1;
+        }
+
+        .pc-header:before {
+            -webkit-filter: blur(5px);
+            -moz-filter: blur(5px);
+            -o-filter: blur(5px);
+            -ms-filter: blur(5px);
+            filter: blur(5px);
+        }
+
+        .header-ams-icon {
+            height: 70px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .header-ams-icon:hover {
+            opacity: 0.5;
+        }
+
+        .pc-header-top {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .pc-header-top-content {   
+        }
+
+        /* reboot button */
+        .reboot-button {
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 25px;
+            margin-top: 10px;
+            margin-right: 15px;
+            padding: 5px 24px;
+            text-decoration: none;
+            color: #AAA;
+            background: #FFFFFF;
+            border-radius: 17px;
+            box-shadow: 5px 5px 20px 0 #44444466;
+            transition: 0.3s;
+        }
+        .reboot-button:hover{
+            box-shadow: 5px 5px 20px 0 #FF000066;
+            color: #FF0000;
+        }
+        .reboot-button p {
+            font-size: 16px;
+            margin: 3px 0px;
+        }
+
+
+        .pc-header-bottom {
+            padding: 0 180px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+
+        .pc-header li {
+            display: inline-block;
+        }
+
+        /* header navigation */
+        .header-nav {
+            cursor: pointer;
+            width: 100%;
+            display: block;
+            transition: 0.2s;
+            position: relative;
+            font-size: 18px;
+        }
+        .header-nav:hover {
+            background: #FFFFFFBB;
+        }
+        .header-nav p {
+            text-align: center;
+            line-height: 50px;
+        }
+
+        /* device */
+        .header-nav-device{
+            text-decoration: none;
+            display: block;
+        }
+        .header-nav-device:hover{
+            color: #00aaff;
+        }
+        .header-nav-device:after {
+            content: '';
+            width: 0;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid #00aaff;
+            display: block;
+        }
+        .header-nav-device:hover:after {
+            width: 100%;
+        }
+        .active-device {
+            background: #FFFFFFD4;
+            color: #00aaff;
+        }
+
+        /* sensor */
+        .header-nav-sensor{
+            text-decoration: none;
+            display: block;
+        }
+        .header-nav-sensor:hover{
+            color: #e07f00;
+        }
+        .header-nav-sensor:after {
+            content: '';
+            width: 0;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid #e07f00;
+            display: block;
+        }
+        .header-nav-sensor:hover:after {
+            width: 100%;
+        }
+        .active-sensor {
+            background: #FFFFFFD4;
+            color: #e07f00;
+        }
+
+        /* camera */
+        .header-nav-camera{
+            text-decoration: none;
+            display: block;
+        }
+        .header-nav-camera:hover{
+            color: #ae00ff;
+        }
+        .header-nav-camera:after {
+            content: '';
+            width: 0;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid #ae00ff;
+            display: block;
+        }
+        .header-nav-camera:hover:after {
+            width: 100%;
+        }
+        .active-camera {
+            background: #FFFFFFD4;
+            color: #ae00ff;
+        }
+
+        /* setting */
+        .header-nav-setting{
+            text-decoration: none;
+            display: block;
+        }
+        .header-nav-setting:hover{
+            color: #00c25e;
+        }
+        .header-nav-setting:after {
+            content: '';
+            width: 0;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid #00c25e;
+            display: block;
+        }
+        .header-nav-setting:hover:after {
+            width: 100%;
+        }   
+        .active-setting {
+            background: #FFFFFFD4;
+            color: #00c25e;
+        }
+
+    </style>
 
 
 
