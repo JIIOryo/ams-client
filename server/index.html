@@ -194,21 +194,18 @@
     <div id="app">
 
         
-        
+        <!-- header for pc -->
         <header class="pc-header">
-            <div class="header-top">
-                <button @click="rebootConfirm = true">reboot</button>
+            <!-- <img src="/static/icon/sensor/ph.png" class="header-ams-icon"> -->
+            <div class="pc-header-top">
+                <button @click="rebootConfirm = true" class="pc-header-top-content">reboot</button>
             </div>
-            <div class="header-bottom">
-                <nav>
-                    <ul>
-                        <li><div class="header-nav" @click="selectedPage = 'Devices'"><p>Device</p></div></li>
-                        <li><div class="header-nav" @click="selectedPage = 'Sensors'"><p>Sensor</p></div></li>
-                        <li><div class="header-nav"><p>Camera</p></div></li>
-                        <li><div class="header-nav" @click="selectedPage = 'Setting'"><p>Setting</p></div></li>
-                    </ul>
-                </nav>
-            </div>
+            <nav class="pc-header-bottom">
+                <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'"><p>Device</p></div>
+                <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'"><p>Sensor</p></div>
+                <div class="header-nav header-nav-camera"><p>Camera</p></div>
+                <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'"><p>Setting</p></div>
+            </nav>
         </header>
         
 
@@ -1340,26 +1337,80 @@
 
         .pc-header {
             background: #DDDDDD55;
-            height:　50px;
+            height:　180px;
             width: 100%;
-            line-height: 50px;
-            margin-top: -50px;
+            /* line-height: 50px; */
             position: fixed;
+            display: flex;
+            flex-direction: column;
+            top: 0px;
+            z-index: 1;
         }
 
-        .pc-header  ul {
-            text-align: center;
-            margin: 0px;
-            padding: 0px;
+        .pc-header:before {
+            -webkit-filter: blur(5px);
+            -moz-filter: blur(5px);
+            -o-filter: blur(5px);
+            -ms-filter: blur(5px);
+            filter: blur(5px);
+        }
+
+        .header-ams-icon {
+            width: 120px;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+        }
+
+        .pc-header-top {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .pc-header-top-content {   
+        }
+
+        .pc-header-bottom {
+            padding: 0 150px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .header-nav-empty {
+            width: 70px;
         }
 
         .pc-header li {
             display: inline-block;
         }
 
+        .header-nav {
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+            border-bottom: inset 10px #00000000;
+        }
+        .header-nav:hover {
+            background: #FFFFFF;
+        }
+
         .header-nav p {
+            text-align: center;
             line-height: 60px;
-            margin: 0px;
+        }
+
+        .header-nav-device:hover {
+            border-bottom: inset 10px #00b3ff;
+        }
+        .header-nav-sensor:hover {
+            border-bottom: inset 10px #ffbb00;
+        }
+        .header-nav-camera:hover {
+            border-bottom: inset 10px #ae00ff;
+        }
+        .header-nav-setting:hover {
+            border-bottom: inset 10px #00c25e;
         }
     </style>
 
