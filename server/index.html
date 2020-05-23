@@ -1332,14 +1332,14 @@
     <!-- header -->
     <style>
         body {
-            padding-top: 50px;
+            padding-top: 150px;
         }
 
         .pc-header {
-            background: #DDDDDD55;
+            background: #BBBBBBDD;
             height:　180px;
             width: 100%;
-            /* line-height: 50px; */
+            color: #FFFFFF;
             position: fixed;
             display: flex;
             flex-direction: column;
@@ -1371,7 +1371,7 @@
         }
 
         .pc-header-bottom {
-            padding: 0 150px;
+            padding: 0 100px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -1385,33 +1385,99 @@
             display: inline-block;
         }
 
+        /* header navigation */
         .header-nav {
-            display: inline-block;
             cursor: pointer;
             width: 100%;
-            border-bottom: inset 10px #00000000;
+            display: block;
+            transition: 0.3s;
+            position: relative;
+            font-size: 18px;
         }
         .header-nav:hover {
-            background: #FFFFFF;
+            background: #FFFFFFBB;
         }
-
         .header-nav p {
             text-align: center;
             line-height: 60px;
         }
 
-        .header-nav-device:hover {
-            border-bottom: inset 10px #00b3ff;
+        /* device */
+        .header-nav-device{
+            text-decoration: none;
+            display: block;
         }
-        .header-nav-sensor:hover {
-            border-bottom: inset 10px #ffbb00;
+        .header-nav-device:hover{
+            color: #00aaff;
         }
-        .header-nav-camera:hover {
-            border-bottom: inset 10px #ae00ff;
+        .header-nav-device:after {
+            content: '';
+            width: 0;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid #00aaff;
+            display: block;
         }
-        .header-nav-setting:hover {
-            border-bottom: inset 10px #00c25e;
+        .header-nav-device:hover:after {
+            width: 100%;
+        }   
+
+        /* sensor */
+        .header-nav-sensor{
+            text-decoration: none;
+            display: block;
         }
+        .header-nav-sensor:hover{
+            color: #e07f00;
+        }
+        .header-nav-sensor:after {
+            content: '';
+            width: 0;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid #e07f00;
+            display: block;
+        }
+        .header-nav-sensor:hover:after {
+            width: 100%;
+        }   
+
+        /* camera */
+        .header-nav-camera{
+            text-decoration: none;
+            display: block;
+        }
+        .header-nav-camera:hover{
+            color: #ae00ff;
+        }
+        .header-nav-camera:after {
+            content: '';
+            width: 0;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid #ae00ff;
+            display: block;
+        }
+        .header-nav-camera:hover:after {
+            width: 100%;
+        }   
+
+        /* setting */
+        .header-nav-setting{
+            text-decoration: none;
+            display: block;
+        }
+        .header-nav-setting:hover{
+            color: #00c25e;
+        }
+        .header-nav-setting:after {
+            content: '';
+            width: 0;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid #00c25e;
+            display: block;
+        }
+        .header-nav-setting:hover:after {
+            width: 100%;
+        }   
+
     </style>
 
 
