@@ -364,31 +364,49 @@
 
 
             <div class="device-container" v-for="(device, i) of devices" :key="device.device_id">
-                <h2>index: {{i}}</h2>
-                <h2>device_id: {{ device.device_id }}</h2>
-                <h2>name: {{ device.name }}</h2>
-                <h2>type: {{ device.type }}</h2>
-
-                <img :src="deviceTypes_temp[device.type].iconUrl" class="device-icon">
-
-                <div v-if="device.type == 'feed_pump'">
-                    <select v-model="feedPumpsWaterSupplyTime[i]">
-                        <option v-for="j in [...Array(180).keys()]" :key="j" :value="j">{{j}}</option>
-                    </select>
-                    <button @click="supplyWater(device.device_id, feedPumpsWaterSupplyTime[i])">supply</button>
+                <div class="device-top-box">
+                    <div class="device-id-box">
+                        <p>Device ID: {{ device.device_id }}</p>
+                    </div>
+                    <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateDeviceButton(device)">
+                    <img src="/static/icon/dustbox.png" class="container-delete-icon">
                 </div>
-                <div v-else-if="device.type == 'auto_feeder'">
-                    <button @click="feed(device.device_id)">feed</button>
-                </div>
-                <div v-else>
-                    <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
-                        <input type="checkbox" class="switch-input" v-model="device.state" disabled>
-                        <span class="switch-label" data-on="On" data-off="Off"></span>
-                        <span class="switch-handle"></span>
-                    </label>
+                <div class="device-middle-box">
+                    <img :src="deviceTypes_temp[device.type].iconUrl" class="device-icon">
+                    <div class="device-name-box"><p>{{ device.name }}</p></div>
+                    <div v-if="device.type == 'feed_pump'" class="device-control-box">
+                        <!-- feed pump -->
+                        <div class="device-switch-box">
+                            <div class="device-select-box-box">
+                                <div class="select-box select-box-simple select-box-flex">
+                                    <select v-model="feedPumpsWaterSupplyTime[i]">
+                                        <option v-for="j in [...Array(180).keys()]" :key="j" :value="j">{{j}}</option>
+                                    </select>
+                                </div>
+                                <p class="select-box-flex select-box-second">[s]</p>
+                            </div>
+                            <div class="feed-pump-button" @click="supplyWater(device.device_id, feedPumpsWaterSupplyTime[i])">supply</div>
+                        </div>
+                    </div>
+                    <div v-else-if="device.type == 'auto_feeder'" class="device-control-box">
+                        <!-- auto feeder -->
+                        <div class="device-switch-box">
+                            <div class="feed-button" @click="feed(device.device_id)">feed</div>
+                        </div>
+                    </div>
+                    <div v-else class="device-control-box">
+                        <!-- other -->
+                        <div class="device-switch-box">
+                            <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
+                                <input type="checkbox" class="switch-input" v-model="device.state" disabled>
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
-                <button @click="clickUpdateDeviceButton(device)">update</button>
+                <!-- <h2>type: {{ device.type }}</h2> -->
             </div>
             <br>
         </div>
@@ -735,16 +753,194 @@
     <style>
         .device-container {
             margin: auto;
-            width: 80%;
-            background: #EFFFFF;
+            margin-bottom: 40px;
+            width: 60%;
+            background: #FFFFFF;
+            box-shadow: 10px 10px 20px 0 rgba(60, 194, 235, 0.2);
             border-radius: 20px;
+            border: 1px solid rgba(60, 194, 235, 0.3);
         }
+        @media screen and (max-width: 480px) {
+            .device-container {
+                width: 92%;
+            }
+        }
+
+        .device-top-box {
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+            margin-top: 4px;
+            /* background: orange; */
+        }
+        .device-id-box {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #999;
+            font-size: 20px;
+        }
+
+        .device-middle-box {
+            display: flex;
+            /* justify-content: flex-start; */
+            justify-content: space-between;
+            position: relative;
+            margin-top: 4px;
+            /* background: orange; */
+        }
+        .device-icon {
+            height: 80px;
+            margin: 6px;
+            margin-left: 30px;
+            margin-bottom: 10px;
+        }
+        @media screen and (max-width: 480px) {
+            .device-icon {
+                height: 40px;
+            }
+        }
+        .device-name-box {
+            margin: auto;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 45px;
+            color: #1A229C;
+            text-shadow: 
+                0px 0px 5px #ffffff,
+                0px 0px 20px #1A229C11,
+                0px 0px 40px #1A229C11,
+                0px 0px 60px rgb(52, 59, 153, 0.3),
+                0px 0px 80px rgb(52, 59, 153, 0.3);
+        }
+        @media screen and (max-width: 480px) {
+            .device-name-box {
+                font-size: 30px;
+            }
+        }
+
+        /*  device control box */
+        .device-control-box {
+            margin-right: 30px;
+            width: 110px;
+            height: 120px;
+        }
+        @media screen and (max-width: 480px) {
+            .device-control-box {
+                width: 50px;
+                height: 60px;
+            }
+        }
+        .device-switch-box {
+            margin-top: 32px;
+        }
+
+        .device-select-box-box {
+            margin-top: -40px;
+            margin-bottom: -15px;
+            display: flex;
+            height: 100px;
+        }
+        .feed-pump-select {
+            width: 20px;
+        }
+        .select-box-flex {
+            justify-content: space-around;
+        }
+        .select-box-second {
+            margin: auto;
+            margin-left: 10px;
+            font-size: 20px;
+            color: #444;
+        }
+
+        /* feed button */
+        .feed-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 8px 28px;
+            text-decoration: none;
+            color: white;
+            background: #4fb845;
+            border-radius: 17px;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+            transition: 0.3s;
+        }
+        .feed-button:hover{
+            background: #73db69;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+        }
+        .feed-button p {
+            font-size: 16px;
+            margin: 3px 0px;
+        }
+
+        /* feed pump button */
+        .feed-pump-button {
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 15px;
+            margin-top: -20px;
+
+            padding: 8px 24px;
+            text-decoration: none;
+            color: white;
+            background: #4fb845;
+            border-radius: 17px;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+            transition: 0.3s;
+        }
+        .feed-pump-button:hover{
+            background: #73db69;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+        }
+        .feed-pump-button p {
+            font-size: 16px;
+            margin: 3px 0px;
+        }
+
+
+
+
+
+
 
         .sensor-container {
             margin: auto;
             width: 80%;
             background: #EFFFFF;
             border-radius: 20px;
+        }
+
+
+
+
+
+
+
+
+
+        .container-update-icon {
+            width: 30px;
+            height: 30px;
+            transition: 0.2s;
+            margin: 5px;
+            margin-right: 8px;
+        }
+        .container-update-icon:hover {
+            opacity: 0.7;
+            cursor: pointer;
+        }
+        .container-delete-icon {
+            width: 30px;
+            height: 30px;
+            transition: 0.2s;
+            margin: 5px;
+            margin-right: 15px;
+        }
+        .container-delete-icon:hover {
+            opacity: 0.7;
+            cursor: pointer;
         }
     </style>
 
@@ -1132,6 +1328,131 @@
             position: relative;
             display: inline-block;
             vertical-align: top;
+            width: 84px;
+            height: 30px;
+            padding: 4.5px;
+            background-color: white;
+            border-radius: 18px;
+            box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            background-image: -webkit-linear-gradient(top, #eeeeee, white 25px);
+            background-image: -moz-linear-gradient(top, #eeeeee, white 25px);
+            background-image: -o-linear-gradient(top, #eeeeee, white 25px);
+            background-image: linear-gradient(to bottom, #eeeeee, white 25px);
+        }
+
+        .switch-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+
+        .switch-label {
+            position: relative;
+            display: block;
+            height: inherit;
+            font-size: 15px;
+            text-transform: uppercase;
+            background: #eceeef;
+            border-radius: inherit;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+            -webkit-transition: 0.15s ease-out;
+            -moz-transition: 0.15s ease-out;
+            -o-transition: 0.15s ease-out;
+            transition: 0.15s ease-out;
+            -webkit-transition-property: opacity background;
+            -moz-transition-property: opacity background;
+            -o-transition-property: opacity background;
+            transition-property: opacity background;
+        }
+
+        .switch-label:before,
+        .switch-label:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+            -webkit-transition: inherit;
+            -moz-transition: inherit;
+            -o-transition: inherit;
+            transition: inherit;
+        }
+
+        .switch-label:before {
+            content: attr(data-off);
+            right: 11px;
+            color: #aaa;
+            text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .switch-label:after {
+            content: attr(data-on);
+            left: 11px;
+            color: white;
+            text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+        }
+
+        .switch-input:checked~.switch-label {
+            background: #4fb845;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .switch-input:checked~.switch-label:before {
+            opacity: 0;
+        }
+
+        .switch-input:checked~.switch-label:after {
+            opacity: 1;
+        }
+
+        .switch-handle {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 27px;
+            height: 27px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+            background-image: -webkit-linear-gradient(top, white 40%, #f0f0f0);
+            background-image: -moz-linear-gradient(top, white 40%, #f0f0f0);
+            background-image: -o-linear-gradient(top, white 40%, #f0f0f0);
+            background-image: linear-gradient(to bottom, white 40%, #f0f0f0);
+            -webkit-transition: left 0.15s ease-out;
+            -moz-transition: left 0.15s ease-out;
+            -o-transition: left 0.15s ease-out;
+            transition: left 0.15s ease-out;
+        }
+
+        .switch-handle:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -6px 0 0 -6px;
+            width: 12px;
+            height: 12px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+            background-image: -webkit-linear-gradient(top, #eeeeee, white);
+            background-image: -moz-linear-gradient(top, #eeeeee, white);
+            background-image: -o-linear-gradient(top, #eeeeee, white);
+            background-image: linear-gradient(to bottom, #eeeeee, white);
+        }
+
+        .switch-input:checked~.switch-handle {
+            left: 60px;
+            box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* switch 初期 */
+        /* .switch {
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
             width: 56px;
             height: 20px;
             padding: 3px;
@@ -1199,7 +1520,7 @@
         }
 
         .switch-input:checked~.switch-label {
-            background: #47a8d8;
+            background: #4fb845;
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
         }
 
@@ -1250,11 +1571,8 @@
         .switch-input:checked~.switch-handle {
             left: 40px;
             box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
-        }
+        } */
 
-        .switch-green>.switch-input:checked~.switch-label {
-            background: #4fb845;
-        }
     </style>
 
 
@@ -1527,9 +1845,7 @@
             cursor: pointer;
         }
 
-        .device-icon {
-            width: 50px;
-        }
+        
     </style>
 
     <style>
@@ -2000,6 +2316,7 @@
         padding: 8px 38px 8px 8px;
         color: #666666;
     }
+
 </style>
 
 </body>
