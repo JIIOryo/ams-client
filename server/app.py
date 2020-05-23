@@ -106,6 +106,17 @@ def sensor_update_():
     sensor_update(message = request.data)
     return empty_response
 
+@app.route('/sensor/calibration/update/<int:sensor_id>', methods=['POST'])
+def sensor_calibration_update_(sensor_id):
+    '''
+    request example
+    {
+        "calibration": [[1900, 21], [1910, 21.3], [2010, 23.8]]
+    }
+    '''
+    print(request.json['calibration'])
+    return empty_response
+
 @app.route('/reboot')
 def reboot_():
     reboot()

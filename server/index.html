@@ -822,6 +822,10 @@
             });
         }
 
+        const updateSensorCalibrationRequest = async (sensorId, calibration) => {
+            await axios.post(`/sensor/calibration/update/${sensorId}`, {calibration});
+        };
+
         var app = new Vue({
             el: '#app',
             data: {
@@ -947,6 +951,15 @@
                     this.closeUpdateSensorModal();
                     // TODO not reset
                     window.location.href = '/'
+                },
+                updateCalibration: async function() {
+                    this.loading = true
+                    const sensor_id = this.selectedSensor.sensor_id;
+                    const calibration = this.selectedSensor.sensor.calibration;
+
+                    await updateSensorCalibrationRequest(sensor_id, calibration);
+                    this.loading = false
+                    this.closeUpdateSensorCalibrationModal();
                 },
                 clickUpdateDeviceButton: function (selectedDevice) {
                     this.updateModal = true;
