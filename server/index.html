@@ -198,7 +198,7 @@
         <header class="pc-header">
             <!-- <img src="/static/icon/sensor/ph.png" class="header-ams-icon"> -->
             <div class="pc-header-top">
-                <button @click="rebootConfirm = true" class="pc-header-top-content">reboot</button>
+                <div @click="rebootConfirm = true" class="reboot-button">reboot</div>
             </div>
             <nav class="pc-header-bottom">
                 <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
@@ -250,10 +250,7 @@
         </div>
 
         <div v-if="selectedPage == 'Devices'">
-            <h1>Devices</h1>
-
-            
-
+            <!-- Device -->
 
             <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
                 <div class="modal-box">
@@ -420,8 +417,7 @@
             <br>
         </div>
         <div v-else-if="selectedPage == 'Sensors'">
-            <h1>Sensors</h1>
-            {{ sensors }}
+            <!-- Sensor -->
             <br>
             <br>
             <br>
@@ -584,7 +580,7 @@
             </div>
         </div>
         <div v-else-if="selectedPage == 'Setting'">
-            <h1>Setting</h1>
+            <!-- Setting -->
             
             <div class="setting-form">
             
@@ -1370,6 +1366,31 @@
 
         .pc-header-top-content {   
         }
+
+        /* reboot button */
+        .reboot-button {
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            margin-right: 15px;
+            padding: 5px 24px;
+            text-decoration: none;
+            color: #AAA;
+            background: #FFFFFF;
+            border-radius: 17px;
+            box-shadow: 5px 5px 20px 0 #44444466;
+            transition: 0.3s;
+        }
+        .reboot-button:hover{
+            box-shadow: 5px 5px 20px 0 #FF000066;
+            color: #FF0000;
+        }
+        .reboot-button p {
+            font-size: 16px;
+            margin: 3px 0px;
+        }
+
 
         .pc-header-bottom {
             padding: 0 100px;
