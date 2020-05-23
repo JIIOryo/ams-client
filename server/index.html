@@ -193,13 +193,24 @@
 <body>
     <div id="app">
 
-        <button @click="rebootConfirm = true">reboot</button>
-
-        <div>
-            <h3 @click="selectedPage = 'Devices'">Devices</h3>
-            <h3 @click="selectedPage = 'Sensors'">Sensors</h3>
-            <h3 @click="selectedPage = 'Setting'">Setting</h3>
-        </div>
+        
+        
+        <header class="pc-header">
+            <div class="header-top">
+                <button @click="rebootConfirm = true">reboot</button>
+            </div>
+            <div class="header-bottom">
+                <nav>
+                    <ul>
+                        <li><div class="header-nav" @click="selectedPage = 'Devices'"><p>Device</p></div></li>
+                        <li><div class="header-nav" @click="selectedPage = 'Sensors'"><p>Sensor</p></div></li>
+                        <li><div class="header-nav"><p>Camera</p></div></li>
+                        <li><div class="header-nav" @click="selectedPage = 'Setting'"><p>Setting</p></div></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
 
         <transition name="fade-translate-display">
             <div class="translate-display" v-show="loading">
@@ -1320,6 +1331,37 @@
         })
     </script>
 
+
+    <!-- header -->
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .pc-header {
+            background: #DDDDDD55;
+            height:　50px;
+            width: 100%;
+            line-height: 50px;
+            margin-top: -50px;
+            position: fixed;
+        }
+
+        .pc-header  ul {
+            text-align: center;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .pc-header li {
+            display: inline-block;
+        }
+
+        .header-nav p {
+            line-height: 60px;
+            margin: 0px;
+        }
+    </style>
 
 
 
