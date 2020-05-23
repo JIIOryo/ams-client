@@ -201,12 +201,13 @@
                 <button @click="rebootConfirm = true" class="pc-header-top-content">reboot</button>
             </div>
             <nav class="pc-header-bottom">
-                <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'"><p>Device</p></div>
-                <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'"><p>Sensor</p></div>
-                <div class="header-nav header-nav-camera"><p>Camera</p></div>
-                <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'"><p>Setting</p></div>
+                <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
+                <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'" v-bind:class="{ 'active-sensor' : selectedPage == 'Sensors' }"><p>Sensor</p></div>
+                <div class="header-nav header-nav-camera" @click="selectedPage = 'Camera'" v-bind:class="{ 'active-camera' : selectedPage == 'Camera' }"><p>Camera</p></div>
+                <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'" v-bind:class="{ 'active-setting' : selectedPage == 'Setting' }"><p>Setting</p></div>
             </nav>
         </header>
+        <!-- header for pc end -->
         
 
         <transition name="fade-translate-display">
@@ -1419,7 +1420,11 @@
         }
         .header-nav-device:hover:after {
             width: 100%;
-        }   
+        }
+        .active-device {
+            background: #FFFFFFD4;
+            color: #00aaff;
+        }
 
         /* sensor */
         .header-nav-sensor{
@@ -1438,7 +1443,11 @@
         }
         .header-nav-sensor:hover:after {
             width: 100%;
-        }   
+        }
+        .active-sensor {
+            background: #FFFFFFD4;
+            color: #e07f00;
+        }
 
         /* camera */
         .header-nav-camera{
@@ -1457,7 +1466,11 @@
         }
         .header-nav-camera:hover:after {
             width: 100%;
-        }   
+        }
+        .active-camera {
+            background: #FFFFFFD4;
+            color: #ae00ff;
+        }
 
         /* setting */
         .header-nav-setting{
@@ -1477,6 +1490,10 @@
         .header-nav-setting:hover:after {
             width: 100%;
         }   
+        .active-setting {
+            background: #FFFFFFD4;
+            color: #00c25e;
+        }
 
     </style>
 
