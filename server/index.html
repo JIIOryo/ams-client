@@ -378,8 +378,8 @@
                     <img src="/static/icon/dustbox.png" class="container-delete-icon">
                 </div>
                 <div class="device-middle-box">
-                    <img :src="deviceTypes_temp[device.type].iconUrl" class="device-icon">
-                    <div class="device-name-box"><p>{{ device.name }}</p></div>
+                    <img :src="deviceTypes_temp[device.type].iconUrl" class="device-icon" :class="{'device-icon-feed-pump-responsive': device.type == 'feed_pump'}">
+                    <div class="device-name-box" :class="{'device-name-feed-pump-responsive': device.type == 'feed_pump'}"><p>{{ device.name }}</p></div>
                     <div v-if="device.type == 'feed_pump'" class="device-control-box device-control-box-responsive-feed-pump">
                         <!-- feed pump -->
                         <div class="device-switch-box">
@@ -773,6 +773,7 @@
         @media screen and (max-width: 480px) {
             .device-container {
                 width: 92%;
+                border-radius: 10px;
             }
         }
 
@@ -808,6 +809,10 @@
         @media screen and (max-width: 480px) {
             .device-icon {
                 height: 40px;
+                margin-left: 20px;
+            }
+            .device-icon-feed-pump-responsive {
+                margin-top: 18px;
             }
         }
         .device-name-box {
@@ -825,7 +830,11 @@
         }
         @media screen and (max-width: 480px) {
             .device-name-box {
-                font-size: 30px;
+                margin-top: 17px;
+                font-size: 27px;
+            }
+            .device-name-feed-pump-responsive {
+                margin-top: 28px;
             }
         }
 
