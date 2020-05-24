@@ -280,121 +280,155 @@
         <div v-if="selectedPage == 'Devices'">
             <!-- Device -->
 
+            <!-- update device modal start -->
             <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
                 <div class="modal-box">
-                    <button @click="closeUpdateDeviceModal">X</button>
+                    <div class="device-update-confirm-box">
+                        <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateDeviceModal">
+                        <img src="/static/icon/update.png" class="modal-update-icon">
+                        <h3>Update device</h3>
+                        <hr>
 
-                    <table class="update-form-table">
-                        <tr>
-                            <td>
-                                <p>name</p>
-                            </td>
-                            <td><input type="text" v-model="selectedDevice.name"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>description</p>
-                            </td>
-                            <td><textarea name="description" cols="20" rows="3"
-                                    v-model="selectedDevice.description"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>type</p>
-                            </td>
-                            <td>
+                        <!-- forms -->
+                        <div class="modal-form-container">
+                            <!-- Name -->
+                            <div class="cp_iptxt">
+                                <input class="ef" type="text" placeholder="" v-model="selectedDevice.name">
+                                <label>Name</label>
+                                <span class="focus_line"></span>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="cp_form">
+                                <textarea required="required" v-model="selectedDevice.description" cols="20" rows="2"></textarea>
+                                <label class="cp_label" for="textarea">Description</label>
+                                <i class="bar"></i>
+                            </div>
+                        </div>
+
+                        <!-- Device type -->
+                        <div class="modal-select-container">
+                            <label class="select-label">Device type</label>
+                            <div class="select-box select-box-simple">
                                 <select name="device_type" v-model="selectedDevice.type">
+                                    <option value="" hidden>Choose</option>
                                     <option v-for="deviceType of deviceTypes" v-bind:value="deviceType.deviceType">
                                         {{ deviceType.deviceType }}</option>
                                 </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>run type</p>
-                            </td>
-                            <td>
-                                <select name="run_type" v-model="selectedDevice.run_type">
-                                    <option v-for="deviceRunType of deviceRunTypes" v-bind:value="deviceRunType">
-                                        {{deviceRunType}}
-                                    </option>
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
+                            </div>
+                        </div>
 
-                    <div>
-                        <table class="update-form-table" v-if="selectedDevice.run_type == 'daily'">
-                            <!-- daily -->
-                            <tr>
-                                <td>
-                                    <p>on time</p>
-                                </td>
-                                <td>
-                                    <select v-model="selectedDevice.options.timer.on_hour">
-                                        <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
-                                    </select>
-                                    :
-                                    <select v-model="selectedDevice.options.timer.on_minute">
-                                        <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>off time</p>
-                                </td>
-                                <td>
-                                    <select v-model="selectedDevice.options.timer.off_hour">
-                                        <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
-                                    </select>
-                                    :
-                                    <select v-model="selectedDevice.options.timer.off_minute">
-                                        <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                        <div v-else-if="selectedDevice.run_type == 'discreate'">
-                            <!-- discreate -->
-                            <table class="update-form-table">
-                                <tr v-for="(timer, index) of selectedDevice.options.timer" :key="index">
+                        <!-- Device run type -->
+                        <div class="modal-select-container">
+                            <label class="select-label">Device type</label>
+                            <div class="select-box select-box-simple">
+                                <select name="run_type" v-model="selectedDevice.run_type">
+                                    <option value="" hidden>Choose</option>
+                                    <option v-for="deviceRunType of deviceRunTypes" v-bind:value="deviceRunType">{{deviceRunType}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <table class="update-form-table" v-if="selectedDevice.run_type == 'daily'">
+                                <!-- daily -->
+                                <tr>
                                     <td>
-                                        <p>timer {{index + 1}}</p>
+                                        <div class="timer-label-box">
+                                            <p>On time</p>
+                                        </div>
                                     </td>
                                     <td>
-                                        <select v-model="timer.hour">
-                                            <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
-                                        </select>
-                                        :
-                                        <select v-model="timer.minute">
-                                            <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
-                                        </select>
+                                        <div class="timer-box">
+                                            <div class="select-box select-box-simple select-box-timer">
+                                                <select name="on_hour" v-model="selectedDevice.options.timer.on_hour">
+                                                    <option value="" hidden>Choose</option>
+                                                    <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
+                                                </select>
+                                            </div>
+                                            <p class="timer-colon">:</p>
+                                            <div class="select-box select-box-simple select-box-timer">
+                                                <select name="on_minite" v-model="selectedDevice.options.timer.on_minute">
+                                                    <option value="" hidden>Choose</option>
+                                                    <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="timer-label-box">
+                                            <p>Off time</p>
+                                        </div>
                                     </td>
                                     <td>
-                                        <button @click="selectedDevice.options.timer.splice(index, 1)">x</button>
+                                        <div class="timer-box">
+                                            <div class="select-box select-box-simple select-box-timer">
+                                                <select name="off_hour" v-model="selectedDevice.options.timer.off_hour">
+                                                    <option value="" hidden>Choose</option>
+                                                    <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
+                                                </select>
+                                            </div>
+                                            <p class="timer-colon">:</p>
+                                            <div class="select-box select-box-simple select-box-timer">
+                                                <select name="off_minite" v-model="selectedDevice.options.timer.off_minute">
+                                                    <option value="" hidden>Choose</option>
+                                                    <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
-                            <button @click="selectedDevice.options.timer.push({hour: 0, minute: 0})">+</button>
+                            <div v-else-if="selectedDevice.run_type == 'discreate'">
+                                <!-- discreate -->
+                                <table class="update-form-table" >
+                                    <tr v-for="(timer, index) of selectedDevice.options.timer" :key="index">
+                                        <td>
+                                            <p>timer {{index + 1}}</p>
+                                        </td>
+                                        <td>
+                                            <div class="select-box select-box-simple">
+                                                <select name="hour" v-model="timer.hour">
+                                                    <option value="" hidden>Choose</option>
+                                                    <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
+                                                </select>
+                                            </div>
+                                            :
+                                            <div class="select-box select-box-simple">
+                                                <select name="minite" v-model="timer.minute">
+                                                    <option value="" hidden>Choose</option>
+                                                    <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <img src="/static/icon/delete.png" @click="sselectedDevice.options.timer.splice(index, 1)" class="delete-icon">
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button @click="selectedDevice.options.timer.push({hour: 0, minute: 0})">+</button>
+                            </div>
                         </div>
+
+                        <table class="update-form-created-at-table">
+                            <tr>
+                                <td>crearted at:</td>
+                                <td>{{selectedDevice.created_at}}</td>
+                            </tr>
+                            <tr>
+                                <td>updated at:</td>
+                                <td>{{selectedDevice.updated_at}}</td>
+                            </tr>
+                        </table>
+
+                        <button @click="updateDevice()">update</button>
                     </div>
-
-                    <table class="update-form-created-at-table">
-                        <tr>
-                            <td>crearted at:</td>
-                            <td>{{selectedDevice.created_at}}</td>
-                        </tr>
-                        <tr>
-                            <td>updated at:</td>
-                            <td>{{selectedDevice.updated_at}}</td>
-                        </tr>
-                    </table>
-
-                    <button @click="updateDevice()">update</button>
                 </div>
             </div>
-
+            <!-- update device modal end -->
 
             <!-- Device -->
             <div class="device-container" v-for="(device, i) of devices" :key="device.device_id">
@@ -2259,6 +2293,12 @@
             margin: 30px 15px;
         }
 
+        .device-update-confirm-box {
+            margin: 30px 15px;
+            height: 600px;
+            overflow-y: scroll;
+        }
+
         .modal-confirm-text {
             font-size: 22px;
         }
@@ -2691,6 +2731,26 @@
                 color:#777;
             }
 
+
+            /* update device */
+            .timer-box {
+                display: flex;
+            }
+            .timer-label-box {
+                text-align: left;
+                width: 130px;
+                font-size: 14px;
+                font-weight: normal;
+                color: #b3b3b3;
+            }
+            .timer-colon {
+                margin: auto 10px;
+                font-size: 30px;
+                color: #555;
+            }
+            .select-box-timer {
+                display: inline-block;
+            }
 
 
 
