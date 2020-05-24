@@ -198,7 +198,7 @@
         <header class="pc-header">
             <img src="/static/ams_logo/ams_logo_white.png" class="header-ams-icon" @click="window.location.href = '/'">
             <div class="pc-header-top">
-                <div @click="rebootConfirm = true" class="reboot-button">reboot</div>
+                <div @click="rebootConfirm = true" class="reboot-button" v-if="!isSmallDisplay">reboot</div>
             </div>
             <nav class="pc-header-bottom" v-if="!isSmallDisplay">
                 <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
