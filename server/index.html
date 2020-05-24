@@ -225,11 +225,11 @@
             <div v-if="hamburgerMenuShow" class="hamburger-menu-content-wrapper">
                 <nav class="hamburger-menu-content">
                     <ul>
-                        <li @click="selectedPage = 'Devices'; hamburgerMenuShow = !hamburgerMenuShow"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Device</li>
-                        <li @click="selectedPage = 'Sensors'; hamburgerMenuShow = !hamburgerMenuShow"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Sensor</li>
-                        <li @click="selectedPage = 'Camera'; hamburgerMenuShow = !hamburgerMenuShow"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Camera</li>
-                        <li @click="selectedPage = 'Setting'; hamburgerMenuShow = !hamburgerMenuShow"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Setting</li>
-                        <li @click="hamburgerMenuShow = !hamburgerMenuShow; rebootConfirm = true"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Reboot</li>
+                        <li @click="selectedPage = 'Devices'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-device"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_device.png"><p>Device</p></li>
+                        <li @click="selectedPage = 'Sensors'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-sensor"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_sensor.png"><p>Sensor</p></li>
+                        <li @click="selectedPage = 'Camera'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-camera"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_camera.png"><p>Camera</p></li>
+                        <li @click="selectedPage = 'Setting'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-setting"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_setting.png"><p>Setting</p></li>
+                        <li @click="hamburgerMenuShow = !hamburgerMenuShow; rebootConfirm = true" class="hamburger-menu-text-reboot"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_reboot.png"><p>Reboot</p></li>
                     </ul>
                 </nav>
             </div>
@@ -1702,7 +1702,8 @@
          
         /* hamburger content */
         .hamburger-menu-content-wrapper {
-            background-color: #333333F0;
+            background-color: #FFFFFFF0;
+            border: solid 1px #AAA;
             position: fixed;
             top: 57px;
             right: 0;
@@ -1713,15 +1714,36 @@
         }
         .hamburger-menu-content li {
             height: 60px;
-            border-bottom: solid 1px #FFF;
+            padding: 10px 0;
+            border-bottom: solid 1px #AAA;
             font-size: 30px;
-
+            cursor: pointer;
         }
+        .hamburger-menu-content li:last-child {
+            border-bottom: solid 0 #AAA;
+        }
+        
         .hamburger-menu-content-icon {
-            width: 30px;
+            height: 30px;
+            margin-right: 8px;
         }
 
-
+        .hamburger-menu-text-device {
+            color: #00AAFF;
+            /* border-bottom: solid 1px #00AAFF; */
+        }
+        .hamburger-menu-text-sensor {
+            color: #e07f00;
+        }
+        .hamburger-menu-text-camera {
+            color: #ae00ff;
+        }
+        .hamburger-menu-text-setting {
+            color: #00c25e;
+        }
+        .hamburger-menu-text-reboot {
+            color: #FF4444;
+        }
 
     </style>
 
