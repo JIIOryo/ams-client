@@ -414,7 +414,7 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <button @click="selectedDevice.options.timer.push({hour: 0, minute: 0})">+</button>
+                                    <img src="/static/img/button/add_button.png" @click="selectedDevice.options.timer.push({hour: 0, minute: 0})" class="add-button">
                                 </div>
                             </div>
 
@@ -2360,6 +2360,15 @@
             width: 40px;
             margin-bottom: -20px;
             cursor: pointer;
+        }
+
+        .add-button {
+            width: 60px;
+            cursor: pointer;
+            transition: .3s;
+        }
+        .add-button:hover {
+            opacity: 0.7;
         }
 
         
