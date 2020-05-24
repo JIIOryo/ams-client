@@ -208,7 +208,7 @@
             </nav>
         </header>
         <!-- header for pc end -->
-        
+
 
         <transition name="fade-translate-display">
             <div class="translate-display" v-show="loading">
@@ -1089,6 +1089,7 @@
         var app = new Vue({
             el: '#app',
             data: {
+                isSmallDisplay: false,
                 selectedPage: "Devices",
                 hasError: false,
                 loading: false,
@@ -1203,6 +1204,13 @@
                 setting: {},
             },
             methods: {
+                handleResize: function () {
+                    if (window.innerWidth <= 480) {
+                        this.isSmallDisplay = true
+                    } else {
+                        this.isSmallDisplay = false
+                    }
+                },
                 setDeviceState: async function () {
                     this.loading = true
                     const deviceState = await getDeviceState()
@@ -1378,6 +1386,13 @@
                 num: function(value) {
                     return Number(value)
                 }
+            },
+            created() {
+                window.addEventListener('resize', this.handleResize)
+                this.handleResize()
+            },
+            destroyed() {
+                window.removeEventListener('resize', this.handleResize)
             }
         })
     </script>
