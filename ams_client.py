@@ -1,8 +1,10 @@
 import os
 import subprocess
 import time
+import traceback
 
 from lib.config import get_config_item
+from lib.notification import post_slack_by_type
 from service.reboot import set_init_device_state
 from service.sensor import publish_sensor_data
 
@@ -25,7 +27,16 @@ def main() -> None:
 
     # open sensor manager
     while True:
-        publish_sensor_data()
+        try:
+            publish_sensor_data()
+        except Exception as e:
+            error_message = ''.join(traceback.TracebackException.from_exception(e).format())
+            post_slack_by_type(
+                text = error_message,
+                type_ = SLACK_NOTIFICATION_TYPE['ERROR'],
+            )
+            print(error_message)
+            pass
 
 if __name__ == '__main__':
     main()
