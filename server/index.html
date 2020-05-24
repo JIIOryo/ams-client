@@ -1539,6 +1539,13 @@
             background-image: -o-linear-gradient(top, #eeeeee, white 25px);
             background-image: linear-gradient(to bottom, #eeeeee, white 25px);
         }
+        @media screen and (max-width: 480px) {
+            .switch {
+                width: 56px;
+                height: 20px;
+                padding: 3px;
+            }
+        }
 
         .switch-input {
             position: absolute;
@@ -1564,6 +1571,11 @@
             -moz-transition-property: opacity background;
             -o-transition-property: opacity background;
             transition-property: opacity background;
+        }
+        @media screen and (max-width: 480px) {
+            .switch-label {
+                font-size: 10px;
+            }
         }
 
         .switch-label:before,
@@ -1624,6 +1636,15 @@
             -o-transition: left 0.15s ease-out;
             transition: left 0.15s ease-out;
         }
+        @media screen and (max-width: 480px) {
+            .switch-handle {
+                top: 4px;
+                left: 4px;
+                width: 18px;
+                height: 18px;
+                border-radius: 10px;
+            }
+        }
 
         .switch-handle:before {
             content: '';
@@ -1645,6 +1666,11 @@
         .switch-input:checked~.switch-handle {
             left: 60px;
             box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+        @media screen and (max-width: 480px) {
+            .switch-input:checked~.switch-handle {
+                left: 40px;
+            }
         }
 
         /* switch 初期 */
