@@ -225,11 +225,11 @@
             <div v-if="hamburgerMenuShow" class="hamburger-menu-content-wrapper">
                 <nav class="hamburger-menu-content">
                     <ul>
-                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Device</li>
-                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Sensor</li>
-                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Camera</li>
-                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Setting</li>
-                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Reboot</li>
+                        <li @click="selectedPage = 'Devices'; hamburgerMenuShow = !hamburgerMenuShow"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Device</li>
+                        <li @click="selectedPage = 'Sensors'; hamburgerMenuShow = !hamburgerMenuShow"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Sensor</li>
+                        <li @click="selectedPage = 'Camera'; hamburgerMenuShow = !hamburgerMenuShow"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Camera</li>
+                        <li @click="selectedPage = 'Setting'; hamburgerMenuShow = !hamburgerMenuShow"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Setting</li>
+                        <li @click="hamburgerMenuShow = !hamburgerMenuShow; rebootConfirm = true"><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Reboot</li>
                     </ul>
                 </nav>
             </div>
@@ -1692,7 +1692,7 @@
         }
         .slide-translate-display-leave-active {
         /* transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0); */
-        transition: all .5s ease;
+        transition: all .4s ease;
         }
         .slide-translate-display-enter, .slide-translate-display-leave-to {
         transform: translateX(400px);
@@ -1702,7 +1702,7 @@
          
         /* hamburger content */
         .hamburger-menu-content-wrapper {
-            background-color: orange;
+            background-color: #333333F0;
             position: fixed;
             top: 57px;
             right: 0;
@@ -1711,7 +1711,10 @@
             border-radius: 10px 0 0 10px;
             z-index: 1;
         }
-        .hamburger-menu-content {
+        .hamburger-menu-content li {
+            height: 60px;
+            border-bottom: solid 1px #FFF;
+            font-size: 30px;
 
         }
         .hamburger-menu-content-icon {
