@@ -194,22 +194,49 @@
     <div id="app">
 
         
-        <!-- header for pc -->
+        <!-- header -->
         <header class="pc-header">
             <img src="/static/ams_logo/ams_logo_white.png" class="header-ams-icon" @click="window.location.href = '/'">
             <div class="pc-header-top">
-                <div @click="rebootConfirm = true" class="reboot-button">reboot</div>
+                <!-- not small display only -->
+                <div @click="rebootConfirm = true" class="reboot-button" v-if="!isSmallDisplay">reboot</div>
+                <!-- small display only -->
+                <!-- hamburger menu icon -->
+                <div class="humberger-icon-box" v-if="isSmallDisplay">
+                    <div class="btn-trigger" id="hamburger-menu" @click="hamburgerMenuShow = !hamburgerMenuShow"
+                        :class="{ active: hamburgerMenuShow }">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
             </div>
-            <nav class="pc-header-bottom">
+            <nav class="pc-header-bottom" v-if="!isSmallDisplay">
                 <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
                 <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'" v-bind:class="{ 'active-sensor' : selectedPage == 'Sensors' }"><p>Sensor</p></div>
                 <div class="header-nav header-nav-camera" @click="selectedPage = 'Camera'" v-bind:class="{ 'active-camera' : selectedPage == 'Camera' }"><p>Camera</p></div>
                 <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'" v-bind:class="{ 'active-setting' : selectedPage == 'Setting' }"><p>Setting</p></div>
             </nav>
         </header>
-        <!-- header for pc end -->
-        
+        <!-- header end -->
 
+        <!-- hamburger menu -->
+        <transition name="slide-translate-display">
+            <div v-if="hamburgerMenuShow" class="hamburger-menu-content-wrapper">
+                <nav class="hamburger-menu-content">
+                    <ul>
+                        <li @click="selectedPage = 'Devices'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-device"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_device.png"><p>Device</p></li>
+                        <li @click="selectedPage = 'Sensors'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-sensor"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_sensor.png"><p>Sensor</p></li>
+                        <li @click="selectedPage = 'Camera'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-camera"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_camera.png"><p>Camera</p></li>
+                        <li @click="selectedPage = 'Setting'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-setting"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_setting.png"><p>Setting</p></li>
+                        <li @click="hamburgerMenuShow = !hamburgerMenuShow; rebootConfirm = true" class="hamburger-menu-text-reboot"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_reboot.png"><p>Reboot</p></li>
+                    </ul>
+                </nav>
+            </div>
+        </transition>
+        <!-- hamburger menu end -->
+
+        <!-- spinner start -->
         <transition name="fade-translate-display">
             <div class="translate-display" v-show="loading">
                 <div class="spinner-box">
@@ -223,6 +250,7 @@
                 </div>
             </div>
         </transition>
+        <!-- spinner end -->
 
         <!-- reboot confirm modal -->
         <div class="modal-display" v-show="rebootConfirm" @click.self="rebootConfirm = false">
@@ -1089,6 +1117,8 @@
         var app = new Vue({
             el: '#app',
             data: {
+                isSmallDisplay: false,
+                hamburgerMenuShow: false,
                 selectedPage: "Devices",
                 hasError: false,
                 loading: false,
@@ -1203,6 +1233,13 @@
                 setting: {},
             },
             methods: {
+                handleResize: function () {
+                    if (window.innerWidth <= 480) {
+                        this.isSmallDisplay = true
+                    } else {
+                        this.isSmallDisplay = false
+                    }
+                },
                 setDeviceState: async function () {
                     this.loading = true
                     const deviceState = await getDeviceState()
@@ -1378,6 +1415,13 @@
                 num: function(value) {
                     return Number(value)
                 }
+            },
+            created() {
+                window.addEventListener('resize', this.handleResize)
+                this.handleResize()
+            },
+            destroyed() {
+                window.removeEventListener('resize', this.handleResize)
             }
         })
     </script>
@@ -1387,6 +1431,11 @@
     <style>
         body {
             padding-top: 150px;
+        }
+        @media screen and (max-width: 480px) {
+            body {
+                padding-top: 100px;
+            }
         }
 
         .pc-header {
@@ -1398,7 +1447,7 @@
             display: flex;
             flex-direction: column;
             top: 0px;
-            z-index: 1;
+            z-index: 2;
         }
 
         .pc-header:before {
@@ -1416,6 +1465,13 @@
             left: 10px;
             cursor: pointer;
             transition: 0.1s;
+        }
+        @media screen and (max-width: 480px) {
+            .header-ams-icon {
+                top: 6px;
+                left: 8px;
+                height: 43px;
+            }
         }
         .header-ams-icon:hover {
             opacity: 0.5;
@@ -1575,7 +1631,122 @@
             color: #00c25e;
         }
 
+
+        /* smart phone header */
+
+        .humberger-icon-box {
+            padding: 7px;
+            padding-right: 10px;
+        }
+
+        /* hamburger */
+        .btn-trigger {
+            position: relative;
+            width: 40px;
+            height: 36px;
+            cursor: pointer;
+        }
+        .btn-trigger span {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #FFF;
+            border-radius: 4px;
+        }
+        .btn-trigger, .btn-trigger span {
+            display: inline-block;
+            transition: all .5s;
+            box-sizing: border-box;
+        }
+        .btn-trigger span:nth-of-type(1) {
+            top: 0;
+        }
+        .btn-trigger span:nth-of-type(2) {
+            top: 16px;
+        }
+        .btn-trigger span:nth-of-type(3) {
+            bottom: 0;
+        }
+
+        #hamburger-menu.active {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+        #hamburger-menu.active span:nth-of-type(1) {
+            -webkit-transform: translateY(16px) rotate(-45deg);
+            transform: rotateY(16px) rotate(-45deg);
+        }
+        #hamburger-menu.active span:nth-of-type(2) {
+            -webkit-transform: translateY(0) rotate(45deg);
+            transform: rotateY(0) rotate(45deg);
+        }
+        #hamburger-menu.active span:nth-of-type(3) {
+            opacity: 0;
+        }
+        /* hamburger end */
+
+        /* hamburger transition start */
+        .slide-translate-display-enter-active {
+        transition: all .5s ease;
+        }
+        .slide-translate-display-leave-active {
+        /* transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0); */
+        transition: all .4s ease;
+        }
+        .slide-translate-display-enter, .slide-translate-display-leave-to {
+        transform: translateX(400px);
+        opacity: 0;
+        }
+        /* hamburger transition end */
+         
+        /* hamburger content */
+        .hamburger-menu-content-wrapper {
+            background-color: #FFFFFFF0;
+            border: solid 1px #AAA;
+            position: fixed;
+            top: 57px;
+            right: 0;
+            width: 90%;
+            text-align: center;
+            border-radius: 10px 0 0 10px;
+            z-index: 1;
+        }
+        .hamburger-menu-content li {
+            height: 60px;
+            padding: 10px 0;
+            border-bottom: solid 1px #AAA;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .hamburger-menu-content li:last-child {
+            border-bottom: solid 0 #AAA;
+        }
+        
+        .hamburger-menu-content-icon {
+            height: 30px;
+            margin-right: 8px;
+        }
+
+        .hamburger-menu-text-device {
+            color: #00AAFF;
+            /* border-bottom: solid 1px #00AAFF; */
+        }
+        .hamburger-menu-text-sensor {
+            color: #e07f00;
+        }
+        .hamburger-menu-text-camera {
+            color: #ae00ff;
+        }
+        .hamburger-menu-text-setting {
+            color: #00c25e;
+        }
+        .hamburger-menu-text-reboot {
+            color: #FF4444;
+        }
+
     </style>
+
 
 
 
@@ -2028,7 +2199,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1;
+            z-index: 2;
         }
 
         .modal-box {
@@ -2038,7 +2209,7 @@
             position: fixed;
             border-radius: 10px;
             text-align: center;
-            z-index: 2;
+            z-index: 3;
         }
         @media screen and (max-width: 480px) {
             .modal-box {
