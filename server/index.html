@@ -199,6 +199,16 @@
             <img src="/static/ams_logo/ams_logo_white.png" class="header-ams-icon" @click="window.location.href = '/'">
             <div class="pc-header-top">
                 <div @click="rebootConfirm = true" class="reboot-button" v-if="!isSmallDisplay">reboot</div>
+                <!-- small display only -->
+                <!-- hamburger menu -->
+                <div class="humberger-icon-box" v-if="isSmallDisplay">
+                    <div class="btn-trigger" id="hamburger-menu" @click="hamburgerMenuShow = !hamburgerMenuShow"
+                        :class="{ active: hamburgerMenuShow }">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
             </div>
             <nav class="pc-header-bottom" v-if="!isSmallDisplay">
                 <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
@@ -1090,6 +1100,7 @@
             el: '#app',
             data: {
                 isSmallDisplay: false,
+                hamburgerMenuShow: false,
                 selectedPage: "Devices",
                 hasError: false,
                 loading: false,
@@ -1205,9 +1216,7 @@
             },
             methods: {
                 handleResize: function () {
-                    // if (window.innerWidth <= 480) {
-                    // for test 
-                    if (window.innerWidth <= 1000) {
+                    if (window.innerWidth <= 480) {
                         this.isSmallDisplay = true
                     } else {
                         this.isSmallDisplay = false
@@ -1441,7 +1450,9 @@
         }
         @media screen and (max-width: 480px) {
             .header-ams-icon {
-                height: 40px;
+                top: 6px;
+                left: 8px;
+                height: 43px;
             }
         }
         .header-ams-icon:hover {
@@ -1602,7 +1613,64 @@
             color: #00c25e;
         }
 
+
+        /* smart phone header */
+
+        .humberger-icon-box {
+            padding: 7px;
+            padding-right: 10px;
+        }
+
+        /* hamburger */
+        .btn-trigger {
+            position: relative;
+            width: 40px;
+            height: 36px;
+            cursor: pointer;
+        }
+        .btn-trigger span {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #FFF;
+            border-radius: 4px;
+        }
+        .btn-trigger, .btn-trigger span {
+            display: inline-block;
+            transition: all .5s;
+            box-sizing: border-box;
+        }
+        .btn-trigger span:nth-of-type(1) {
+            top: 0;
+        }
+        .btn-trigger span:nth-of-type(2) {
+            top: 16px;
+        }
+        .btn-trigger span:nth-of-type(3) {
+            bottom: 0;
+        }
+
+        #hamburger-menu.active {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+        #hamburger-menu.active span:nth-of-type(1) {
+            -webkit-transform: translateY(16px) rotate(-45deg);
+            transform: rotateY(16px) rotate(-45deg);
+        }
+        #hamburger-menu.active span:nth-of-type(2) {
+            -webkit-transform: translateY(0) rotate(45deg);
+            transform: rotateY(0) rotate(45deg);
+        }
+        #hamburger-menu.active span:nth-of-type(3) {
+            opacity: 0;
+        }
+
+
+
     </style>
+
 
 
 
