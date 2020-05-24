@@ -200,7 +200,7 @@
             <div class="pc-header-top">
                 <div @click="rebootConfirm = true" class="reboot-button">reboot</div>
             </div>
-            <nav class="pc-header-bottom">
+            <nav class="pc-header-bottom" v-if="!isSmallDisplay">
                 <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
                 <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'" v-bind:class="{ 'active-sensor' : selectedPage == 'Sensors' }"><p>Sensor</p></div>
                 <div class="header-nav header-nav-camera" @click="selectedPage = 'Camera'" v-bind:class="{ 'active-camera' : selectedPage == 'Camera' }"><p>Camera</p></div>
@@ -1205,7 +1205,9 @@
             },
             methods: {
                 handleResize: function () {
-                    if (window.innerWidth <= 480) {
+                    // if (window.innerWidth <= 480) {
+                    // for test 
+                    if (window.innerWidth <= 1000) {
                         this.isSmallDisplay = true
                     } else {
                         this.isSmallDisplay = false
@@ -1403,6 +1405,11 @@
         body {
             padding-top: 150px;
         }
+        @media screen and (max-width: 480px) {
+            body {
+                padding-top: 100px;
+            }
+        }
 
         .pc-header {
             background: #BBBBBBDD;
@@ -1431,6 +1438,11 @@
             left: 10px;
             cursor: pointer;
             transition: 0.1s;
+        }
+        @media screen and (max-width: 480px) {
+            .header-ams-icon {
+                height: 40px;
+            }
         }
         .header-ams-icon:hover {
             opacity: 0.5;
