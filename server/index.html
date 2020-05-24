@@ -418,31 +418,35 @@
                                 </div>
                             </div>
 
-                            <table class="update-form-created-at-table">
-                                <tr>
-                                    <td>crearted at:</td>
-                                    <td>{{selectedDevice.created_at}}</td>
-                                </tr>
-                                <tr>
-                                    <td>updated at:</td>
-                                    <td>{{selectedDevice.updated_at}}</td>
-                                </tr>
-                            </table>
                         </div>
 
                     </div>
-                    <div class="button-container">
-                        <div class="button-wrapper">
-                            <div class="modal-cancel-button" @click="closeUpdateDeviceModal()">
-                                <p>Cancel</p>
+
+                    <div class="device-update-modal-bottom-container">
+                        <table class="update-form-created-at-table">
+                            <tr>
+                                <td>crearted at:</td>
+                                <td>{{selectedDevice.created_at}}</td>
+                            </tr>
+                            <tr>
+                                <td>updated at:</td>
+                                <td>{{selectedDevice.updated_at}}</td>
+                            </tr>
+                        </table>
+                        <div class="button-container">
+                            <div class="button-wrapper">
+                                <div class="modal-cancel-button" @click="closeUpdateDeviceModal()">
+                                    <p>Cancel</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="button-wrapper">
-                            <div class="modal-update-button" @click="updateDevice()">
-                                <p>Update</p>
+                            <div class="button-wrapper">
+                                <div class="modal-update-button" @click="updateDevice()">
+                                    <p>Update</p>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <!-- update device modal end -->
@@ -2318,14 +2322,22 @@
 
         .device-scroll-box {
             overflow-y: scroll;
-            margin-top: 20px;
+            margin-top: 30px;
             margin-bottom: 20px;
             height: 450px;
+        }
+
+        .device-update-modal-bottom-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
         }
 
         .modal-confirm-text {
             font-size: 22px;
         }
+
+        
     </style>
 
 
@@ -2392,13 +2404,11 @@
 
         .button-container {
             margin: 10px;
-            margin-bottom: 40px;
             display: flex;
-            justify-content: flex-end;
         }
 
         .button-wrapper {
-            margin-right: 15px;
+            margin-right: 20px;
         }
 
         /* cancel button */
