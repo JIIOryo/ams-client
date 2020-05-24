@@ -194,13 +194,14 @@
     <div id="app">
 
         
-        <!-- header for pc -->
+        <!-- header -->
         <header class="pc-header">
             <img src="/static/ams_logo/ams_logo_white.png" class="header-ams-icon" @click="window.location.href = '/'">
             <div class="pc-header-top">
+                <!-- not small display only -->
                 <div @click="rebootConfirm = true" class="reboot-button" v-if="!isSmallDisplay">reboot</div>
                 <!-- small display only -->
-                <!-- hamburger menu -->
+                <!-- hamburger menu icon -->
                 <div class="humberger-icon-box" v-if="isSmallDisplay">
                     <div class="btn-trigger" id="hamburger-menu" @click="hamburgerMenuShow = !hamburgerMenuShow"
                         :class="{ active: hamburgerMenuShow }">
@@ -217,9 +218,25 @@
                 <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'" v-bind:class="{ 'active-setting' : selectedPage == 'Setting' }"><p>Setting</p></div>
             </nav>
         </header>
-        <!-- header for pc end -->
+        <!-- header end -->
 
+        <!-- hamburger menu -->
+        <transition name="slide-translate-display">
+            <div v-if="hamburgerMenuShow" class="hamburger-menu-content-wrapper">
+                <nav class="hamburger-menu-content">
+                    <ul>
+                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Device</li>
+                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Sensor</li>
+                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Camera</li>
+                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Setting</li>
+                        <li><img class="hamburger-menu-content-icon" src="/static/icon/x.png">Reboot</li>
+                    </ul>
+                </nav>
+            </div>
+        </transition>
+        <!-- hamburger menu end -->
 
+        <!-- spinner start -->
         <transition name="fade-translate-display">
             <div class="translate-display" v-show="loading">
                 <div class="spinner-box">
@@ -233,6 +250,7 @@
                 </div>
             </div>
         </transition>
+        <!-- spinner end -->
 
         <!-- reboot confirm modal -->
         <div class="modal-display" v-show="rebootConfirm" @click.self="rebootConfirm = false">
@@ -1429,7 +1447,7 @@
             display: flex;
             flex-direction: column;
             top: 0px;
-            z-index: 1;
+            z-index: 2;
         }
 
         .pc-header:before {
@@ -1665,6 +1683,39 @@
         }
         #hamburger-menu.active span:nth-of-type(3) {
             opacity: 0;
+        }
+        /* hamburger end */
+
+        /* hamburger transition start */
+        .slide-translate-display-enter-active {
+        transition: all .5s ease;
+        }
+        .slide-translate-display-leave-active {
+        /* transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0); */
+        transition: all .5s ease;
+        }
+        .slide-translate-display-enter, .slide-translate-display-leave-to {
+        transform: translateX(400px);
+        opacity: 0;
+        }
+        /* hamburger transition end */
+         
+        /* hamburger content */
+        .hamburger-menu-content-wrapper {
+            background-color: orange;
+            position: fixed;
+            top: 57px;
+            right: 0;
+            width: 90%;
+            text-align: center;
+            border-radius: 10px 0 0 10px;
+            z-index: 1;
+        }
+        .hamburger-menu-content {
+
+        }
+        .hamburger-menu-content-icon {
+            width: 30px;
         }
 
 
@@ -2123,7 +2174,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1;
+            z-index: 2;
         }
 
         .modal-box {
@@ -2133,7 +2184,7 @@
             position: fixed;
             border-radius: 10px;
             text-align: center;
-            z-index: 2;
+            z-index: 3;
         }
         @media screen and (max-width: 480px) {
             .modal-box {
