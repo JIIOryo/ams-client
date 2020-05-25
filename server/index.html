@@ -286,7 +286,7 @@
                     <div class="device-update-confirm-box">
                         <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateDeviceModal">
                         <img src="/static/icon/update.png" class="modal-update-icon">
-                        <h3>Update device</h3>
+                        <h3 class="modal-title">Update Device</h3>
                         <hr>
 
                         <div class="device-scroll-box">
@@ -2290,7 +2290,17 @@
 
         .modal-update-icon {
             width: 70px;
+            margin-top: -15px;
             margin-bottom: -20px;
+        }
+        @media screen and (max-width: 480px) {
+            .modal-update-icon {
+                width: 50px;
+            }
+            .modal-title {
+                font-size: 20px;
+                margin-bottom: -1px;
+            }
         }
 
         .update-form-table {
