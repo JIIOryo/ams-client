@@ -351,14 +351,14 @@
                                                     <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                         <select name="on_hour" v-model="selectedDevice.options.timer.on_hour">
                                                             <option value="" hidden>Choose</option>
-                                                            <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
+                                                            <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour | zeroPadding}}</option>
                                                         </select>
                                                     </div>
                                                     <p class="timer-colon">:</p>
                                                     <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                         <select name="on_minite" v-model="selectedDevice.options.timer.on_minute">
                                                             <option value="" hidden>Choose</option>
-                                                            <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
+                                                            <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute | zeroPadding}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -375,14 +375,14 @@
                                                     <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                         <select name="off_hour" v-model="selectedDevice.options.timer.off_hour">
                                                             <option value="" hidden>Choose</option>
-                                                            <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
+                                                            <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour | zeroPadding}}</option>
                                                         </select>
                                                     </div>
                                                     <p class="timer-colon">:</p>
                                                     <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                         <select name="off_minite" v-model="selectedDevice.options.timer.off_minute">
                                                             <option value="" hidden>Choose</option>
-                                                            <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
+                                                            <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute | zeroPadding}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -403,14 +403,14 @@
                                                         <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                             <select name="hour" v-model="timer.hour">
                                                                 <option value="" hidden>Choose</option>
-                                                                <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
+                                                                <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour| zeroPadding}}</option>
                                                             </select>
                                                         </div>
                                                         <p class="timer-colon">:</p>
                                                         <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                             <select name="minite" v-model="timer.minute">
                                                                 <option value="" hidden>Choose</option>
-                                                                <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
+                                                                <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute | zeroPadding}}</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1483,6 +1483,13 @@
             filters: {
                 num: function(value) {
                     return Number(value)
+                },
+                zeroPadding: function(n) {
+                    let result = String(n)
+                    if (n < 10) {
+                        result = "0" + result;
+                    }
+                    return result
                 }
             },
             created() {
