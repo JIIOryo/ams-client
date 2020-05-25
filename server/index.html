@@ -156,6 +156,12 @@
         body {
             font-family: 'Roboto',arial,sans-serif;
         }
+        main.fixed {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 0;
+        }
 
         h1 {
             margin: 0.7em 0;
@@ -192,654 +198,655 @@
 
 <body>
     <div id="app">
+        <main :class="{fixed: updateModal}">
 
-        
-        <!-- header -->
-        <header class="pc-header">
-            <img src="/static/ams_logo/ams_logo_white.png" class="header-ams-icon" @click="window.location.href = '/'">
-            <div class="pc-header-top">
-                <!-- not small display only -->
-                <div @click="rebootConfirm = true" class="reboot-button" v-if="!isSmallDisplay">reboot</div>
-                <!-- small display only -->
-                <!-- hamburger menu icon -->
-                <div class="humberger-icon-box" v-if="isSmallDisplay">
-                    <div class="btn-trigger" id="hamburger-menu" @click="hamburgerMenuShow = !hamburgerMenuShow"
-                        :class="{ active: hamburgerMenuShow }">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+            <!-- header -->
+            <header class="pc-header">
+                <img src="/static/ams_logo/ams_logo_white.png" class="header-ams-icon" @click="window.location.href = '/'">
+                <div class="pc-header-top">
+                    <!-- not small display only -->
+                    <div @click="rebootConfirm = true" class="reboot-button" v-if="!isSmallDisplay">reboot</div>
+                    <!-- small display only -->
+                    <!-- hamburger menu icon -->
+                    <div class="humberger-icon-box" v-if="isSmallDisplay">
+                        <div class="btn-trigger" id="hamburger-menu" @click="hamburgerMenuShow = !hamburgerMenuShow"
+                            :class="{ active: hamburgerMenuShow }">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <nav class="pc-header-bottom" v-if="!isSmallDisplay">
-                <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
-                <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'" v-bind:class="{ 'active-sensor' : selectedPage == 'Sensors' }"><p>Sensor</p></div>
-                <div class="header-nav header-nav-camera" @click="selectedPage = 'Camera'" v-bind:class="{ 'active-camera' : selectedPage == 'Camera' }"><p>Camera</p></div>
-                <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'" v-bind:class="{ 'active-setting' : selectedPage == 'Setting' }"><p>Setting</p></div>
-            </nav>
-        </header>
-        <!-- header end -->
-
-        <!-- hamburger menu -->
-        <transition name="slide-translate-display">
-            <div v-if="hamburgerMenuShow" class="hamburger-menu-content-wrapper">
-                <nav class="hamburger-menu-content">
-                    <ul>
-                        <li @click="selectedPage = 'Devices'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-device"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_device.png"><p>Device</p></li>
-                        <li @click="selectedPage = 'Sensors'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-sensor"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_sensor.png"><p>Sensor</p></li>
-                        <li @click="selectedPage = 'Camera'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-camera"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_camera.png"><p>Camera</p></li>
-                        <li @click="selectedPage = 'Setting'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-setting"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_setting.png"><p>Setting</p></li>
-                        <li @click="hamburgerMenuShow = !hamburgerMenuShow; rebootConfirm = true" class="hamburger-menu-text-reboot"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_reboot.png"><p>Reboot</p></li>
-                    </ul>
+                <nav class="pc-header-bottom" v-if="!isSmallDisplay">
+                    <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
+                    <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'" v-bind:class="{ 'active-sensor' : selectedPage == 'Sensors' }"><p>Sensor</p></div>
+                    <div class="header-nav header-nav-camera" @click="selectedPage = 'Camera'" v-bind:class="{ 'active-camera' : selectedPage == 'Camera' }"><p>Camera</p></div>
+                    <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'" v-bind:class="{ 'active-setting' : selectedPage == 'Setting' }"><p>Setting</p></div>
                 </nav>
-            </div>
-        </transition>
-        <!-- hamburger menu end -->
+            </header>
+            <!-- header end -->
 
-        <!-- spinner start -->
-        <transition name="fade-translate-display">
-            <div class="translate-display" v-show="loading">
-                <div class="spinner-box">
-                    <div class="flower-spinner">
-                        <div class="dots-container">
-                            <div class="bigger-dot">
-                                <div class="smaller-dot"></div>
+            <!-- hamburger menu -->
+            <transition name="slide-translate-display">
+                <div v-if="hamburgerMenuShow" class="hamburger-menu-content-wrapper">
+                    <nav class="hamburger-menu-content">
+                        <ul>
+                            <li @click="selectedPage = 'Devices'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-device"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_device.png"><p>Device</p></li>
+                            <li @click="selectedPage = 'Sensors'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-sensor"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_sensor.png"><p>Sensor</p></li>
+                            <li @click="selectedPage = 'Camera'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-camera"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_camera.png"><p>Camera</p></li>
+                            <li @click="selectedPage = 'Setting'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-setting"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_setting.png"><p>Setting</p></li>
+                            <li @click="hamburgerMenuShow = !hamburgerMenuShow; rebootConfirm = true" class="hamburger-menu-text-reboot"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_reboot.png"><p>Reboot</p></li>
+                        </ul>
+                    </nav>
+                </div>
+            </transition>
+            <!-- hamburger menu end -->
+
+            <!-- spinner start -->
+            <transition name="fade-translate-display">
+                <div class="translate-display" v-show="loading">
+                    <div class="spinner-box">
+                        <div class="flower-spinner">
+                            <div class="dots-container">
+                                <div class="bigger-dot">
+                                    <div class="smaller-dot"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </transition>
-        <!-- spinner end -->
+            </transition>
+            <!-- spinner end -->
 
-        <!-- reboot confirm modal -->
-        <div class="modal-display" v-show="rebootConfirm" @click.self="rebootConfirm = false">
-            <div class="modal-box">
-                <div class="reboot-confirm-box">
-                    <img src="/static/icon/x.png" class="modal-close-x-icon" @click="rebootConfirm = false">
-                    <img src="/static/icon/alert.png" class="modal-alert-icon">
-                    <h3>Confirmation</h3>
-                    <hr>
-                    <div class="small-space-box"></div>
-                    <p class="modal-confirm-text">Are you sure to reboot AMS?</p>
-                    <div class="small-space-box"></div>
-                    <div class="button-container">
-                        <div class="modal-cancel-button" @click="rebootConfirm = false">
-                            <p>Cancel</p>
-                        </div>
-                        <div class="dangerous-button" @click="reboot()">
-                            <p>Reboot</p>
-                        </div>
-                    </div>
-                    <div class="small-medium-space-box"></div>
-                    
-                </div>
-            </div>
-        </div>
-
-        <div v-if="selectedPage == 'Devices'">
-            <!-- Device -->
-
-            <!-- update device modal start -->
-            <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
+            <!-- reboot confirm modal -->
+            <div class="modal-display" v-show="rebootConfirm" @click.self="rebootConfirm = false">
                 <div class="modal-box">
-                    <div class="device-update-confirm-box">
-                        <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateDeviceModal">
-                        <img src="/static/icon/update.png" class="modal-update-icon">
-                        <h3>Update device</h3>
+                    <div class="reboot-confirm-box">
+                        <img src="/static/icon/x.png" class="modal-close-x-icon" @click="rebootConfirm = false">
+                        <img src="/static/icon/alert.png" class="modal-alert-icon">
+                        <h3>Confirmation</h3>
                         <hr>
-
-                        <div class="device-scroll-box">
-                            <!-- forms -->
-                            <div class="modal-form-container">
-                                <!-- Name -->
-                                <div class="cp_iptxt">
-                                    <input class="ef" type="text" placeholder="" v-model="selectedDevice.name">
-                                    <label>Name</label>
-                                    <span class="focus_line"></span>
-                                </div>
-
-                                <!-- Description -->
-                                <div class="cp_form">
-                                    <textarea required="required" v-model="selectedDevice.description" cols="20" rows="2"></textarea>
-                                    <label class="cp_label" for="textarea">Description</label>
-                                    <i class="bar"></i>
-                                </div>
+                        <div class="small-space-box"></div>
+                        <p class="modal-confirm-text">Are you sure to reboot AMS?</p>
+                        <div class="small-space-box"></div>
+                        <div class="button-container">
+                            <div class="modal-cancel-button" @click="rebootConfirm = false">
+                                <p>Cancel</p>
                             </div>
-
-                            <!-- Device type -->
-                            <div class="modal-select-container">
-                                <label class="select-label">Device type</label>
-                                <div class="select-box select-box-simple">
-                                    <select name="device_type" v-model="selectedDevice.type">
-                                        <option value="" hidden>Choose</option>
-                                        <option v-for="deviceType of deviceTypes" v-bind:value="deviceType.deviceType">
-                                            {{ deviceType.deviceType }}</option>
-                                    </select>
-                                </div>
+                            <div class="dangerous-button" @click="reboot()">
+                                <p>Reboot</p>
                             </div>
+                        </div>
+                        <div class="small-medium-space-box"></div>
+                        
+                    </div>
+                </div>
+            </div>
 
-                            <!-- Device run type -->
-                            <div class="modal-select-container">
-                                <label class="select-label">Device type</label>
-                                <div class="select-box select-box-simple">
-                                    <select name="run_type" v-model="selectedDevice.run_type">
-                                        <option value="" hidden>Choose</option>
-                                        <option v-for="deviceRunType of deviceRunTypes" v-bind:value="deviceRunType">{{deviceRunType}}</option>
-                                    </select>
+            <div v-if="selectedPage == 'Devices'">
+                <!-- Device -->
+
+                <!-- update device modal start -->
+                <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
+                    <div class="modal-box update-device-responsive">
+                        <div class="device-update-confirm-box">
+                            <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateDeviceModal">
+                            <img src="/static/icon/update.png" class="modal-update-icon">
+                            <h3 class="modal-title">Update Device</h3>
+                            <hr>
+
+                            <div class="device-scroll-box">
+                                <!-- forms -->
+                                <div class="modal-form-container">
+                                    <!-- Name -->
+                                    <div class="cp_iptxt">
+                                        <input class="ef" type="text" placeholder="" v-model="selectedDevice.name">
+                                        <label>Name</label>
+                                        <span class="focus_line"></span>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="cp_form">
+                                        <textarea required="required" v-model="selectedDevice.description" cols="20" rows="2"></textarea>
+                                        <label class="cp_label" for="textarea">Description</label>
+                                        <i class="bar"></i>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <!-- Device type -->
+                                <div class="modal-select-container">
+                                    <label class="select-label">Device type</label>
+                                    <div class="select-box select-box-simple device-update-modal-select-box">
+                                        <select name="device_type" v-model="selectedDevice.type">
+                                            <option value="" hidden>Choose</option>
+                                            <option v-for="deviceType of deviceTypes" v-bind:value="deviceType.deviceType">
+                                                {{ deviceType.deviceType }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Device run type -->
+                                <div class="modal-select-container">
+                                    <label class="select-label">Device Run type</label>
+                                    <div class="select-box select-box-simple device-update-modal-select-box">
+                                        <select name="run_type" v-model="selectedDevice.run_type">
+                                            <option value="" hidden>Choose</option>
+                                            <option v-for="deviceRunType of deviceRunTypes" v-bind:value="deviceRunType">{{deviceRunType}}</option>
+                                        </select>
+                                    </div>
+                                </div>
 
 
-                            <div>
-                                <table class="update-form-table" v-if="selectedDevice.run_type == 'daily'">
-                                    <!-- daily -->
-                                    <tr>
-                                        <td>
-                                            <div class="timer-label-box">
-                                                <p>On time</p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="timer-box">
-                                                <div class="select-box select-box-simple select-box-timer">
-                                                    <select name="on_hour" v-model="selectedDevice.options.timer.on_hour">
-                                                        <option value="" hidden>Choose</option>
-                                                        <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
-                                                    </select>
-                                                </div>
-                                                <p class="timer-colon">:</p>
-                                                <div class="select-box select-box-simple select-box-timer">
-                                                    <select name="on_minite" v-model="selectedDevice.options.timer.on_minute">
-                                                        <option value="" hidden>Choose</option>
-                                                        <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="timer-label-box">
-                                                <p>Off time</p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="timer-box">
-                                                <div class="select-box select-box-simple select-box-timer">
-                                                    <select name="off_hour" v-model="selectedDevice.options.timer.off_hour">
-                                                        <option value="" hidden>Choose</option>
-                                                        <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
-                                                    </select>
-                                                </div>
-                                                <p class="timer-colon">:</p>
-                                                <div class="select-box select-box-simple select-box-timer">
-                                                    <select name="off_minite" v-model="selectedDevice.options.timer.off_minute">
-                                                        <option value="" hidden>Choose</option>
-                                                        <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <div v-else-if="selectedDevice.run_type == 'discreate'">
-                                    <!-- discreate -->
-                                    <table class="update-form-table" >
-                                        <tr v-for="(timer, index) of selectedDevice.options.timer" :key="index">
+                                <div>
+                                    <table class="update-form-table" v-if="selectedDevice.run_type == 'daily'">
+                                        <!-- daily -->
+                                        <tr>
                                             <td>
                                                 <div class="timer-label-box">
-                                                    <p>timer {{index + 1}}</p>
+                                                    <p>On time</p>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="timer-box">
-                                                    <div class="select-box select-box-simple select-box-timer">
-                                                        <select name="hour" v-model="timer.hour">
+                                                    <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                        <select name="on_hour" v-model="selectedDevice.options.timer.on_hour">
                                                             <option value="" hidden>Choose</option>
                                                             <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
                                                         </select>
                                                     </div>
                                                     <p class="timer-colon">:</p>
-                                                    <div class="select-box select-box-simple select-box-timer">
-                                                        <select name="minite" v-model="timer.minute">
+                                                    <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                        <select name="on_minite" v-model="selectedDevice.options.timer.on_minute">
                                                             <option value="" hidden>Choose</option>
                                                             <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td>
-                                                <img src="/static/icon/delete.png" @click="selectedDevice.options.timer.splice(index, 1)" class="delete-icon">
+                                                <div class="timer-label-box">
+                                                    <p>Off time</p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="timer-box">
+                                                    <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                        <select name="off_hour" v-model="selectedDevice.options.timer.off_hour">
+                                                            <option value="" hidden>Choose</option>
+                                                            <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <p class="timer-colon">:</p>
+                                                    <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                        <select name="off_minite" v-model="selectedDevice.options.timer.off_minute">
+                                                            <option value="" hidden>Choose</option>
+                                                            <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>
-                                    <img src="/static/img/button/add_button.png" @click="selectedDevice.options.timer.push({hour: 0, minute: 0})" class="add-button">
+                                    <div v-else-if="selectedDevice.run_type == 'discreate'">
+                                        <!-- discreate -->
+                                        <table class="update-form-table" >
+                                            <tr v-for="(timer, index) of selectedDevice.options.timer" :key="index">
+                                                <td>
+                                                    <div class="timer-label-box">
+                                                        <p>timer {{index + 1}}</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="timer-box">
+                                                        <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                            <select name="hour" v-model="timer.hour">
+                                                                <option value="" hidden>Choose</option>
+                                                                <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <p class="timer-colon">:</p>
+                                                        <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                            <select name="minite" v-model="timer.minute">
+                                                                <option value="" hidden>Choose</option>
+                                                                <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <img src="/static/icon/delete.png" @click="selectedDevice.options.timer.splice(index, 1)" class="delete-icon">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <img src="/static/img/button/add_button.png" @click="selectedDevice.options.timer.push({hour: 0, minute: 0})" class="add-button">
+                                    </div>
                                 </div>
+
                             </div>
 
                         </div>
 
-                    </div>
-
-                    <div class="device-update-modal-bottom-container">
-                        <table class="update-form-created-at-table">
-                            <tr>
-                                <td>crearted at:</td>
-                                <td>{{selectedDevice.created_at}}</td>
-                            </tr>
-                            <tr>
-                                <td>updated at:</td>
-                                <td>{{selectedDevice.updated_at}}</td>
-                            </tr>
-                        </table>
-                        <div class="button-container">
-                            <div class="button-wrapper">
-                                <div class="modal-cancel-button" @click="closeUpdateDeviceModal()">
-                                    <p>Cancel</p>
+                        <div class="device-update-modal-bottom-container">
+                            <table class="update-form-created-at-table">
+                                <tr>
+                                    <td>crearted at:</td>
+                                    <td>{{selectedDevice.created_at}}</td>
+                                </tr>
+                                <tr>
+                                    <td>updated at:</td>
+                                    <td>{{selectedDevice.updated_at}}</td>
+                                </tr>
+                            </table>
+                            <div class="button-container">
+                                <div class="button-wrapper">
+                                    <div class="modal-cancel-button" @click="closeUpdateDeviceModal()">
+                                        <p>Cancel</p>
+                                    </div>
+                                </div>
+                                <div class="button-wrapper">
+                                    <div class="modal-update-button" @click="updateDevice()">
+                                        <p>Update</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="button-wrapper">
-                                <div class="modal-update-button" @click="updateDevice()">
+                        </div>
+
+                    </div>
+                </div>
+                <!-- update device modal end -->
+
+                <!-- Device -->
+                <div class="device-container" v-for="(device, i) of devices" :key="device.device_id">
+                    <div class="device-top-box">
+                        <div class="device-id-box">
+                            <p>Device ID: {{ device.device_id }}</p>
+                        </div>
+                        <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateDeviceButton(device)">
+                        <img src="/static/icon/dustbox.png" class="container-delete-icon">
+                    </div>
+                    <div class="device-middle-box">
+                        <img :src="deviceTypes_temp[device.type].iconUrl" class="device-icon" :class="{'device-icon-feed-pump-responsive': device.type == 'feed_pump'}">
+                        <div class="device-name-box" :class="{'device-name-feed-pump-responsive': device.type == 'feed_pump'}"><p>{{ device.name }}</p></div>
+                        <div v-if="device.type == 'feed_pump'" class="device-control-box device-control-box-responsive-feed-pump">
+                            <!-- feed pump -->
+                            <div class="device-switch-box">
+                                <!-- feed pump select box -->
+                                <div class="device-select-box-box">
+                                    <div class="select-box select-box-simple select-box-flex">
+                                        <select v-model="feedPumpsWaterSupplyTime[i]">
+                                            <option v-for="j in [...Array(180).keys()]" :key="j" :value="j">{{j}}</option>
+                                        </select>
+                                    </div>
+                                    <p class="select-box-flex select-box-second">[s]</p>
+                                </div>
+                                <!-- feed pump select box end -->
+                                <div class="feed-pump-button" @click="supplyWater(device.device_id, feedPumpsWaterSupplyTime[i])">supply</div>
+                            </div>
+                            <!-- feed pump end -->
+                        </div>
+                        <div v-else-if="device.type == 'auto_feeder'" class="device-control-box">
+                            <!-- auto feeder -->
+                            <div class="device-switch-box">
+                                <div class="feed-button" @click="feed(device.device_id)">feed</div>
+                            </div>
+                            <!-- auto feeder end -->
+                        </div>
+                        <div v-else class="device-control-box">
+                            <!-- other -->
+                            <div class="device-switch-box">
+                                <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
+                                    <input type="checkbox" class="switch-input" v-model="device.state" disabled>
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                            <!-- other end -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Device end -->
+
+                <br>
+            </div>
+            <div v-else-if="selectedPage == 'Sensors'">
+                <!-- Sensor -->
+                <br>
+                <br>
+                <br>
+                Sensor data last updated at: {{ sensorDataLastUpdatedAt }}
+                <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
+                    <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
+                        <h2>index: {{i}}</h2>
+                        <h2>sensor_id: {{ sensor.sensor_id }}</h2>
+                        <h2>name: {{ sensor.sensor.name }}</h2>
+                        <h2>type: {{ sensor.sensor.type }}</h2>
+                        <h2>values: {{ sensor.value }}</h2>
+                        <button @click="clickUpdateSensorButton(sensor)">update</button>
+                        <button @click="clickUpdateSensorCalibrationButton(sensor)">Calibration</button>
+                    </div>
+                </div>
+
+                <!-- update sensor modal start -->
+                {{selectedSensor}}
+                <div class="modal-display" v-show="updateSensorModal" @click.self="closeUpdateSensorModal()">
+                    <div class="modal-box">
+                        <div class="update-confirm-box">
+                            <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateSensorModal">
+                            <img src="/static/icon/update.png" class="modal-update-icon">
+                            <h3>Update sensor</h3>
+                            <hr>
+
+                            <div class="modal-form-container">
+                                <div class="cp_iptxt">
+                                    <input class="ef" type="text" placeholder="" v-model="selectedSensor.sensor.name">
+                                    <label>Name</label>
+                                    <span class="focus_line"></span>
+                                </div>
+        
+                                <div class="cp_form">
+                                    <textarea required="required" v-model="selectedSensor.sensor.description" name="error-message-format" cols="20"
+                                        rows="2"></textarea>
+                                    <label class="cp_label" for="textarea">Description</label>
+                                    <i class="bar"></i>
+                                </div>
+                            </div>
+
+                            <div class="modal-select-container">
+                                <label class="select-label">Sensor type</label>
+                                <div class="select-box select-box-simple">
+                                    <select name="sensor_type" v-model="selectedSensor.sensor.type">
+                                        <option value="" hidden>Choose</option>
+                                        <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
+                                            {{ sensorType.sensorType }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <br>
+
+                            <table class="update-form-created-at-table">
+                                <tr>
+                                    <td>crearted at:</td>
+                                    <td>  {{selectedSensor.sensor.created_at}}</td>
+                                </tr>
+                                <tr>
+                                    <td>updated at:</td>
+                                    <td>  {{selectedSensor.sensor.updated_at}}</td>
+                                </tr>
+                            </table>
+
+                            <div style="margin-bottom: 30px;"></div>
+                            
+                        
+                            <div class="button-container">
+                                <div class="modal-cancel-button" @click="closeUpdateSensorModal()">
+                                    <p>Cancel</p>
+                                </div>
+                                <div class="modal-update-button" @click="updateSensor()">
                                     <p>Update</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                </div>
-            </div>
-            <!-- update device modal end -->
+                            <div style="margin-bottom: 100px;"></div>
+                            
+                        </div>
 
-            <!-- Device -->
-            <div class="device-container" v-for="(device, i) of devices" :key="device.device_id">
-                <div class="device-top-box">
-                    <div class="device-id-box">
-                        <p>Device ID: {{ device.device_id }}</p>
-                    </div>
-                    <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateDeviceButton(device)">
-                    <img src="/static/icon/dustbox.png" class="container-delete-icon">
-                </div>
-                <div class="device-middle-box">
-                    <img :src="deviceTypes_temp[device.type].iconUrl" class="device-icon" :class="{'device-icon-feed-pump-responsive': device.type == 'feed_pump'}">
-                    <div class="device-name-box" :class="{'device-name-feed-pump-responsive': device.type == 'feed_pump'}"><p>{{ device.name }}</p></div>
-                    <div v-if="device.type == 'feed_pump'" class="device-control-box device-control-box-responsive-feed-pump">
-                        <!-- feed pump -->
-                        <div class="device-switch-box">
-                            <!-- feed pump select box -->
-                            <div class="device-select-box-box">
-                                <div class="select-box select-box-simple select-box-flex">
-                                    <select v-model="feedPumpsWaterSupplyTime[i]">
-                                        <option v-for="j in [...Array(180).keys()]" :key="j" :value="j">{{j}}</option>
-                                    </select>
-                                </div>
-                                <p class="select-box-flex select-box-second">[s]</p>
-                            </div>
-                            <!-- feed pump select box end -->
-                            <div class="feed-pump-button" @click="supplyWater(device.device_id, feedPumpsWaterSupplyTime[i])">supply</div>
-                        </div>
-                        <!-- feed pump end -->
-                    </div>
-                    <div v-else-if="device.type == 'auto_feeder'" class="device-control-box">
-                        <!-- auto feeder -->
-                        <div class="device-switch-box">
-                            <div class="feed-button" @click="feed(device.device_id)">feed</div>
-                        </div>
-                        <!-- auto feeder end -->
-                    </div>
-                    <div v-else class="device-control-box">
-                        <!-- other -->
-                        <div class="device-switch-box">
-                            <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
-                                <input type="checkbox" class="switch-input" v-model="device.state" disabled>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </div>
-                        <!-- other end -->
                     </div>
                 </div>
-            </div>
-            <!-- Device end -->
+                <!-- update sensor modal end -->
 
-            <br>
-        </div>
-        <div v-else-if="selectedPage == 'Sensors'">
-            <!-- Sensor -->
-            <br>
-            <br>
-            <br>
-            Sensor data last updated at: {{ sensorDataLastUpdatedAt }}
-            <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
-                <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
-                    <h2>index: {{i}}</h2>
-                    <h2>sensor_id: {{ sensor.sensor_id }}</h2>
-                    <h2>name: {{ sensor.sensor.name }}</h2>
-                    <h2>type: {{ sensor.sensor.type }}</h2>
-                    <h2>values: {{ sensor.value }}</h2>
-                    <button @click="clickUpdateSensorButton(sensor)">update</button>
-                    <button @click="clickUpdateSensorCalibrationButton(sensor)">Calibration</button>
-                </div>
-            </div>
-
-            <!-- update sensor modal start -->
-            {{selectedSensor}}
-            <div class="modal-display" v-show="updateSensorModal" @click.self="closeUpdateSensorModal()">
-                <div class="modal-box">
-                    <div class="update-confirm-box">
-                        <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateSensorModal">
-                        <img src="/static/icon/update.png" class="modal-update-icon">
-                        <h3>Update sensor</h3>
-                        <hr>
-
-                        <div class="modal-form-container">
-                            <div class="cp_iptxt">
-                                <input class="ef" type="text" placeholder="" v-model="selectedSensor.sensor.name">
-                                <label>Name</label>
-                                <span class="focus_line"></span>
-                            </div>
-    
-                            <div class="cp_form">
-                                <textarea required="required" v-model="selectedSensor.sensor.description" name="error-message-format" cols="20"
-                                    rows="2"></textarea>
-                                <label class="cp_label" for="textarea">Description</label>
-                                <i class="bar"></i>
-                            </div>
-                        </div>
-
-                        <div class="modal-select-container">
-                            <label class="select-label">Sensor type</label>
-                            <div class="select-box select-box-simple">
-                                <select name="sensor_type" v-model="selectedSensor.sensor.type">
-                                    <option value="" hidden>Choose</option>
-                                    <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
-                                        {{ sensorType.sensorType }}</option>
-                                </select>
-                            </div>
-                        </div>
-
-
-
-                        <br>
-
-                        <table class="update-form-created-at-table">
-                            <tr>
-                                <td>crearted at:</td>
-                                <td>  {{selectedSensor.sensor.created_at}}</td>
-                            </tr>
-                            <tr>
-                                <td>updated at:</td>
-                                <td>  {{selectedSensor.sensor.updated_at}}</td>
-                            </tr>
-                        </table>
-
-                        <div style="margin-bottom: 30px;"></div>
-                        
-                    
-                        <div class="button-container">
-                            <div class="modal-cancel-button" @click="closeUpdateSensorModal()">
-                                <p>Cancel</p>
-                            </div>
-                            <div class="modal-update-button" @click="updateSensor()">
-                                <p>Update</p>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 100px;"></div>
-                        
-                    </div>
-
-                </div>
-            </div>
-            <!-- update sensor modal end -->
-
-            <!-- update sensor calibration modal start -->
-            <div class="modal-display" v-show="updateSensorCalibrationModal" @click.self="closeUpdateSensorCalibrationModal()">
-                <div class="modal-box">
-                    <div class="update-confirm-box">
-                        <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateSensorCalibrationModal()">
-                        <img src="/static/icon/update.png" class="modal-update-icon">
-                        <h3>Update sensor calibration</h3>
-                        <hr>
-                        <div style="margin-bottom: 20px;"></div>
-                        <div class="vertical-scroll-table">
-                            <table class="calibration-form-table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <p>No.</p>
-                                        </th>
-                                        <th>
-                                            <p>Raw</p>
-                                        </th>
-                                        <th>
-                                            <p>Real</p>
-                                        </th>
-                                        <th></th>
+                <!-- update sensor calibration modal start -->
+                <div class="modal-display" v-show="updateSensorCalibrationModal" @click.self="closeUpdateSensorCalibrationModal()">
+                    <div class="modal-box">
+                        <div class="update-confirm-box">
+                            <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateSensorCalibrationModal()">
+                            <img src="/static/icon/update.png" class="modal-update-icon">
+                            <h3>Update sensor calibration</h3>
+                            <hr>
+                            <div style="margin-bottom: 20px;"></div>
+                            <div class="vertical-scroll-table">
+                                <table class="calibration-form-table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <p>No.</p>
+                                            </th>
+                                            <th>
+                                                <p>Raw</p>
+                                            </th>
+                                            <th>
+                                                <p>Real</p>
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tr v-for="(oneCalibrationData, index) of selectedSensor.sensor.calibration" v-bind:value="index">
+                                        <td>
+                                            <p>{{ index + 1 }}</p>
+                                        </td>
+                                        <td>
+                                            <input type="number" v-model.number="oneCalibrationData[0]" class="calibration-number-form">
+                                        </td>
+                                        <td>
+                                            <input type="number" v-model.number="oneCalibrationData[1]" class="calibration-number-form">
+                                        </td>
+                                        <td>
+                                            <img src="/static/icon/delete.png" @click="selectedSensor.sensor.calibration.splice(index, 1)" class="delete-icon">
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tr v-for="(oneCalibrationData, index) of selectedSensor.sensor.calibration" v-bind:value="index">
+                                </table>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px;"></div>
+
+                            <table class="new-calibration-value-table">
+                                <tr>
                                     <td>
-                                        <p>{{ index + 1 }}</p>
+                                        <p>Now</p>
                                     </td>
                                     <td>
-                                        <input type="number" v-model.number="oneCalibrationData[0]" class="calibration-number-form">
+                                        <p class="raw-sensor-value">
+                                            {{selectedSensor.raw_value}}
+                                        </p>
                                     </td>
                                     <td>
-                                        <input type="number" v-model.number="oneCalibrationData[1]" class="calibration-number-form">
+                                        <input type="number" v-model.number="selectedSensorNewCalibrationValue"  class="calibration-number-form more-small">
                                     </td>
                                     <td>
-                                        <img src="/static/icon/delete.png" @click="selectedSensor.sensor.calibration.splice(index, 1)" class="delete-icon">
+                                        <div class="add-new-calibration-button" @click="selectedSensor.sensor.calibration.push([selectedSensor.raw_value, selectedSensorNewCalibrationValue])">
+                                            <p>Add</p>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
+
+                            <div class="calibration-update-button" @click="updateCalibration()">
+                                <p>Update</p>
+                            </div>
+
+
                         </div>
-                        
-                        <div style="margin-bottom: 20px;"></div>
-
-                        <table class="new-calibration-value-table">
-                            <tr>
-                                <td>
-                                    <p>Now</p>
-                                </td>
-                                <td>
-                                    <p class="raw-sensor-value">
-                                        {{selectedSensor.raw_value}}
-                                    </p>
-                                </td>
-                                <td>
-                                    <input type="number" v-model.number="selectedSensorNewCalibrationValue"  class="calibration-number-form more-small">
-                                </td>
-                                <td>
-                                    <div class="add-new-calibration-button" @click="selectedSensor.sensor.calibration.push([selectedSensor.raw_value, selectedSensorNewCalibrationValue])">
-                                        <p>Add</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <div class="calibration-update-button" @click="updateCalibration()">
-                            <p>Update</p>
-                        </div>
-
-
                     </div>
                 </div>
             </div>
-        </div>
-        <div v-else-if="selectedPage == 'Setting'">
-            <!-- Setting -->
-            
-            <div class="setting-form">
-            
-                <h2 class="setting-head">Local</h2>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.TANK_ID">
-                    <label>Tank id</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.CLIENT_ID">
-                    <label>Client id</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.ROOT_PATH">
-                    <label>AMS root path</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.LOCAL_SERVER.PORT">
-                    <label>Local server port</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.NETWORK_CONNECTION_WAIT_TIME">
-                    <label>Network connection wait time [sec]</label>
-                    <span class="focus_line"></span>
-                </div>
-            
-                <br>
-            
-                <h2 class="setting-head">MQTT <img src="/static/icon/cloud_network.png" class="setting-head-icon"></h2>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.MQTT.MQTT_BROKER">
-                    <label>Broker Address</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.MQTT.MQTT_BROKER_PORT">
-                    <label>Broker Port</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.MQTT.MQTT_BROKER_USERNAME">
-                    <label>Broker UserName</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="password" placeholder="" v-model="setting.MQTT.MQTT_BROKER_PASSWORD">
-                    <label>Broker Password</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.MQTT.KEEPALIVE">
-                    <label>Broker Keepalive</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.MQTT.SUBSCRIBER_QOS">
-                    <label>Subscribe QoS</label>
-                    <span class="focus_line"></span>
-                </div>
-            
-                <br>
-            
-                <h2 class="setting-head">Slack <img src="/static/img/slack_icon.png" class="setting-head-icon"></h2>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.WEBHOOK_URL">
-                    <label>Webhook URL</label>
-                    <span class="focus_line"></span>
-                </div>
-            
-                <h3 class="setting-sub-head">Error <img src="/static/icon/error.png" class="setting-sub-head-icon"></h3>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.CHANNEL">
-                    <label>Channel</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.USERNAME">
-                    <label>UserName</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.ICON_EMOJI">
-                    <label>Icon Emoji</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_form">
-                    <textarea required="required" v-model="setting.SLACK.ERROR.MESSAGE_FORMAT" name="error-message-format" cols="30"
-                        rows="4"></textarea>
-                    <label class="cp_label" for="textarea">Message format</label>
-                    <i class="bar"></i>
-                </div>
-
-                <br>
-            
-                <h3 class="setting-sub-head">Notification <img src="/static/icon/notification.png" class="setting-sub-head-icon"></h3>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.CHANNEL">
-                    <label>Channel</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.USERNAME">
-                    <label>UserName</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.ICON_EMOJI">
-                    <label>Icon Emoji</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_form">
-                    <textarea required="required" v-model="setting.SLACK.NOTIFICATION.MESSAGE_FORMAT"
-                        name="notification-message-format" cols="30" rows="4"></textarea>
-                    <label class="cp_label" for="textarea">Message format</label>
-                    <i class="bar"></i>
-                </div>
-            
-                <br>
-            
-                <h2 class="setting-head">Sensing <img src="/static/icon/sensor.png" class="setting-head-icon"></h2>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.SENSOR_DATA_PUBLISH_PERIOD">
-                    <label>Sensor data publish period</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.SENSING_NUMBER">
-                    <label>Sensing number</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.WEB_SENSOR_DATA_POLLING_PERIOD">
-                    <label>Sensor data polling period</label>
-                    <span class="focus_line"></span>
-                </div>
-            
-                <br>
-            
-                <h2 class="setting-head">Device <img src="/static/icon/device.png" class="setting-head-icon"></h2>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
-                    <label>Auto feeder run time</label>
-                    <span class="focus_line"></span>
-                </div>
-                <div class="cp_iptxt">
-                    <input class="ef" type="number" placeholder="" v-model.number="setting.DEVICE.FEED_PUMP_DEFAULT_TIME">
-                    <label>Feed pump default time</label>
-                    <span class="focus_line"></span>
-                </div>
-            
-                <div class="small-space-box"></div>
+            <div v-else-if="selectedPage == 'Setting'">
+                <!-- Setting -->
                 
-                <div class="centering-wrapper">
-                    <div class="setting-update-button" @click="updateSetting()">
-                        <p>Update setting</p>
+                <div class="setting-form">
+                
+                    <h2 class="setting-head">Local</h2>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.TANK_ID">
+                        <label>Tank id</label>
+                        <span class="focus_line"></span>
                     </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.CLIENT_ID">
+                        <label>Client id</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.ROOT_PATH">
+                        <label>AMS root path</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.LOCAL_SERVER.PORT">
+                        <label>Local server port</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.NETWORK_CONNECTION_WAIT_TIME">
+                        <label>Network connection wait time [sec]</label>
+                        <span class="focus_line"></span>
+                    </div>
+                
+                    <br>
+                
+                    <h2 class="setting-head">MQTT <img src="/static/icon/cloud_network.png" class="setting-head-icon"></h2>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.MQTT.MQTT_BROKER">
+                        <label>Broker Address</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.MQTT.MQTT_BROKER_PORT">
+                        <label>Broker Port</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.MQTT.MQTT_BROKER_USERNAME">
+                        <label>Broker UserName</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="password" placeholder="" v-model="setting.MQTT.MQTT_BROKER_PASSWORD">
+                        <label>Broker Password</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.MQTT.KEEPALIVE">
+                        <label>Broker Keepalive</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.MQTT.SUBSCRIBER_QOS">
+                        <label>Subscribe QoS</label>
+                        <span class="focus_line"></span>
+                    </div>
+                
+                    <br>
+                
+                    <h2 class="setting-head">Slack <img src="/static/img/slack_icon.png" class="setting-head-icon"></h2>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.WEBHOOK_URL">
+                        <label>Webhook URL</label>
+                        <span class="focus_line"></span>
+                    </div>
+                
+                    <h3 class="setting-sub-head">Error <img src="/static/icon/error.png" class="setting-sub-head-icon"></h3>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.CHANNEL">
+                        <label>Channel</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.USERNAME">
+                        <label>UserName</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.ERROR.ICON_EMOJI">
+                        <label>Icon Emoji</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_form">
+                        <textarea required="required" v-model="setting.SLACK.ERROR.MESSAGE_FORMAT" name="error-message-format" cols="30"
+                            rows="4"></textarea>
+                        <label class="cp_label" for="textarea">Message format</label>
+                        <i class="bar"></i>
+                    </div>
+
+                    <br>
+                
+                    <h3 class="setting-sub-head">Notification <img src="/static/icon/notification.png" class="setting-sub-head-icon"></h3>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.CHANNEL">
+                        <label>Channel</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.USERNAME">
+                        <label>UserName</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.NOTIFICATION.ICON_EMOJI">
+                        <label>Icon Emoji</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_form">
+                        <textarea required="required" v-model="setting.SLACK.NOTIFICATION.MESSAGE_FORMAT"
+                            name="notification-message-format" cols="30" rows="4"></textarea>
+                        <label class="cp_label" for="textarea">Message format</label>
+                        <i class="bar"></i>
+                    </div>
+                
+                    <br>
+                
+                    <h2 class="setting-head">Sensing <img src="/static/icon/sensor.png" class="setting-head-icon"></h2>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.SENSOR_DATA_PUBLISH_PERIOD">
+                        <label>Sensor data publish period</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.SENSING_NUMBER">
+                        <label>Sensing number</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.SENSING.WEB_SENSOR_DATA_POLLING_PERIOD">
+                        <label>Sensor data polling period</label>
+                        <span class="focus_line"></span>
+                    </div>
+                
+                    <br>
+                
+                    <h2 class="setting-head">Device <img src="/static/icon/device.png" class="setting-head-icon"></h2>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.DEVICE.AUTO_FEEDER_RUN_TIME">
+                        <label>Auto feeder run time</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.DEVICE.FEED_PUMP_DEFAULT_TIME">
+                        <label>Feed pump default time</label>
+                        <span class="focus_line"></span>
+                    </div>
+                
+                    <div class="small-space-box"></div>
+                    
+                    <div class="centering-wrapper">
+                        <div class="setting-update-button" @click="updateSetting()">
+                            <p>Update setting</p>
+                        </div>
+                    </div>
+
+                    <div class="medium-space-box"></div>
+                
                 </div>
-
-                <div class="medium-space-box"></div>
-            
+                
+                </div>
+            <div v-else>
+                <h1>Unknown Page</h1>
             </div>
-            
-            </div>
-        <div v-else>
-            <h1>Unknown Page</h1>
-        </div>
 
+    </main>
     </div>
 
 
@@ -2270,6 +2277,9 @@
             .modal-box {
                 width: 90%;
             }
+            .update-device-responsive {
+                height: 510px;
+            }
         }
 
         .modal-close-x-icon {
@@ -2287,12 +2297,28 @@
 
         .modal-update-icon {
             width: 70px;
+            margin-top: -15px;
             margin-bottom: -20px;
+        }
+        @media screen and (max-width: 480px) {
+            .modal-update-icon {
+                width: 50px;
+            }
+            .modal-title {
+                font-size: 20px;
+                margin-bottom: -1px;
+            }
         }
 
         .update-form-table {
             margin: auto;
         }
+        @media screen and (max-width: 480px) {
+            .update-form-table {
+                width: 95%;
+            }
+        }
+
 
         .update-form-created-at-table {
             margin: auto;
@@ -2319,6 +2345,11 @@
             margin: 30px 15px;
             height: 600px;
         }
+        @media screen and (max-width: 480px) { 
+            .device-update-confirm-box {
+                height: 360px;
+            }
+        }
 
         .device-scroll-box {
             overflow-y: scroll;
@@ -2326,13 +2357,25 @@
             margin-bottom: 20px;
             height: 450px;
         }
+        @media screen and (max-width: 480px) { 
+            .device-scroll-box {
+                margin-top: 20px;
+                height: 270px;
+            }
+        }
 
         .device-update-modal-bottom-container {
             display: flex;
             justify-content: flex-end;
             margin-bottom: 20px;
         }
-
+        @media screen and (max-width: 480px) { 
+            .device-update-modal-bottom-container {
+                flex-wrap: wrap;
+                width: 100%;
+                margin-top: -23px;
+            }
+        }
         .modal-confirm-text {
             font-size: 22px;
         }
@@ -2573,6 +2616,12 @@
         letter-spacing: 1px;
         padding-left: 4em;
         }
+        @media screen and (max-width: 480px) { 
+            .cp_iptxt input[type='text'], .cp_iptxt input[type='number'], .cp_iptxt input[type='password'] {
+                padding-left: 2em;
+            }
+        }
+
         .cp_iptxt input[type='password'] {
             font-weight: 900;
         }
@@ -2792,10 +2841,20 @@
                 font-weight: normal;
                 color: #b3b3b3;
             }
+            @media screen and (max-width: 480px) {
+                .timer-label-box {
+                    width: 90px;
+                }
+            }
             .timer-colon {
                 margin: auto 10px;
                 font-size: 30px;
                 color: #555;
+            }
+            @media screen and (max-width: 480px) {
+                .timer-colon {
+                    margin-top: 17px;
+                }
             }
             .select-box-timer {
                 display: inline-block;
@@ -2807,6 +2866,13 @@
             .modal-form-container {
                 text-align: left;
                 margin-left: 50px;
+            }
+            @media screen and (max-width: 480px) { 
+                .modal-form-container {
+                    width: 97%;
+                    margin-left: 10px;
+                    margin-right: 10px;
+                }
             }
 
             .modal-select-container {
@@ -2821,6 +2887,15 @@
                 margin-left: 40px;
             }
 
+            @media screen and (max-width: 480px) { 
+                .modal-select-container .select-label {
+                    margin-bottom: -20px;
+                }
+                .modal-select-container {
+                    margin-top: -20px;
+            }
+        }
+
     </style>
 
 
@@ -2831,6 +2906,13 @@
         width: 90%;
         margin: 2em auto;
         text-align: center;
+    }
+    @media screen and (max-width: 480px) {
+        /* if use select-box, it affects others select box */
+        .device-update-modal-select-box {
+            margin: 0.8em auto;
+            margin-bottom: 2em;
+        }
     }
 
     .select-box select {
@@ -2873,11 +2955,13 @@
         border-top: 6px solid #666666;
         pointer-events: none;
     }
+    
 
     .select-box.select-box-simple select {
         padding: 8px 38px 8px 8px;
         color: #666666;
     }
+    
 
 </style>
 
