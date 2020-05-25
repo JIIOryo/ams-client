@@ -293,7 +293,7 @@
                             <!-- forms -->
                             <div class="modal-form-container">
                                 <!-- Name -->
-                                <div class="cp_iptxt">
+                                <div class="cp_iptxt form-container-update-device-responsive">
                                     <input class="ef" type="text" placeholder="" v-model="selectedDevice.name">
                                     <label>Name</label>
                                     <span class="focus_line"></span>
@@ -321,7 +321,7 @@
 
                             <!-- Device run type -->
                             <div class="modal-select-container">
-                                <label class="select-label">Device type</label>
+                                <label class="select-label">Device Run type</label>
                                 <div class="select-box select-box-simple">
                                     <select name="run_type" v-model="selectedDevice.run_type">
                                         <option value="" hidden>Choose</option>
@@ -2271,7 +2271,7 @@
                 width: 90%;
             }
             .update-device-responsive {
-                height: 90%;
+                height: 500px;
             }
         }
 
@@ -2591,6 +2591,12 @@
         letter-spacing: 1px;
         padding-left: 4em;
         }
+        @media screen and (max-width: 480px) { 
+            .cp_iptxt input[type='text'], .cp_iptxt input[type='number'], .cp_iptxt input[type='password'] {
+                padding-left: 2em;
+            }
+        }
+
         .cp_iptxt input[type='password'] {
             font-weight: 900;
         }
@@ -2815,6 +2821,11 @@
                 font-size: 30px;
                 color: #555;
             }
+            @media screen and (max-width: 480px) {
+                .timer-colon {
+                    margin-top: 17px;
+                }
+            }
             .select-box-timer {
                 display: inline-block;
             }
@@ -2825,6 +2836,13 @@
             .modal-form-container {
                 text-align: left;
                 margin-left: 50px;
+            }
+            @media screen and (max-width: 480px) { 
+                .modal-form-container {
+                    width: 97%;
+                    margin-left: 10px;
+                    margin-right: 10px;
+                }
             }
 
             .modal-select-container {
@@ -2839,6 +2857,15 @@
                 margin-left: 40px;
             }
 
+            @media screen and (max-width: 480px) { 
+                .modal-select-container .select-label {
+                    margin-bottom: -20px;
+                }
+                .modal-select-container {
+                    margin-top: -20px;
+            }
+        }
+
     </style>
 
 
@@ -2849,6 +2876,12 @@
         width: 90%;
         margin: 2em auto;
         text-align: center;
+    }
+    @media screen and (max-width: 480px) {
+        .select-box {
+            margin: 0.8em auto;
+            margin-bottom: 2em;
+        }
     }
 
     .select-box select {
@@ -2891,11 +2924,13 @@
         border-top: 6px solid #666666;
         pointer-events: none;
     }
+    
 
     .select-box.select-box-simple select {
         padding: 8px 38px 8px 8px;
         color: #666666;
     }
+    
 
 </style>
 
