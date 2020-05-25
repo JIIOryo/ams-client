@@ -7,6 +7,9 @@ from lib.config import get_config_item
 from lib.notification import post_slack_by_type
 from service.reboot import set_init_device_state
 from service.sensor import publish_sensor_data
+from commons.consts import (
+    SLACK_NOTIFICATION_TYPE,
+)
 
 PWD = os.getcwd()
 SUBSCRIBER_PATH = '/'.join([PWD, 'subscriber', 'subscriber.py'])
