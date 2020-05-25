@@ -282,7 +282,7 @@
 
             <!-- update device modal start -->
             <div class="modal-display" v-show="updateModal" @click.self="closeUpdateDeviceModal">
-                <div class="modal-box">
+                <div class="modal-box update-device-responsive">
                     <div class="device-update-confirm-box">
                         <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateDeviceModal">
                         <img src="/static/icon/update.png" class="modal-update-icon">
@@ -2269,6 +2269,9 @@
         @media screen and (max-width: 480px) {
             .modal-box {
                 width: 90%;
+            }
+            .update-device-responsive {
+                height: 90%;
             }
         }
 
