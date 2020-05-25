@@ -316,7 +316,7 @@
                                 <!-- Device type -->
                                 <div class="modal-select-container">
                                     <label class="select-label">Device type</label>
-                                    <div class="select-box select-box-simple">
+                                    <div class="select-box select-box-simple device-update-modal-select-box">
                                         <select name="device_type" v-model="selectedDevice.type">
                                             <option value="" hidden>Choose</option>
                                             <option v-for="deviceType of deviceTypes" v-bind:value="deviceType.deviceType">
@@ -328,7 +328,7 @@
                                 <!-- Device run type -->
                                 <div class="modal-select-container">
                                     <label class="select-label">Device Run type</label>
-                                    <div class="select-box select-box-simple">
+                                    <div class="select-box select-box-simple device-update-modal-select-box">
                                         <select name="run_type" v-model="selectedDevice.run_type">
                                             <option value="" hidden>Choose</option>
                                             <option v-for="deviceRunType of deviceRunTypes" v-bind:value="deviceRunType">{{deviceRunType}}</option>
@@ -348,14 +348,14 @@
                                             </td>
                                             <td>
                                                 <div class="timer-box">
-                                                    <div class="select-box select-box-simple select-box-timer">
+                                                    <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                         <select name="on_hour" v-model="selectedDevice.options.timer.on_hour">
                                                             <option value="" hidden>Choose</option>
                                                             <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
                                                         </select>
                                                     </div>
                                                     <p class="timer-colon">:</p>
-                                                    <div class="select-box select-box-simple select-box-timer">
+                                                    <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                         <select name="on_minite" v-model="selectedDevice.options.timer.on_minute">
                                                             <option value="" hidden>Choose</option>
                                                             <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
@@ -372,14 +372,14 @@
                                             </td>
                                             <td>
                                                 <div class="timer-box">
-                                                    <div class="select-box select-box-simple select-box-timer">
+                                                    <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                         <select name="off_hour" v-model="selectedDevice.options.timer.off_hour">
                                                             <option value="" hidden>Choose</option>
                                                             <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
                                                         </select>
                                                     </div>
                                                     <p class="timer-colon">:</p>
-                                                    <div class="select-box select-box-simple select-box-timer">
+                                                    <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                         <select name="off_minite" v-model="selectedDevice.options.timer.off_minute">
                                                             <option value="" hidden>Choose</option>
                                                             <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
@@ -400,14 +400,14 @@
                                                 </td>
                                                 <td>
                                                     <div class="timer-box">
-                                                        <div class="select-box select-box-simple select-box-timer">
+                                                        <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                             <select name="hour" v-model="timer.hour">
                                                                 <option value="" hidden>Choose</option>
                                                                 <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">{{hour}}</option>
                                                             </select>
                                                         </div>
                                                         <p class="timer-colon">:</p>
-                                                        <div class="select-box select-box-simple select-box-timer">
+                                                        <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
                                                             <select name="minite" v-model="timer.minute">
                                                                 <option value="" hidden>Choose</option>
                                                                 <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">{{minute}}</option>
@@ -2908,7 +2908,8 @@
         text-align: center;
     }
     @media screen and (max-width: 480px) {
-        .select-box {
+        /* if use select-box, it affects others select box */
+        .device-update-modal-select-box {
             margin: 0.8em auto;
             margin-bottom: 2em;
         }
