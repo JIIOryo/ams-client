@@ -1436,19 +1436,26 @@
             },
             watch: {
                 'selectedDevice.run_type': function (val, oldVal) {
-                    if ((oldVal == "daily" || oldVal == "continuous") && val == "discreate") {
-                        this.selectedDevice.options.timer = [];
+                    if (!this.deviceRunTypes.includes(oldVal)) {
+                        return;
                     }
-                    if ((oldVal == "discreate" || oldVal == "continuous") && val == "daily") {
-                        this.selectedDevice.options.timer = {
-                            on_hour: 10,
-                            on_minute: 0,
-                            off_hour: 19,
-                            off_minute: 0,
-                        };
-                    }
-                    if (val == "continuous") {
-                        this.selectedDevice.options = {};
+                    switch (val) {
+                        case "discreate":
+                            this.selectedDevice.options = {
+                                timer: [],
+                            }
+                            break;
+                        case "daily":
+                            this.selectedDevice.options.timer = {
+                                on_hour: 10,
+                                on_minute: 0,
+                                off_hour: 19,
+                                off_minute: 0,
+                            };
+                            break;
+                        case "continuous":
+                            this.selectedDevice.options = {};
+                            break;
                     }
                 }
             },
