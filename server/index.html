@@ -299,7 +299,7 @@
                                 <!-- forms -->
                                 <div class="modal-form-container">
                                     <!-- Name -->
-                                    <div class="cp_iptxt form-container-update-device-responsive">
+                                    <div class="cp_iptxt">
                                         <input class="ef" type="text" placeholder="" v-model="selectedDevice.name">
                                         <label>Name</label>
                                         <span class="focus_line"></span>
@@ -2313,6 +2313,12 @@
         .update-form-table {
             margin: auto;
         }
+        @media screen and (max-width: 480px) {
+            .update-form-table {
+                width: 95%;
+            }
+        }
+
 
         .update-form-created-at-table {
             margin: auto;
@@ -2834,6 +2840,11 @@
                 font-size: 14px;
                 font-weight: normal;
                 color: #b3b3b3;
+            }
+            @media screen and (max-width: 480px) {
+                .timer-label-box {
+                    width: 90px;
+                }
             }
             .timer-colon {
                 margin: auto 10px;
