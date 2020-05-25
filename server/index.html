@@ -2278,7 +2278,7 @@
                 width: 90%;
             }
             .update-device-responsive {
-                height: 500px;
+                height: 510px;
             }
         }
 
@@ -2339,6 +2339,11 @@
             margin: 30px 15px;
             height: 600px;
         }
+        @media screen and (max-width: 480px) { 
+            .device-update-confirm-box {
+                height: 360px;
+            }
+        }
 
         .device-scroll-box {
             overflow-y: scroll;
@@ -2348,7 +2353,8 @@
         }
         @media screen and (max-width: 480px) { 
             .device-scroll-box {
-                height: 290px;
+                margin-top: 20px;
+                height: 270px;
             }
         }
 
@@ -2357,7 +2363,13 @@
             justify-content: flex-end;
             margin-bottom: 20px;
         }
-
+        @media screen and (max-width: 480px) { 
+            .device-update-modal-bottom-container {
+                flex-wrap: wrap;
+                width: 100%;
+                margin-top: -23px;
+            }
+        }
         .modal-confirm-text {
             font-size: 22px;
         }
