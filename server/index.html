@@ -522,6 +522,8 @@
                 <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
                     <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
                         <h2>index: {{i}}</h2>
+                        <img :src="sensorTypes_temp[sensor.sensor.type].iconUrl" class="device-icon">
+                        {{sensorTypes_temp[sensor.sensor.type].iconUrl}}
                         <h2>sensor_id: {{ sensor.sensor_id }}</h2>
                         <h2>name: {{ sensor.sensor.name }}</h2>
                         <h2>type: {{ sensor.sensor.type }}</h2>
@@ -1290,6 +1292,44 @@
                         sensorType: "ph"
                     },
                 ],
+                sensorTypes_temp: {
+                    water_temperature: {
+                        iconUrl: "/static/icon/sensor/temperature.png",
+                        unit: "℃",
+                    },
+                    illuminance: {
+                        iconUrl: "/static/icon/sensor/light_level.png",
+                        unit: "",
+                    },
+                    water_level: {
+                        iconUrl: "/static/icon/sensor/water_level.png",
+                        unit: "cm",
+                    },
+                    sub_tank_water_level: {
+                        iconUrl: "/static/icon/sensor/water_level.png",
+                        unit: "cm",
+                    },
+                    room_temperature: {
+                        iconUrl: "/static/icon/sensor/temperature.png",
+                        unit: "℃",
+                    },
+                    room_humidity: {
+                        iconUrl: "/static/icon/sensor/humidity.png",
+                        unit: "%",
+                    },
+                    salinity: {
+                        iconUrl: "/static/icon/sensor/salinity.png",
+                        unit: "",
+                    },
+                    water_flow_rate: {
+                        iconUrl: "/static/icon/sensor/water_flow_rate.png",
+                        unit: "",
+                    },
+                    ph: {
+                        iconUrl: "/static/icon/sensor/ph.png",
+                        unit: "",
+                    },
+                },
                 deviceRunTypes: [
                     "daily",
                     "discreate",
