@@ -527,7 +527,7 @@
                         <h2>sensor_id: {{ sensor.sensor_id }}</h2>
                         <h2>name: {{ sensor.sensor.name }}</h2>
                         <h2>type: {{ sensor.sensor.type }}</h2>
-                        <h2>values: {{ sensor.value }}</h2>
+                        <h2>values: {{ sensor.value }}{{sensorTypes_temp[sensor.sensor.type].unit}}</h2>
                         <button @click="clickUpdateSensorButton(sensor)">update</button>
                         <button @click="clickUpdateSensorCalibrationButton(sensor)">Calibration</button>
                     </div>
@@ -1062,11 +1062,21 @@
 
 
 
+
         .sensor-container {
             margin: auto;
-            width: 80%;
-            background: #EFFFFF;
+            margin-bottom: 40px;
+            width: 700px;
+            background: #FFFFFF;
+            box-shadow: 10px 10px 20px 0 rgba(60, 194, 235, 0.2);
             border-radius: 20px;
+            border: 1px solid rgba(60, 194, 235, 0.3);
+        }
+        @media screen and (max-width: 480px) {
+            .sensor-container {
+                width: 92%;
+                border-radius: 10px;
+            }
         }
 
 
