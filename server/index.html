@@ -269,15 +269,18 @@
                         <div class="small-space-box"></div>
                         <p class="modal-confirm-text">Are you sure to reboot AMS?</p>
                         <div class="small-space-box"></div>
-                        <div class="button-container">
-                            <div class="modal-cancel-button" @click="rebootConfirm = false">
-                                <p>Cancel</p>
+                        <div class="button-container button-container-right">
+                            <div class="button-wrapper">
+                                <div class="modal-cancel-button" @click="rebootConfirm = false">
+                                    <p>Cancel</p>
+                                </div>
                             </div>
-                            <div class="dangerous-button" @click="reboot()">
-                                <p>Reboot</p>
+                            <div class="button-wrapper">
+                                <div class="dangerous-button" @click="reboot()">
+                                    <p>Reboot</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="small-medium-space-box"></div>
                         
                     </div>
                 </div>
@@ -2459,6 +2462,7 @@
 
     <style>
 
+        /* button common */
         .button-container {
             margin: 10px;
             display: flex;
@@ -2466,6 +2470,10 @@
 
         .button-wrapper {
             margin-right: 20px;
+        }
+
+        .button-container-right {
+            justify-content: flex-end;
         }
 
         /* cancel button */
