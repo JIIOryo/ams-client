@@ -529,16 +529,11 @@
                             <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateSensorButton(sensor)">
                             <img src="/static/icon/dustbox.png" class="container-delete-icon">
                         </div>
-
-                        <h2>index: {{i}}</h2>
-                        <img :src="sensorTypes_temp[sensor.sensor.type].iconUrl" class="device-icon">
-                        {{sensorTypes_temp[sensor.sensor.type].iconUrl}}
-                        <h2>sensor_id: {{ sensor.sensor_id }}</h2>
-                        <h2>name: {{ sensor.sensor.name }}</h2>
-                        <h2>type: {{ sensor.sensor.type }}</h2>
-                        <h2>values: {{ sensor.value }}{{sensorTypes_temp[sensor.sensor.type].unit}}</h2>
-                        <button @click="clickUpdateSensorCalibrationButton(sensor)">Calibration</button>
-
+                        <div class="sensor-middle-box">
+                            <img :src="sensorTypes_temp[sensor.sensor.type].iconUrl" class="sensor-icon">
+                            <h2>name: {{ sensor.sensor.name }}</h2>
+                            <h2>{{ sensor.value }}{{sensorTypes_temp[sensor.sensor.type].unit}}</h2>
+                        </div>
                     </div>
                 </div>
 
@@ -1100,6 +1095,26 @@
             left: 10px;
             color: #999;
             font-size: 20px;
+        }
+
+        .sensor-middle-box {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 4px;
+        }
+
+        .sensor-icon {
+            height: 80px;
+            margin: 6px;
+            margin-left: 30px;
+            margin-bottom: 10px;
+        }
+        @media screen and (max-width: 480px) {
+            .sensor-icon {
+                height: 40px;
+                margin-left: 20px;
+            }
         }
 
 
