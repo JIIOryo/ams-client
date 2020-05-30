@@ -218,10 +218,10 @@
                     </div>
                 </div>
                 <nav class="pc-header-bottom" v-if="!isSmallDisplay">
-                    <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
-                    <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'" v-bind:class="{ 'active-sensor' : selectedPage == 'Sensors' }"><p>Sensor</p></div>
-                    <div class="header-nav header-nav-camera" @click="selectedPage = 'Camera'" v-bind:class="{ 'active-camera' : selectedPage == 'Camera' }"><p>Camera</p></div>
-                    <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'" v-bind:class="{ 'active-setting' : selectedPage == 'Setting' }"><p>Setting</p></div>
+                    <div class="header-nav header-nav-device" @click="selectedPage = 'Devices'; selectedPageStatus = 'main'" v-bind:class="{ 'active-device' : selectedPage == 'Devices' }"><p>Device</p></div>
+                    <div class="header-nav header-nav-sensor" @click="selectedPage = 'Sensors'; selectedPageStatus = 'main'" v-bind:class="{ 'active-sensor' : selectedPage == 'Sensors' }"><p>Sensor</p></div>
+                    <div class="header-nav header-nav-camera" @click="selectedPage = 'Camera'; selectedPageStatus = 'main'" v-bind:class="{ 'active-camera' : selectedPage == 'Camera' }"><p>Camera</p></div>
+                    <div class="header-nav header-nav-setting" @click="selectedPage = 'Setting'; selectedPageStatus = 'main'" v-bind:class="{ 'active-setting' : selectedPage == 'Setting' }"><p>Setting</p></div>
                 </nav>
             </header>
             <!-- header end -->
@@ -231,10 +231,10 @@
                 <div v-if="hamburgerMenuShow" class="hamburger-menu-content-wrapper">
                     <nav class="hamburger-menu-content">
                         <ul>
-                            <li @click="selectedPage = 'Devices'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-device"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_device.png"><p>Device</p></li>
-                            <li @click="selectedPage = 'Sensors'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-sensor"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_sensor.png"><p>Sensor</p></li>
-                            <li @click="selectedPage = 'Camera'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-camera"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_camera.png"><p>Camera</p></li>
-                            <li @click="selectedPage = 'Setting'; hamburgerMenuShow = !hamburgerMenuShow" class="hamburger-menu-text-setting"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_setting.png"><p>Setting</p></li>
+                            <li @click="selectedPage = 'Devices'; hamburgerMenuShow = !hamburgerMenuShow; selectedPageStatus = 'main'" class="hamburger-menu-text-device"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_device.png"><p>Device</p></li>
+                            <li @click="selectedPage = 'Sensors'; hamburgerMenuShow = !hamburgerMenuShow; selectedPageStatus = 'main'" class="hamburger-menu-text-sensor"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_sensor.png"><p>Sensor</p></li>
+                            <li @click="selectedPage = 'Camera'; hamburgerMenuShow = !hamburgerMenuShow; selectedPageStatus = 'main'" class="hamburger-menu-text-camera"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_camera.png"><p>Camera</p></li>
+                            <li @click="selectedPage = 'Setting'; hamburgerMenuShow = !hamburgerMenuShow; selectedPageStatus = 'main'" class="hamburger-menu-text-setting"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_setting.png"><p>Setting</p></li>
                             <li @click="hamburgerMenuShow = !hamburgerMenuShow; rebootConfirm = true" class="hamburger-menu-text-reboot"><img class="hamburger-menu-content-icon" src="/static/icon/nav/nav_reboot.png"><p>Reboot</p></li>
                         </ul>
                     </nav>
@@ -460,62 +460,77 @@
                 </div>
                 <!-- update device modal end -->
 
-                <!-- Device -->
-                <div class="device-container" v-for="(device, i) of devices" :key="device.device_id">
-                    <div class="device-top-box">
-                        <div class="device-id-box">
-                            <p>Device ID: {{ device.device_id }}</p>
-                        </div>
-                        <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateDeviceButton(device)">
-                        <img src="/static/icon/dustbox.png" class="container-delete-icon">
-                    </div>
-                    <div class="device-middle-box">
-                        <img :src="deviceTypes_temp[device.type].iconUrl" class="device-icon" :class="{'device-icon-feed-pump-responsive': device.type == 'feed_pump'}">
-                        <div class="device-name-box" :class="{'device-name-feed-pump-responsive': device.type == 'feed_pump'}"><p>{{ device.name }}</p></div>
-                        <div v-if="device.type == 'feed_pump'" class="device-control-box device-control-box-responsive-feed-pump">
-                            <!-- feed pump -->
-                            <div class="device-switch-box">
-                                <!-- feed pump select box -->
-                                <div class="device-select-box-box">
-                                    <div class="select-box select-box-simple select-box-flex">
-                                        <select v-model="feedPumpsWaterSupplyTime[i]">
-                                            <option v-for="j in [...Array(180).keys()]" :key="j" :value="j">{{j}}</option>
-                                        </select>
-                                    </div>
-                                    <p class="select-box-flex select-box-second">[s]</p>
-                                </div>
-                                <!-- feed pump select box end -->
-                                <div class="feed-pump-button" @click="supplyWater(device.device_id, feedPumpsWaterSupplyTime[i])">supply</div>
-                            </div>
-                            <!-- feed pump end -->
-                        </div>
-                        <div v-else-if="device.type == 'auto_feeder'" class="device-control-box">
-                            <!-- auto feeder -->
-                            <div class="device-switch-box">
-                                <div class="feed-button" @click="feed(device.device_id)">feed</div>
-                            </div>
-                            <!-- auto feeder end -->
-                        </div>
-                        <div v-else class="device-control-box">
-                            <!-- other -->
-                            <div class="device-switch-box">
-                                <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
-                                    <input type="checkbox" class="switch-input" v-model="device.state" disabled>
-                                    <span class="switch-label" data-on="On" data-off="Off"></span>
-                                    <span class="switch-handle"></span>
-                                </label>
-                            </div>
-                            <!-- other end -->
-                        </div>
-                    </div>
-                </div>
-                <!-- Device end -->
 
-                <br>
+
+
+
+                <!-- Device -->
+
+                <!-- Device main page -->
+                <div v-if="selectedPageStatus == 'main'">
+
+                    <div @click="selectedPageStatus = 'setting'">
+                        Button
+                    </div>
+
+                    <div class="device-container" v-for="(device, i) of devices" :key="device.device_id">
+                        <div class="device-top-box">
+                            <div class="device-id-box">
+                                <p>Device ID: {{ device.device_id }}</p>
+                            </div>
+                            <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateDeviceButton(device)">
+                            <img src="/static/icon/dustbox.png" class="container-delete-icon">
+                        </div>
+                        <div class="device-middle-box">
+                            <img :src="deviceTypes_temp[device.type].iconUrl" class="device-icon" :class="{'device-icon-feed-pump-responsive': device.type == 'feed_pump'}">
+                            <div class="device-name-box" :class="{'device-name-feed-pump-responsive': device.type == 'feed_pump'}"><p>{{ device.name }}</p></div>
+                            <div v-if="device.type == 'feed_pump'" class="device-control-box device-control-box-responsive-feed-pump">
+                                <!-- feed pump -->
+                                <div class="device-switch-box">
+                                    <!-- feed pump select box -->
+                                    <div class="device-select-box-box">
+                                        <div class="select-box select-box-simple select-box-flex">
+                                            <select v-model="feedPumpsWaterSupplyTime[i]">
+                                                <option v-for="j in [...Array(180).keys()]" :key="j" :value="j">{{j}}</option>
+                                            </select>
+                                        </div>
+                                        <p class="select-box-flex select-box-second">[s]</p>
+                                    </div>
+                                    <!-- feed pump select box end -->
+                                    <div class="feed-pump-button" @click="supplyWater(device.device_id, feedPumpsWaterSupplyTime[i])">supply</div>
+                                </div>
+                                <!-- feed pump end -->
+                            </div>
+                            <div v-else-if="device.type == 'auto_feeder'" class="device-control-box">
+                                <!-- auto feeder -->
+                                <div class="device-switch-box">
+                                    <div class="feed-button" @click="feed(device.device_id)">feed</div>
+                                </div>
+                                <!-- auto feeder end -->
+                            </div>
+                            <div v-else class="device-control-box">
+                                <!-- other -->
+                                <div class="device-switch-box">
+                                    <label class="switch" @click="updateDeviceState(device.device_id, !device.state)">
+                                        <input type="checkbox" class="switch-input" v-model="device.state" disabled>
+                                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                                <!-- other end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Device end -->
+
+                    <br>
+                </div>
+                <div v-else-if="selectedPageStatus =='setting'">
+                    <h1>This is setting page</h1>
+                </div>
             </div>
             <div v-else-if="selectedPage == 'Sensors'">
-
-
+                <!-- --------------------------------------------------------------------- -->
                 <!-- Sensor -->
                 <div class="sensor-data-last-updated-at-text-box">
                     <p class="sensor-data-last-updated-at-text">
@@ -1329,6 +1344,7 @@
                 isSmallDisplay: false,
                 hamburgerMenuShow: false,
                 selectedPage: "Devices",
+                selectedPageStatus: "main",
                 hasError: false,
                 loading: false,
                 updateModal: false,
