@@ -516,9 +516,11 @@
             <div v-else-if="selectedPage == 'Sensors'">
                 <!-- Sensor -->
                 <br>
-                <br>
-                <br>
-                Sensor data last updated at: {{ sensorDataLastUpdatedAt }}
+                <div>
+                    <p class="sensor-data-last-updated-at-text">
+                        Sensor data last updated at: {{ sensorDataLastUpdatedAt }}
+                    </p>
+                </div>
                 <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
                     <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
                         <div class="sensor-top-box">
@@ -531,8 +533,16 @@
                         </div>
                         <div class="sensor-middle-box">
                             <img :src="sensorTypes_temp[sensor.sensor.type].iconUrl" class="sensor-icon">
-                            <h2>name: {{ sensor.sensor.name }}</h2>
-                            <h2>{{ sensor.value }}{{sensorTypes_temp[sensor.sensor.type].unit}}</h2>
+                            <div class="sensor-name-box">
+                                <p>{{ sensor.sensor.name }}</p>
+                            </div>
+                            <div class="sensor-value-box">
+                                <p class="sensor-value-unit-box">
+                                    <span class="sensor-value">{{ sensor.value }}</span>
+                                    <span class="sensor-unit">{{sensorTypes_temp[sensor.sensor.type].unit}}</span>                                    
+                                </p>
+                            </div>
+                        
                         </div>
                     </div>
                 </div>
@@ -1114,6 +1124,60 @@
             .sensor-icon {
                 height: 40px;
                 margin-left: 20px;
+            }
+        }
+
+        .sensor-name-box {
+            margin: auto;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 45px;
+            color: rgb(158, 61, 0);
+            text-shadow: 
+                0px 0px 5px #ffffff,
+                0px 0px 20px #1A229C11,
+                0px 0px 40px #1A229C11,
+                0px 0px 60px #e07f0055,
+                0px 0px 80px #e07f0055;
+        }
+        @media screen and (max-width: 480px) {
+            .sensor-name-box {
+                margin-top: 17px;
+                font-size: 27px;
+            }
+        }
+
+        .sensor-value-box {
+            width: 200px;
+            text-align: center;
+        }
+        .sensor-value-unit-box {
+            line-height: 100px;
+            color: rgb(47, 188, 0);
+        }
+        .sensor-value {
+            font-size: 45px;
+        }
+        .sensor-unit {
+            font-size: 20px;
+        }
+
+        @media screen and (max-width: 480px) {
+            .sensor-value-box {
+                width: 100px;
+                text-align: center;
+            }
+
+            .sensor-value-unit-box {
+                line-height: 50px;
+                color: rgb(47, 188, 0);
+            }
+
+            .sensor-value {
+                font-size: 24px;
+            }
+            .sensor-unit {
+                font-size: 12px;
             }
         }
 
