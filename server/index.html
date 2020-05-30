@@ -514,27 +514,40 @@
                 <br>
             </div>
             <div v-else-if="selectedPage == 'Sensors'">
+
+
                 <!-- Sensor -->
-                <br>
-                <br>
-                <br>
-                Sensor data last updated at: {{ sensorDataLastUpdatedAt }}
+                <div class="sensor-data-last-updated-at-text-box">
+                    <p class="sensor-data-last-updated-at-text">
+                        Sensor data are updated at: {{ sensorDataLastUpdatedAt }}
+                    </p>
+                </div>
                 <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
                     <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
-                        <h2>index: {{i}}</h2>
-                        <img :src="sensorTypes_temp[sensor.sensor.type].iconUrl" class="device-icon">
-                        {{sensorTypes_temp[sensor.sensor.type].iconUrl}}
-                        <h2>sensor_id: {{ sensor.sensor_id }}</h2>
-                        <h2>name: {{ sensor.sensor.name }}</h2>
-                        <h2>type: {{ sensor.sensor.type }}</h2>
-                        <h2>values: {{ sensor.value }}</h2>
-                        <button @click="clickUpdateSensorButton(sensor)">update</button>
-                        <button @click="clickUpdateSensorCalibrationButton(sensor)">Calibration</button>
+                        <div class="sensor-top-box">
+                            <div class="sensor-id-box">
+                                <p>Sensor ID: {{ sensor.sensor_id }}</p>
+                            </div>
+                            <img src="/static/icon/calibration.png" class="container-update-icon" @click="clickUpdateSensorCalibrationButton(sensor)">
+                            <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateSensorButton(sensor)">
+                            <img src="/static/icon/dustbox.png" class="container-delete-icon">
+                        </div>
+                        <div class="sensor-middle-box">
+                            <img :src="sensorTypes_temp[sensor.sensor.type].iconUrl" class="sensor-icon">
+                            <div class="sensor-name-box">
+                                <p>{{ sensor.sensor.name }}</p>
+                            </div>
+                            <div class="sensor-value-box">
+                                <p class="sensor-value-unit-box">
+                                    <span class="sensor-value">{{ sensor.value }}</span>
+                                    <span class="sensor-unit">{{sensorTypes_temp[sensor.sensor.type].unit}}</span>                                    
+                                </p>
+                            </div> 
+                        </div>
                     </div>
                 </div>
 
                 <!-- update sensor modal start -->
-                {{selectedSensor}}
                 <div class="modal-display" v-show="updateSensorModal" @click.self="closeUpdateSensorModal()">
                     <div class="modal-box">
                         <div class="update-confirm-box">
@@ -1061,12 +1074,128 @@
 
 
 
+        /* sensor */
+
+        .sensor-data-last-updated-at-text-box {
+            text-align: center;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+        .sensor-data-last-updated-at-text {
+            font-size: 20px;
+            color: #555;
+        }
+        @media screen and (max-width: 480px) {
+            .sensor-data-last-updated-at-text-box {
+                margin-top: -15px;
+            }
+            .sensor-data-last-updated-at-text {
+                font-size: 15px;
+            }
+        }
 
         .sensor-container {
             margin: auto;
-            width: 80%;
-            background: #EFFFFF;
+            margin-bottom: 40px;
+            width: 700px;
+            background: #FFFFFF;
+            box-shadow: 10px 10px 20px 0 #e07f0033;
             border-radius: 20px;
+            border: 1px solid #e07f0055;
+        }
+        @media screen and (max-width: 480px) {
+            .sensor-container {
+                width: 92%;
+                border-radius: 10px;
+            }
+        }
+
+        .sensor-top-box {
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+            margin-top: 4px;
+        }
+        .sensor-id-box {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #999;
+            font-size: 20px;
+        }
+
+        .sensor-middle-box {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 4px;
+        }
+
+        .sensor-icon {
+            height: 80px;
+            margin: 6px;
+            margin-left: 30px;
+            margin-bottom: 10px;
+        }
+        @media screen and (max-width: 480px) {
+            .sensor-icon {
+                height: 40px;
+                margin-left: 20px;
+            }
+        }
+
+        .sensor-name-box {
+            margin: auto;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 45px;
+            color: rgb(158, 61, 0);
+            text-shadow: 
+                0px 0px 5px #ffffff,
+                0px 0px 20px #1A229C11,
+                0px 0px 40px #1A229C11,
+                0px 0px 60px #e07f0055,
+                0px 0px 80px #e07f0055;
+        }
+        @media screen and (max-width: 480px) {
+            .sensor-name-box {
+                margin-top: 17px;
+                font-size: 27px;
+            }
+        }
+
+        .sensor-value-box {
+            width: 200px;
+            text-align: center;
+        }
+        .sensor-value-unit-box {
+            line-height: 100px;
+            color: rgb(47, 188, 0);
+        }
+        .sensor-value {
+            font-size: 45px;
+        }
+        .sensor-unit {
+            font-size: 20px;
+        }
+
+        @media screen and (max-width: 480px) {
+            .sensor-value-box {
+                width: 100px;
+                text-align: center;
+            }
+
+            .sensor-value-unit-box {
+                line-height: 50px;
+                color: rgb(47, 188, 0);
+            }
+
+            .sensor-value {
+                font-size: 24px;
+            }
+            .sensor-unit {
+                font-size: 12px;
+            }
         }
 
 
