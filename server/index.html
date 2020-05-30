@@ -555,62 +555,61 @@
                             <img src="/static/icon/update.png" class="modal-update-icon">
                             <h3>Update sensor</h3>
                             <hr>
+                            <div class="sensor-scroll-box">
 
-                            <div class="modal-form-container">
-                                <div class="cp_iptxt">
-                                    <input class="ef" type="text" placeholder="" v-model="selectedSensor.sensor.name">
-                                    <label>Name</label>
-                                    <span class="focus_line"></span>
+                                <div class="modal-form-container">
+                                    <div class="cp_iptxt">
+                                        <input class="ef" type="text" placeholder="" v-model="selectedSensor.sensor.name">
+                                        <label>Name</label>
+                                        <span class="focus_line"></span>
+                                    </div>
+            
+                                    <div class="cp_form">
+                                        <textarea required="required" v-model="selectedSensor.sensor.description" name="error-message-format" cols="20"
+                                            rows="2"></textarea>
+                                        <label class="cp_label" for="textarea">Description</label>
+                                        <i class="bar"></i>
+                                    </div>
                                 </div>
-        
-                                <div class="cp_form">
-                                    <textarea required="required" v-model="selectedSensor.sensor.description" name="error-message-format" cols="20"
-                                        rows="2"></textarea>
-                                    <label class="cp_label" for="textarea">Description</label>
-                                    <i class="bar"></i>
-                                </div>
-                            </div>
 
-                            <div class="modal-select-container">
-                                <label class="select-label">Sensor type</label>
-                                <div class="select-box select-box-simple">
-                                    <select name="sensor_type" v-model="selectedSensor.sensor.type">
-                                        <option value="" hidden>Choose</option>
-                                        <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
-                                            {{ sensorType.sensorType }}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-
-
-                            <br>
-
-                            <table class="update-form-created-at-table">
-                                <tr>
-                                    <td>crearted at:</td>
-                                    <td>  {{selectedSensor.sensor.created_at}}</td>
-                                </tr>
-                                <tr>
-                                    <td>updated at:</td>
-                                    <td>  {{selectedSensor.sensor.updated_at}}</td>
-                                </tr>
-                            </table>
-
-                            <div style="margin-bottom: 30px;"></div>
-                            
-                        
-                            <div class="button-container">
-                                <div class="modal-cancel-button" @click="closeUpdateSensorModal()">
-                                    <p>Cancel</p>
-                                </div>
-                                <div class="modal-update-button" @click="updateSensor()">
-                                    <p>Update</p>
+                                <div class="modal-select-container">
+                                    <label class="select-label">Sensor type</label>
+                                    <div class="select-box select-box-simple device-update-modal-select-box">
+                                        <select name="sensor_type" v-model="selectedSensor.sensor.type">
+                                            <option value="" hidden>Choose</option>
+                                            <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
+                                                {{ sensorType.sensorType }}</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div style="margin-bottom: 100px;"></div>
-                            
+
+                            <div class="device-update-modal-bottom-container">
+                                <table class="update-form-created-at-table">
+                                    <tr>
+                                        <td>crearted at:</td>
+                                        <td>{{selectedSensor.sensor.created_at}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>updated at:</td>
+                                        <td>{{selectedSensor.sensor.updated_at}}</td>
+                                    </tr>
+                                </table>
+                                <div class="button-container">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="closeUpdateSensorModal()">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="modal-update-button" @click="updateSensor()">
+                                            <p>Update</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -1195,6 +1194,20 @@
             }
             .sensor-unit {
                 font-size: 12px;
+            }
+        }
+
+
+        .sensor-scroll-box {
+            overflow-y: scroll;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            height: 400px;
+        }
+        @media screen and (max-width: 480px) { 
+            .sensor-scroll-box {
+                margin-top: 20px;
+                height: 270px;
             }
         }
 
