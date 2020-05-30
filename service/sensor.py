@@ -82,7 +82,7 @@ def publish_sensor_data() -> None:
             continue
 
         # Least squares coefficients
-        if sensor['sensor']['calibration']:
+        if len(sensor['sensor']['calibration']) > 1:
             a, b = least_squares( sensor['sensor']['calibration'] )
         else:
             # use raw value
