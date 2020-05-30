@@ -469,8 +469,10 @@
                 <!-- Device main page -->
                 <div v-if="selectedPageStatus == 'main'">
 
-                    <div @click="selectedPageStatus = 'setting'">
-                        Button
+                    <div @click="selectedPageStatus = 'setting'" class="devices-setting-button">
+                        <p>
+                            Devices Setting
+                        </p>
                     </div>
 
                     <div class="device-container" v-for="(device, i) of devices" :key="device.device_id">
@@ -2816,6 +2818,26 @@
         .calibration-update-button p {
             font-size: 1.2em;
             margin: 5px 0px;
+        }
+
+        .devices-setting-button {
+            width: 700px;
+            height: 50px;
+            margin: auto;
+            margin-bottom: 30px;
+            background: #1A229CAA;
+            border-radius: 25px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 50px;
+            box-shadow: 5px 5px 15px 0 #1A229CAA;
+            font-size: 30px;
+            /* color: #1A229C; */
+            color: white;
+            transition: .2s;
+        }
+        .devices-setting-button:hover{
+            background: #1A229C88;
         }
 
         
