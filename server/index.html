@@ -514,11 +514,12 @@
                 <br>
             </div>
             <div v-else-if="selectedPage == 'Sensors'">
+
+
                 <!-- Sensor -->
-                <br>
-                <div>
+                <div class="sensor-data-last-updated-at-text-box">
                     <p class="sensor-data-last-updated-at-text">
-                        Sensor data last updated at: {{ sensorDataLastUpdatedAt }}
+                        Sensor data are updated at: {{ sensorDataLastUpdatedAt }}
                     </p>
                 </div>
                 <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
@@ -541,14 +542,12 @@
                                     <span class="sensor-value">{{ sensor.value }}</span>
                                     <span class="sensor-unit">{{sensorTypes_temp[sensor.sensor.type].unit}}</span>                                    
                                 </p>
-                            </div>
-                        
+                            </div> 
                         </div>
                     </div>
                 </div>
 
                 <!-- update sensor modal start -->
-                {{selectedSensor}}
                 <div class="modal-display" v-show="updateSensorModal" @click.self="closeUpdateSensorModal()">
                     <div class="modal-box">
                         <div class="update-confirm-box">
@@ -1075,7 +1074,25 @@
 
 
 
+        /* sensor */
 
+        .sensor-data-last-updated-at-text-box {
+            text-align: center;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+        .sensor-data-last-updated-at-text {
+            font-size: 20px;
+            color: #555;
+        }
+        @media screen and (max-width: 480px) {
+            .sensor-data-last-updated-at-text-box {
+                margin-top: -15px;
+            }
+            .sensor-data-last-updated-at-text {
+                font-size: 15px;
+            }
+        }
 
         .sensor-container {
             margin: auto;
