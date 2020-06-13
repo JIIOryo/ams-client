@@ -528,6 +528,13 @@
                     <br>
                 </div>
                 <div v-else-if="selectedPageStatus =='setting'">
+                    <!-- Device setting page -->
+                    <div @click="selectedPageStatus = 'main'" class="devices-setting-button">
+                        <p>
+                            back
+                        </p>
+                    </div>
+
                     <h1>This is setting page</h1>
                 </div>
             </div>
