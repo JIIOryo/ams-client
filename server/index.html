@@ -534,7 +534,6 @@
                             back
                         </p>
                     </div>
-                    {{ devicesSetting }}
                     <div class="devices-setting-table-box">
                         <table border="1" class="devices-setting-table">
                             <tr>
@@ -547,15 +546,18 @@
                             <tr v-for="deviceSetting of devicesSetting" v-bind:value="deviceSetting.device_id">
                                 <td>{{ deviceSetting.device_id }}</td>
                                 <td>{{ deviceSetting.BCM }}</td>
-                                <td>{{ deviceSetting.device.name }}</td>
-                                <td v-if="Object.keys(deviceSetting.device).length === 0">Add</td>
-                                <td>{{ deviceSetting.device.type }}</td>
+                                <td v-if="Object.keys(deviceSetting.device).length != 0">{{ deviceSetting.device.name }}</td>
+                                <td v-if="Object.keys(deviceSetting.device).length === 0" colspan="3"><div class="table-new-device-button">Add new device</div></td>
+                                <td v-if="Object.keys(deviceSetting.device).length != 0">{{ deviceSetting.device.type }}</td>
                                 <td v-if="Object.keys(deviceSetting.device).length != 0">
                                     <img src="/static/icon/dustbox.png" class="container-delete-icon container-delete-icon-table-small">
                                 </td>
                             </tr>
                         </table>
                     </div>
+
+                    {{ devicesSetting }}
+
 
                 </div>
             </div>
@@ -1109,6 +1111,37 @@
         }
         @media screen and (max-width: 480px) {
             .feed-pump-button p {
+                font-size: 10px;
+            }
+        }
+
+        /* table new device button */
+        .table-new-device-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 3px 20px;
+            text-decoration: none;
+            color: white;
+            background: #4fb845;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+            transition: 0.3s;
+        }
+        @media screen and (max-width: 480px) {
+            .table-new-device-button {
+                padding: 4px 14px;
+            }
+        }
+        .table-new-device-button:hover{
+            background: #73db69;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+        }
+        .table-new-device-button p {
+            font-size: 10px;
+            margin: 0;
+        }
+        @media screen and (max-width: 480px) {
+            .table-new-device-button p {
                 font-size: 10px;
             }
         }
@@ -2892,6 +2925,7 @@
         .devices-setting-table-box {
             width: 700px;
             margin: auto;
+            padding-top: 30px;
         }
 
         .devices-setting-table {
@@ -2907,7 +2941,7 @@
             padding: 10px;
             font-weight: bold;
             vertical-align: top;
-            background: #1A229C88;
+            background: #1A229CAA;
             color: #ffffff;
         }
         .devices-setting-table td {
