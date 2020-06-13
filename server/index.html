@@ -534,6 +534,7 @@
                             back
                         </p>
                     </div>
+                    {{ devicesSetting }}
                     <div class="devices-setting-table-box">
                         <table>
                             <th>
@@ -1286,6 +1287,11 @@
             return `${dateTime.getFullYear()}/${dateTime.getMonth() + 1}/${dateTime.getDate()} ${dateTime.toLocaleTimeString()}`
         }
 
+        const getDevices = async () => {
+            res = await axios.get('/devices')
+            return res.data
+        };
+
         const getDeviceState = async () => {
             res = await axios.get('/devices/state')
             return res.data
@@ -1369,6 +1375,7 @@
                 updateSensorCalibrationModal: false,
                 rebootConfirm: false,
                 devices: [],
+                devicesSetting: [],
                 sensors: [],
                 sensorDataLastUpdatedAt: '',
                 sensorDataPollingPeriod: 5,
@@ -1680,14 +1687,16 @@
             mounted: async function () {
 
                 this.loading = true
-                const [deviceState, sensors, setting] = await Promise.all([
+                const [deviceState, devicesSetting, sensors, setting] = await Promise.all([
                     getDeviceState(),
+                    getDevices(),
                     getSensors(),
                     getSetting(),
                 ])
                 this.loading = false
 
                 this.devices = deviceState;
+                this.devicesSetting = devicesSetting;
                 this.sensors = sensors.map(sensor => {
                     sensor.value = 0;
                     return sensor;
