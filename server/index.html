@@ -534,8 +534,16 @@
                             back
                         </p>
                     </div>
+                    <div class="devices-setting-table-box">
+                        <table>
+                            <th>
+                                <td>device id</td>
+                                <td>BCM</td>
+                                <td>device name</td>
+                            </th>
+                        </table>
+                    </div>
 
-                    <h1>This is setting page</h1>
                 </div>
             </div>
             <div v-else-if="selectedPage == 'Sensors'">
@@ -2853,6 +2861,11 @@
                 font-size: 25px;
                 line-height: 40px;
             }
+        }
+
+        .devices-setting-table-box {
+            width: 700px;
+            margin: auto;
         }
 
         
