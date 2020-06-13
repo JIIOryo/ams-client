@@ -536,12 +536,24 @@
                     </div>
                     {{ devicesSetting }}
                     <div class="devices-setting-table-box">
-                        <table>
-                            <th>
-                                <td>device id</td>
-                                <td>BCM</td>
-                                <td>device name</td>
-                            </th>
+                        <table border="1" class="devices-setting-table">
+                            <tr>
+                                <th>device id</th>
+                                <th>BCM</th>
+                                <th>device name</th>
+                                <th>device type</th>
+                                <th>delete</th>
+                            </tr>
+                            <tr v-for="deviceSetting of devicesSetting" v-bind:value="deviceSetting.device_id">
+                                <td>{{ deviceSetting.device_id }}</td>
+                                <td>{{ deviceSetting.BCM }}</td>
+                                <td>{{ deviceSetting.device.name }}</td>
+                                <td v-if="Object.keys(deviceSetting.device).length === 0">Add</td>
+                                <td>{{ deviceSetting.device.type }}</td>
+                                <td v-if="Object.keys(deviceSetting.device).length != 0">
+                                    <img src="/static/icon/dustbox.png" class="container-delete-icon container-delete-icon-table-small">
+                                </td>
+                            </tr>
                         </table>
                     </div>
 
@@ -1273,6 +1285,11 @@
         .container-delete-icon:hover {
             opacity: 0.7;
             cursor: pointer;
+        }
+        .container-delete-icon-table-small {
+            width: 20px;
+            height: 20px;
+            margin: 0;
         }
     </style>
 
@@ -2877,6 +2894,31 @@
             margin: auto;
         }
 
+        .devices-setting-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ccc;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .devices-setting-table th {
+            width: 150px;
+            padding: 10px;
+            font-weight: bold;
+            vertical-align: top;
+            background: #1A229C88;
+            color: #ffffff;
+        }
+        .devices-setting-table td {
+            width: 350px;
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        .devices-setting-table tr:nth-child(even) {
+            background: #00AAFF11;
+        }
         
     </style>
 
