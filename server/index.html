@@ -547,7 +547,7 @@
                                 <td>{{ deviceSetting.device_id }}</td>
                                 <td>{{ deviceSetting.BCM }}</td>
                                 <td v-if="Object.keys(deviceSetting.device).length != 0">{{ deviceSetting.device.name }}</td>
-                                <td v-if="Object.keys(deviceSetting.device).length === 0" colspan="3"><div class="table-new-device-button" @click="clickCreateDeviceButton">Add new device</div></td>
+                                <td v-if="Object.keys(deviceSetting.device).length === 0" colspan="3"><div class="table-new-device-button" @click="clickCreateDeviceButton(deviceSetting.device_id)">Add new device</div></td>
                                 <td v-if="Object.keys(deviceSetting.device).length != 0">{{ deviceSetting.device.type }}</td>
                                 <td v-if="Object.keys(deviceSetting.device).length != 0">
                                     <img src="/static/icon/dustbox.png" class="container-delete-icon container-delete-icon-table-small">
@@ -721,8 +721,8 @@
                                         </div>
                                     </div>
                                     <div class="button-wrapper">
-                                        <div class="modal-update-button" @click="updateDevice()">
-                                            <p>Update</p>
+                                        <div class="modal-update-button" @click="createDevice()">
+                                            <p>Create</p>
                                         </div>
                                     </div>
                                 </div>
@@ -730,7 +730,7 @@
                     
                         </div>
                     </div>
-                    <!-- update device modal end -->
+                    <!-- create device modal end -->
 
                     {{ devicesSetting }}
 
@@ -1562,6 +1562,18 @@
             await axios.post(`/device/control/auto_feeder/${deviceId}`, {});
         }
 
+        const createDeviceRequest = async createdDevice => {
+            console.log(createdDevice)
+            await axios.post('/device/create', {
+                device_id: createdDevice.device_id,
+                name: createdDevice.name,
+                description: createdDevice.description,
+                type: createdDevice.type,
+                run_type: createdDevice.run_type,
+                options: createdDevice.options,
+            });
+        }
+        
         const updateDeviceRequest = async updatedDevice => {
             console.log(updatedDevice)
             await axios.post('/device/update', {
@@ -1778,6 +1790,13 @@
                         await this.setDeviceState()
                     }
                 },
+                createDevice: async function () {
+                    this.loading = true
+                    const deviceState = await createDeviceRequest(this.selectedDevice);
+                    this.closeUpdateDeviceModal();
+                    // TODO not reset
+                    window.location.href = '/'
+                },
                 updateDevice: async function () {
                     this.loading = true
                     const deviceState = await updateDeviceRequest(this.selectedDevice);
@@ -1808,9 +1827,9 @@
                     this.selectedDevice.created_at = getDateTime(this.selectedDevice.created_at)
                     this.selectedDevice.updated_at = getDateTime(this.selectedDevice.updated_at)
                 },
-                clickCreateDeviceButton: function (selectedDevice) {
+                clickCreateDeviceButton: function (device_id) {
                     this.selectedDevice = {
-                        device_id: selectedDevice.device_id,
+                        device_id: device_id,
                         name: '',
                         description: '',
                         type: 'main_light',

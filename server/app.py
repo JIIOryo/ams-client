@@ -10,6 +10,7 @@ sys.path.append( str(current_dir) + '/../' )
 
 from lib.config import get_config_item, get_gpio_config, get_config, set_config, get_sensor_config
 from on_message.device_control import device_control
+from on_message.device_create import device_create
 from on_message.device_update import device_update
 from on_message.reboot import reboot
 from on_message.device_feed_pump import device_feed_pump
@@ -53,6 +54,12 @@ def get_devices():
 def get_all_device_state_():
     devices = get_all_device_state()
     return json.dumps(devices)
+
+@app.route('/device/create', methods=['POST'])
+def device_create_():
+    print(request.json)
+    device_create(message = request.data)
+    return empty_response
 
 @app.route('/device/update', methods=['POST'])
 def device_update_():
