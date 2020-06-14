@@ -198,6 +198,7 @@
 
 <body>
     <div id="app">
+        {{ selectedDevice}}
         <main :class="{fixed: updateModal}">
 
             <!-- header -->
@@ -550,7 +551,7 @@
                                 <td v-if="Object.keys(deviceSetting.device).length === 0" colspan="3"><div class="table-new-device-button" @click="clickCreateDeviceButton(deviceSetting.device_id)">Add new device</div></td>
                                 <td v-if="Object.keys(deviceSetting.device).length != 0">{{ deviceSetting.device.type }}</td>
                                 <td v-if="Object.keys(deviceSetting.device).length != 0">
-                                    <img src="/static/icon/dustbox.png" class="container-delete-icon container-delete-icon-table-small">
+                                    <img src="/static/icon/dustbox.png" class="container-delete-icon container-delete-icon-table-small" @click="deviceDeleteConfirmOpen(deviceSetting.device_id, deviceSetting.device)">
                                 </td>
                             </tr>
                         </table>
@@ -733,6 +734,34 @@
                     <!-- create device modal end -->
 
                     {{ devicesSetting }}
+
+                    <!-- delete device confirm modal -->
+                    <div class="modal-display" v-show="deleteDeviceConfirm" @click.self="deviceDeleteConfirmClose">
+                        <div class="modal-box">
+                            <div class="reboot-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="deviceDeleteConfirmClose">
+                                <img src="/static/icon/alert.png" class="modal-alert-icon">
+                                <h3>Confirmation</h3>
+                                <hr>
+                                <div class="small-space-box"></div>
+                                <p class="modal-confirm-text">Are you sure to delete {{selectedDevice.name}}?</p>
+                                <div class="small-space-box"></div>
+                                <div class="button-container button-container-right">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="deviceDeleteConfirmClose">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="dangerous-button" @click="deleteDevice()">
+                                            <p>Delete</p>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -1613,6 +1642,7 @@
                 updateSensorModal: false,
                 updateSensorCalibrationModal: false,
                 rebootConfirm: false,
+                deleteDeviceConfirm: false,
                 devices: [],
                 devicesSetting: [],
                 sensors: [],
@@ -1803,6 +1833,22 @@
                     this.closeUpdateDeviceModal();
                     // TODO not reset
                     window.location.href = '/'
+                },
+                deviceDeleteConfirmOpen: async function(device_id, deviceSetting) {
+                    this.deleteDeviceConfirm = true; 
+                    this.selectedDevice = {
+                        device_id: device_id,
+                        name: deviceSetting.name,
+                    };
+                },
+                deviceDeleteConfirmClose: async function() {
+                    this.deleteDeviceConfirm = false; 
+                    this.selectedDevice = {
+                        run_type: "",
+                    };
+                },
+                deleteDevice: async function() {
+                    this.deviceDeleteConfirmClose();
                 },
                 updateSensor: async function () {
                     this.loading = true
