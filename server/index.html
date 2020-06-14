@@ -555,6 +555,39 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="device-exchange-box">
+                        <div class="device-exchange-box-top"><p>exchange</p></div>
+                        <div class="device-exchange-box-bottom">
+                            <div><p class="device-exchange-device-id">device_id</p></div>
+                            <div class="device-exchange-box-bottom-select-wrapper">
+                                <div>
+                                    <p class="device-exchange-box-select-label">from</p>
+                                </div>
+                                <div>
+                                    <!-- <select name="device_id" v-model="selectedDevice.options.timer.on_hour"> -->
+                                    <select name="device_id" >
+                                        <option v-for="device_id in [...Array(6).keys()]" :key="device_id" :value="device_id + 1">
+                                            {{device_id + 1}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="device-exchange-box-bottom-select-wrapper">
+                                <div>
+                                    <p class="device-exchange-box-select-label">to</p>
+                                </div>
+                                <div>
+                                    <!-- <select name="device_id" v-model="selectedDevice.options.timer.on_hour"> -->
+                                    <select name="device_id">
+                                        <option v-for="device_id in [...Array(6).keys()]" :key="device_id" :value="device_id + 1">
+                                            {{device_id + 1}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-new-device-button">
+                                exchange
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- create device modal start -->
                     <div class="modal-display" v-show="createModal" @click.self="closeCreateDeviceModal">
@@ -3229,6 +3262,57 @@
 
         .devices-setting-table tr:nth-child(even) {
             background: #00AAFF11;
+        }
+
+        .device-exchange-box {
+            width: 700px;
+            margin: auto;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ccc;
+        }
+        @media screen and (max-width: 480px) {
+            .device-exchange-box {
+                width: 95%;
+            }
+            .device-exchange-device-id {
+                margin-top: 4px;
+                font-size: 14px;
+            }
+        }
+
+        .device-exchange-box-top {
+            padding: 10px;
+            padding-left: 50px;
+            background-color: #1A229CAA;
+            font-weight: bold;
+            color: white;
+        }
+
+        .device-exchange-box-bottom {
+            background-color: white;
+            display: flex;
+            flex-direction: row;
+            text-align: center;
+            padding: 15px 0;
+            justify-content: space-evenly;
+        }
+
+        .device-exchange-box-bottom-select-wrapper {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .device-exchange-box-select-label {
+            margin-right: 13px;
+        }
+        @media screen and (max-width: 480px) {
+            .device-exchange-box-select-label {
+                font-size: 10px;
+                margin-right: 5px;
+            }
         }
         
     </style>
