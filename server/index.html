@@ -198,7 +198,6 @@
 
 <body>
     <div id="app">
-        {{ selectedDevice}}
         <main :class="{fixed: updateModal}">
 
             <!-- header -->
@@ -732,8 +731,6 @@
                         </div>
                     </div>
                     <!-- create device modal end -->
-
-                    {{ devicesSetting }}
 
                     <!-- delete device confirm modal -->
                     <div class="modal-display" v-show="deleteDeviceConfirm" @click.self="deviceDeleteConfirmClose">
@@ -1615,6 +1612,10 @@
             });
         }
 
+        const deleteSensorRequest = async deleteDeviceId => {
+            await axios.delete(`/device/delete/${deleteDeviceId}`); 
+        };
+
         const updateSensorRequest = async updatedSensor => {
             await axios.post('/sensor/update', {
                 sensor_id: updatedSensor.sensor_id,
@@ -1848,7 +1849,10 @@
                     };
                 },
                 deleteDevice: async function() {
+                    await deleteSensorRequest(this.selectedDevice.device_id);
+                    // TODO not reset
                     this.deviceDeleteConfirmClose();
+                    window.location.href = '/'
                 },
                 updateSensor: async function () {
                     this.loading = true
