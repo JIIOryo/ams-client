@@ -528,7 +528,270 @@
                     <br>
                 </div>
                 <div v-else-if="selectedPageStatus =='setting'">
-                    <h1>This is setting page</h1>
+                    <!-- Device setting page -->
+                    <div @click="selectedPageStatus = 'main'" class="devices-setting-button">
+                        <p>
+                            back
+                        </p>
+                    </div>
+                    <div class="devices-setting-table-box">
+                        <table border="1" class="devices-setting-table">
+                            <tr>
+                                <th>device id</th>
+                                <th>BCM</th>
+                                <th>device name</th>
+                                <th>device type</th>
+                                <th>delete</th>
+                            </tr>
+                            <tr v-for="deviceSetting of devicesSetting" v-bind:value="deviceSetting.device_id">
+                                <td>{{ deviceSetting.device_id }}</td>
+                                <td>{{ deviceSetting.BCM }}</td>
+                                <td v-if="Object.keys(deviceSetting.device).length != 0">{{ deviceSetting.device.name }}</td>
+                                <td v-if="Object.keys(deviceSetting.device).length === 0" colspan="3"><div class="table-new-device-button" @click="clickCreateDeviceButton(deviceSetting.device_id)">Add new device</div></td>
+                                <td v-if="Object.keys(deviceSetting.device).length != 0">{{ deviceSetting.device.type }}</td>
+                                <td v-if="Object.keys(deviceSetting.device).length != 0">
+                                    <img src="/static/icon/dustbox.png" class="container-delete-icon container-delete-icon-table-small" @click="deviceDeleteConfirmOpen(deviceSetting.device_id, deviceSetting.device)">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="device-exchange-box">
+                        <div class="device-exchange-box-top"><p>exchange</p></div>
+                        <div class="device-exchange-box-bottom">
+                            <div><p class="device-exchange-device-id">device_id</p></div>
+                            <div class="device-exchange-box-bottom-select-wrapper">
+                                <div>
+                                    <p class="device-exchange-box-select-label">from</p>
+                                </div>
+                                <div>
+                                    <select name="device_id" v-model="exchangeFrom">
+                                        <option v-for="device_id in [...Array(devicesSetting.length).keys()]" :key="device_id" :value="device_id + 1">
+                                            {{device_id + 1}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="device-exchange-box-bottom-select-wrapper">
+                                <div>
+                                    <p class="device-exchange-box-select-label">to</p>
+                                </div>
+                                <div>
+                                    <select name="device_id" v-model="exchangeTo">
+                                        <option v-for="device_id in [...Array(devicesSetting.length).keys()]" :key="device_id" :value="device_id + 1">
+                                            {{device_id + 1}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-new-device-button" @click="deviceExchange">
+                                exchange
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- create device modal start -->
+                    <div class="modal-display" v-show="createModal" @click.self="closeCreateDeviceModal">
+                        <div class="modal-box update-device-responsive">
+                            <div class="device-update-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeCreateDeviceModal">
+                                <img src="/static/icon/create.png" class="modal-update-icon">
+                                <h3 class="modal-title">Create Device</h3>
+                                <hr>
+                    
+                                <div class="device-scroll-box">
+                                    <!-- forms -->
+                                    <div class="modal-form-container">
+                                        <!-- Name -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="text" placeholder="" v-model="selectedDevice.name">
+                                            <label>Name</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                    
+                                        <!-- Description -->
+                                        <div class="cp_form">
+                                            <textarea required="required" v-model="selectedDevice.description" cols="20"
+                                                rows="2"></textarea>
+                                            <label class="cp_label" for="textarea">Description</label>
+                                            <i class="bar"></i>
+                                        </div>
+                                    </div>
+                    
+                                    <!-- Device type -->
+                                    <div class="modal-select-container">
+                                        <label class="select-label">Device type</label>
+                                        <div class="select-box select-box-simple device-update-modal-select-box">
+                                            <select name="device_type" v-model="selectedDevice.type">
+                                                <option value="" hidden>Choose</option>
+                                                <option v-for="deviceType of deviceTypes" v-bind:value="deviceType.deviceType">
+                                                    {{ deviceType.deviceType }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                    
+                                    <!-- Device run type -->
+                                    <div class="modal-select-container">
+                                        <label class="select-label">Device Run type</label>
+                                        <div class="select-box select-box-simple device-update-modal-select-box">
+                                            <select name="run_type" v-model="selectedDevice.run_type">
+                                                <option value="" hidden>Choose</option>
+                                                <option v-for="deviceRunType of deviceRunTypes" v-bind:value="deviceRunType">
+                                                    {{deviceRunType}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                    
+                                    <div>
+                                        <table class="update-form-table" v-if="selectedDevice.run_type == 'daily'">
+                                            <!-- daily -->
+                                            <tr>
+                                                <td>
+                                                    <div class="timer-label-box">
+                                                        <p>On time</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="timer-box">
+                                                        <div
+                                                            class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                            <select name="on_hour" v-model="selectedDevice.options.timer.on_hour">
+                                                                <option value="" hidden>Choose</option>
+                                                                <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">
+                                                                    {{hour | zeroPadding}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <p class="timer-colon">:</p>
+                                                        <div
+                                                            class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                            <select name="on_minite" v-model="selectedDevice.options.timer.on_minute">
+                                                                <option value="" hidden>Choose</option>
+                                                                <option v-for="minute in [...Array(60).keys()]" :key="minute"
+                                                                    :value="minute">{{minute | zeroPadding}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="timer-label-box">
+                                                        <p>Off time</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="timer-box">
+                                                        <div
+                                                            class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                            <select name="off_hour" v-model="selectedDevice.options.timer.off_hour">
+                                                                <option value="" hidden>Choose</option>
+                                                                <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">
+                                                                    {{hour | zeroPadding}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <p class="timer-colon">:</p>
+                                                        <div
+                                                            class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                            <select name="off_minite" v-model="selectedDevice.options.timer.off_minute">
+                                                                <option value="" hidden>Choose</option>
+                                                                <option v-for="minute in [...Array(60).keys()]" :key="minute"
+                                                                    :value="minute">{{minute | zeroPadding}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div v-else-if="selectedDevice.run_type == 'discreate'">
+                                            <!-- discreate -->
+                                            <table class="update-form-table">
+                                                <tr v-for="(timer, index) of selectedDevice.options.timer" :key="index">
+                                                    <td>
+                                                        <div class="timer-label-box">
+                                                            <p>timer {{index + 1}}</p>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="timer-box">
+                                                            <div
+                                                                class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                                <select name="hour" v-model="timer.hour">
+                                                                    <option value="" hidden>Choose</option>
+                                                                    <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">
+                                                                        {{hour| zeroPadding}}</option>
+                                                                </select>
+                                                            </div>
+                                                            <p class="timer-colon">:</p>
+                                                            <div
+                                                                class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                                <select name="minite" v-model="timer.minute">
+                                                                    <option value="" hidden>Choose</option>
+                                                                    <option v-for="minute in [...Array(60).keys()]" :key="minute"
+                                                                        :value="minute">{{minute | zeroPadding}}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <img src="/static/icon/delete.png"
+                                                            @click="selectedDevice.options.timer.splice(index, 1)" class="delete-icon">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <img src="/static/img/button/add_button.png"
+                                                @click="selectedDevice.options.timer.push({hour: 0, minute: 0})" class="add-button">
+                                        </div>
+                                    </div>
+                    
+                                </div>
+                    
+                            </div>
+                    
+                            <div class="device-update-modal-bottom-container">
+                                <div class="button-container">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="closeCreateDeviceModal()">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="modal-update-button" @click="createDevice()">
+                                            <p>Create</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                        </div>
+                    </div>
+                    <!-- create device modal end -->
+
+                    <!-- delete device confirm modal -->
+                    <div class="modal-display" v-show="deleteDeviceConfirm" @click.self="deviceDeleteConfirmClose">
+                        <div class="modal-box">
+                            <div class="reboot-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="deviceDeleteConfirmClose">
+                                <img src="/static/icon/alert.png" class="modal-alert-icon">
+                                <h3>Confirmation</h3>
+                                <hr>
+                                <div class="small-space-box"></div>
+                                <p class="modal-confirm-text">Are you sure to delete {{selectedDevice.name}}?</p>
+                                <div class="small-space-box"></div>
+                                <div class="button-container button-container-right">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="deviceDeleteConfirmClose">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="dangerous-button" @click="deleteDevice()">
+                                            <p>Delete</p>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
             <div v-else-if="selectedPage == 'Sensors'">
@@ -1085,6 +1348,37 @@
             }
         }
 
+        /* table new device button */
+        .table-new-device-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 3px 20px;
+            text-decoration: none;
+            color: white;
+            background: #4fb845;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+            transition: 0.3s;
+        }
+        @media screen and (max-width: 480px) {
+            .table-new-device-button {
+                padding: 4px 14px;
+            }
+        }
+        .table-new-device-button:hover{
+            background: #73db69;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+        }
+        .table-new-device-button p {
+            font-size: 10px;
+            margin: 0;
+        }
+        @media screen and (max-width: 480px) {
+            .table-new-device-button p {
+                font-size: 10px;
+            }
+        }
+
 
 
 
@@ -1258,6 +1552,11 @@
             opacity: 0.7;
             cursor: pointer;
         }
+        .container-delete-icon-table-small {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+        }
     </style>
 
 
@@ -1270,6 +1569,11 @@
             let dateTime = new Date(timestamp * 1000);
             return `${dateTime.getFullYear()}/${dateTime.getMonth() + 1}/${dateTime.getDate()} ${dateTime.toLocaleTimeString()}`
         }
+
+        const getDevices = async () => {
+            res = await axios.get('/devices')
+            return res.data
+        };
 
         const getDeviceState = async () => {
             res = await axios.get('/devices/state')
@@ -1315,6 +1619,18 @@
             await axios.post(`/device/control/auto_feeder/${deviceId}`, {});
         }
 
+        const createDeviceRequest = async createdDevice => {
+            console.log(createdDevice)
+            await axios.post('/device/create', {
+                device_id: createdDevice.device_id,
+                name: createdDevice.name,
+                description: createdDevice.description,
+                type: createdDevice.type,
+                run_type: createdDevice.run_type,
+                options: createdDevice.options,
+            });
+        }
+        
         const updateDeviceRequest = async updatedDevice => {
             console.log(updatedDevice)
             await axios.post('/device/update', {
@@ -1326,6 +1642,16 @@
                 options: updatedDevice.options,
             });
         }
+
+        const deleteSensorRequest = async deleteDeviceId => {
+            await axios.delete(`/device/delete/${deleteDeviceId}`); 
+        };
+
+        const deviceExchangeRequest = async devicesOrder => {
+            await axios.post('/device/exchange', {
+                devices: devicesOrder,
+            });
+        };
 
         const updateSensorRequest = async updatedSensor => {
             await axios.post('/sensor/update', {
@@ -1350,10 +1676,13 @@
                 hasError: false,
                 loading: false,
                 updateModal: false,
+                createModal: false,
                 updateSensorModal: false,
                 updateSensorCalibrationModal: false,
                 rebootConfirm: false,
+                deleteDeviceConfirm: false,
                 devices: [],
+                devicesSetting: [],
                 sensors: [],
                 sensorDataLastUpdatedAt: '',
                 sensorDataPollingPeriod: 5,
@@ -1364,6 +1693,8 @@
                 selectedSensor: {
                     sensor: {}
                 },
+                exchangeFrom: 0,
+                exchangeTo: 0,
                 selectedSensorNewCalibrationValue: 10,
                 deviceTypes: [
                     {
@@ -1529,12 +1860,64 @@
                         await this.setDeviceState()
                     }
                 },
+                createDevice: async function () {
+                    this.loading = true
+                    const deviceState = await createDeviceRequest(this.selectedDevice);
+                    this.closeUpdateDeviceModal();
+                    // TODO not reset
+                    window.location.href = '/'
+                },
                 updateDevice: async function () {
                     this.loading = true
                     const deviceState = await updateDeviceRequest(this.selectedDevice);
                     this.closeUpdateDeviceModal();
                     // TODO not reset
                     window.location.href = '/'
+                },
+                deviceDeleteConfirmOpen: async function(device_id, deviceSetting) {
+                    this.deleteDeviceConfirm = true; 
+                    this.selectedDevice = {
+                        device_id: device_id,
+                        name: deviceSetting.name,
+                    };
+                },
+                deviceDeleteConfirmClose: async function() {
+                    this.deleteDeviceConfirm = false; 
+                    this.selectedDevice = {
+                        run_type: "",
+                    };
+                },
+                deleteDevice: async function() {
+                    await deleteSensorRequest(this.selectedDevice.device_id);
+                    // TODO not reset
+                    this.deviceDeleteConfirmClose();
+                    window.location.href = '/'
+                },
+                deviceExchange: async function() {
+                    const devicesOrder = [...Array(this.devicesSetting.length).keys()].map(v => v+1);
+                    // e.g. devicesOrder = [1, 2, 3, 4, 5, 6]
+                    const exchangeFrom = this.exchangeFrom;
+                    const exchangeTo = this.exchangeTo;
+
+                    // validation
+                    if (exchangeFrom * exchangeTo === 0) {
+                        alert('Please select device id.')
+                        return
+                    }
+                    if (exchangeFrom === exchangeTo) {
+                        alert('Same device id can not exchange.')
+                        return
+                    }
+
+                    // exchange
+                    devicesOrder.splice(exchangeTo - 1, 1, exchangeFrom);
+                    devicesOrder.splice(exchangeFrom - 1, 1, exchangeTo);
+
+                    this.loading = true;
+                    await deviceExchangeRequest(devicesOrder);
+                    this.loading = false;
+
+                    window.location.href = '/';
                 },
                 updateSensor: async function () {
                     this.loading = true
@@ -1559,8 +1942,32 @@
                     this.selectedDevice.created_at = getDateTime(this.selectedDevice.created_at)
                     this.selectedDevice.updated_at = getDateTime(this.selectedDevice.updated_at)
                 },
+                clickCreateDeviceButton: function (device_id) {
+                    this.selectedDevice = {
+                        device_id: device_id,
+                        name: '',
+                        description: '',
+                        type: 'main_light',
+                        run_type: 'daily',
+                        options: {
+                            timer: {
+                                on_hour: 10,
+                                on_minute: 0,
+                                off_hour: 19,
+                                off_minute: 0,
+                            }
+                        },
+                    };
+                    this.createModal = true;
+                },
                 closeUpdateDeviceModal: function () {
                     this.updateModal = false;
+                    this.selectedDevice = {
+                        run_type: "",
+                    };
+                },
+                closeCreateDeviceModal: function () {
+                    this.createModal = false;
                     this.selectedDevice = {
                         run_type: "",
                     };
@@ -1665,14 +2072,16 @@
             mounted: async function () {
 
                 this.loading = true
-                const [deviceState, sensors, setting] = await Promise.all([
+                const [deviceState, devicesSetting, sensors, setting] = await Promise.all([
                     getDeviceState(),
+                    getDevices(),
                     getSensors(),
                     getSetting(),
                 ])
                 this.loading = false
 
                 this.devices = deviceState;
+                this.devicesSetting = devicesSetting;
                 this.sensors = sensors.map(sensor => {
                     sensor.value = 0;
                     return sensor;
@@ -2848,6 +3257,95 @@
             }
         }
 
+        .devices-setting-table-box {
+            width: 700px;
+            margin: auto;
+            padding-top: 30px;
+        }
+        @media screen and (max-width: 480px) {
+            .devices-setting-table-box {
+                width: 95%;
+                font-size: 12px;
+                padding-top: 10px;
+            }
+        }
+
+        .devices-setting-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ccc;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .devices-setting-table th {
+            width: 150px;
+            padding: 10px;
+            font-weight: bold;
+            vertical-align: top;
+            background: #1A229CAA;
+            color: #ffffff;
+        }
+        .devices-setting-table td {
+            width: 350px;
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        .devices-setting-table tr:nth-child(even) {
+            background: #00AAFF11;
+        }
+
+        .device-exchange-box {
+            width: 700px;
+            margin: auto;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ccc;
+        }
+        @media screen and (max-width: 480px) {
+            .device-exchange-box {
+                width: 95%;
+            }
+            .device-exchange-device-id {
+                margin-top: 4px;
+                font-size: 14px;
+            }
+        }
+
+        .device-exchange-box-top {
+            padding: 10px;
+            padding-left: 50px;
+            background-color: #1A229CAA;
+            font-weight: bold;
+            color: white;
+        }
+
+        .device-exchange-box-bottom {
+            background-color: white;
+            display: flex;
+            flex-direction: row;
+            text-align: center;
+            padding: 15px 0;
+            justify-content: space-evenly;
+        }
+
+        .device-exchange-box-bottom-select-wrapper {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .device-exchange-box-select-label {
+            margin-right: 13px;
+        }
+        @media screen and (max-width: 480px) {
+            .device-exchange-box-select-label {
+                font-size: 10px;
+                margin-right: 5px;
+            }
+        }
         
     </style>
 

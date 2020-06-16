@@ -10,7 +10,10 @@ sys.path.append( str(current_dir) + '/../' )
 
 from lib.config import get_config_item, get_gpio_config, get_config, set_config, get_sensor_config
 from on_message.device_control import device_control
+from on_message.device_create import device_create
 from on_message.device_update import device_update
+from on_message.device_delete import device_delete
+from on_message.device_exchange import device_exchange
 from on_message.reboot import reboot
 from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
@@ -54,6 +57,12 @@ def get_all_device_state_():
     devices = get_all_device_state()
     return json.dumps(devices)
 
+@app.route('/device/create', methods=['POST'])
+def device_create_():
+    print(request.json)
+    device_create(message = request.data)
+    return empty_response
+
 @app.route('/device/update', methods=['POST'])
 def device_update_():
     print(request.json)
@@ -64,6 +73,18 @@ def device_update_():
 def device_control_():
     print(request.json)
     device_control(message = request.data)
+    return empty_response
+
+@app.route('/device/delete/<int:device_id>', methods=['DELETE'])
+def device_delete_(device_id: int):
+    device_delete(message = json.dumps({
+        'device_id': device_id,
+    }))
+    return empty_response
+
+@app.route('/device/exchange', methods=['POST'])
+def device_exchange_():
+    device_exchange(message = request.data)
     return empty_response
 
 @app.route('/device/control/feed_pump/<int:device_id>', methods=['POST'])
