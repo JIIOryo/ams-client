@@ -1647,6 +1647,12 @@
             await axios.delete(`/device/delete/${deleteDeviceId}`); 
         };
 
+        const deviceExchangeRequest = async devicesOrder => {
+            await axios.post('/device/exchange', {
+                devices: devicesOrder,
+            });
+        };
+
         const updateSensorRequest = async updatedSensor => {
             await axios.post('/sensor/update', {
                 sensor_id: updatedSensor.sensor_id,
@@ -1889,8 +1895,11 @@
                 },
                 deviceExchange: async function() {
                     const devicesOrder = [...Array(this.devicesSetting.length).keys()].map(v => v+1);
+                    // e.g. devicesOrder = [1, 2, 3, 4, 5, 6]
                     const exchangeFrom = this.exchangeFrom;
                     const exchangeTo = this.exchangeTo;
+
+                    // validation
                     if (exchangeFrom * exchangeTo === 0) {
                         alert('Please select device id.')
                         return
@@ -1899,10 +1908,16 @@
                         alert('Same device id can not exchange.')
                         return
                     }
+
+                    // exchange
                     devicesOrder.splice(exchangeTo - 1, 1, exchangeFrom);
                     devicesOrder.splice(exchangeFrom - 1, 1, exchangeTo);
-                    console.log(devicesOrder);
-                    // await deviceExchangeRequest(this.)
+
+                    this.loading = true;
+                    await deviceExchangeRequest(devicesOrder);
+                    this.loading = false;
+
+                    window.location.href = '/';
                 },
                 updateSensor: async function () {
                     this.loading = true
