@@ -581,7 +581,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="table-new-device-button">
+                            <div class="table-new-device-button" @click="deviceExchange">
                                 exchange
                             </div>
                         </div>
@@ -1886,6 +1886,23 @@
                     // TODO not reset
                     this.deviceDeleteConfirmClose();
                     window.location.href = '/'
+                },
+                deviceExchange: async function() {
+                    const devicesOrder = [...Array(this.devicesSetting.length).keys()].map(v => v+1);
+                    const exchangeFrom = this.exchangeFrom;
+                    const exchangeTo = this.exchangeTo;
+                    if (exchangeFrom * exchangeTo === 0) {
+                        alert('Please select device id.')
+                        return
+                    }
+                    if (exchangeFrom === exchangeTo) {
+                        alert('Same device id can not exchange.')
+                        return
+                    }
+                    devicesOrder.splice(exchangeTo - 1, 1, exchangeFrom);
+                    devicesOrder.splice(exchangeFrom - 1, 1, exchangeTo);
+                    console.log(devicesOrder);
+                    // await deviceExchangeRequest(this.)
                 },
                 updateSensor: async function () {
                     this.loading = true
