@@ -1643,7 +1643,7 @@
             });
         }
 
-        const deleteSensorRequest = async deleteDeviceId => {
+        const deleteDeviceRequest = async deleteDeviceId => {
             await axios.delete(`/device/delete/${deleteDeviceId}`); 
         };
 
@@ -1888,7 +1888,7 @@
                     };
                 },
                 deleteDevice: async function() {
-                    await deleteSensorRequest(this.selectedDevice.device_id);
+                    await deleteDeviceRequest(this.selectedDevice.device_id);
                     // TODO not reset
                     this.deviceDeleteConfirmClose();
                     window.location.href = '/'
