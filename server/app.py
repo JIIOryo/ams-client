@@ -2,7 +2,7 @@ import json
 import os
 import sys
 
-from flask import Flask, render_template, request, send_from_directory, jsonify
+from flask import Flask, render_template, request, send_from_directory, jsonify, make_response
 
 import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
@@ -20,6 +20,7 @@ from on_message.device_auto_feeder import device_auto_feeder
 from on_message.sensor_update import sensor_update, sensor_calibration_update
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
+from service.backup import backup_file_name, get_device_backup_file
 
 app = Flask(__name__)
 server_config = get_config_item('LOCAL_SERVER')
@@ -145,6 +146,22 @@ def sensor_calibration_update_(sensor_id):
 def reboot_():
     reboot()
     return empty_response
+
+@app.route('/device/backup')
+def device_backup():
+    downloadFileName = backup_file_name(
+        type_ = 'device',
+        ext = 'json',
+    )
+    response = make_response(
+        json.dumps(
+            get_device_backup_file(),
+            ensure_ascii = False,
+        )
+    )
+    response.headers['Content-Disposition'] = 'attachment; filename=' + downloadFileName
+    response.mimetype = 'application/json'
+    return response
 
 
 if __name__ == '__main__':
