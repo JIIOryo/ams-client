@@ -534,6 +534,12 @@
                             back
                         </p>
                     </div>
+                    <!-- Device menu -->
+                    <div class="device-menu-container">
+                        <a href="/device/backup"><img src="/static/icon/download_blue.png" class="container-update-icon"></a>
+                        <!-- まだ使うかは未定 -->
+                        <!-- <img src="/static/icon/download_blue.png" class="container-update-icon" @click="deviceBackupDownload"> -->
+                    </div>
                     <div class="devices-setting-table-box">
                         <table border="1" class="devices-setting-table">
                             <tr>
@@ -1653,6 +1659,17 @@
             });
         };
 
+        // TODO まだ使うかは未定
+        const deviceBackupDownloadRequest = async () => {
+            const response = await axios.get('/device/backup')
+            console.log(response)
+            const json = response.data
+            let link = document.createElement('a')
+            link.href = `data:application/json,${json.blob}`
+            link.download = json.name
+            link.click()
+        };
+
         const updateSensorRequest = async updatedSensor => {
             await axios.post('/sensor/update', {
                 sensor_id: updatedSensor.sensor_id,
@@ -1918,6 +1935,11 @@
                     this.loading = false;
 
                     window.location.href = '/';
+                },
+                deviceBackupDownload: async function() {
+                    this.loading = true;
+                    await deviceBackupDownloadRequest();
+                    this.loading = false;
                 },
                 updateSensor: async function () {
                     this.loading = true
@@ -3254,6 +3276,20 @@
                 height: 40px;
                 font-size: 25px;
                 line-height: 40px;
+            }
+        }
+
+        .device-menu-container {
+            width: 700px;
+            margin: auto;
+            padding-top: 5px;
+            padding-right: 30px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        @media screen and (max-width: 480px) {
+            .device-menu-container {
+                width: 95%;
             }
         }
 
