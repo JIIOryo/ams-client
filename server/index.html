@@ -1737,8 +1737,11 @@
                 updateSensorCalibrationModal: false,
                 rebootConfirm: false,
                 deleteDeviceConfirm: false,
+                deviceBackupUploadConfirm: false,
                 devices: [],
                 devicesSetting: [],
+                deviceBackupUploadFileName: '',
+                deviceBackupUploadFileData: '',
                 sensors: [],
                 sensorDataLastUpdatedAt: '',
                 sensorDataPollingPeriod: 5,
@@ -1980,6 +1983,11 @@
                     await deviceBackupDownloadRequest();
                     this.loading = false;
                 },
+                deviceBackupUploadConfirmClose: function() {
+                    this.deviceBackupUploadConfirm = false;
+                    this.deviceBackupUploadFileName = '';
+                    this.deviceBackupUploadFileData = '';
+                },
                 updateSensor: async function () {
                     this.loading = true
                     const sensorState = await updateSensorRequest(this.selectedSensor);
@@ -2128,7 +2136,28 @@
                             this.selectedDevice.options = {};
                             break;
                     }
-                }
+                },
+                deviceBackupUploadFileName: function (val, oldVal) {
+                    if (!this.deviceBackupUploadFileName) {
+                        return;
+                    }
+                    console.log(val);
+                    this.deviceBackupUploadConfirm = true;
+
+                    const files = document.getElementById('device-backup-file-upload').files;
+                    if (files.length <= 0) {
+                        return false;
+                    }
+
+                    const fr = new FileReader();
+
+                    fr.onload = e => {
+                        const result = JSON.parse(e.target.result);
+                        const formatted = JSON.stringify(result, null, 2);
+                        this.deviceBackupUploadFileData = formatted;
+                    }
+                    fr.readAsText(files.item(0));
+                },
             },
             mounted: async function () {
 
