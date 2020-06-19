@@ -570,7 +570,7 @@
                                         </div>
                                     </div>
                                     <div class="button-wrapper">
-                                        <div class="modal-update-button">
+                                        <div class="modal-update-button" @click="deviceBackupUpload">
                                             <p>Import</p>
                                         </div>
                                     </div>
@@ -1709,6 +1709,11 @@
             link.click()
         };
 
+        const deviceBackupUploadRequest = async backupFile => {
+            console.log(backupFile)
+            await axios.post('/device/backup', JSON.parse(backupFile))
+        }
+
         const updateSensorRequest = async updatedSensor => {
             await axios.post('/sensor/update', {
                 sensor_id: updatedSensor.sensor_id,
@@ -1987,6 +1992,11 @@
                     this.deviceBackupUploadConfirm = false;
                     this.deviceBackupUploadFileName = '';
                     this.deviceBackupUploadFileData = '';
+                },
+                deviceBackupUpload: async function() {
+                    await deviceBackupUploadRequest(this.deviceBackupUploadFileData)
+                    window.location.href = '/'
+
                 },
                 updateSensor: async function () {
                     this.loading = true
