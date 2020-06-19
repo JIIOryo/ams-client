@@ -536,9 +536,48 @@
                     </div>
                     <!-- Device menu -->
                     <div class="device-menu-container">
+                        <!-- download -->
                         <a href="/device/backup"><img src="/static/icon/download_blue.png" class="container-update-icon"></a>
                         <!-- まだ使うかは未定 -->
                         <!-- <img src="/static/icon/download_blue.png" class="container-update-icon" @click="deviceBackupDownload"> -->
+                        <!-- upload -->
+                        <label>
+                            <span>
+                                <img src="/static/icon/upload_blue.png" class="container-update-icon">
+                            </span>
+                            <input type="file" id="device-backup-file-upload" style="display: none;" v-model="deviceBackupUploadFileName">
+                        </label>
+                    </div>
+                    <!-- reboot confirm modal -->
+                    <div class="modal-display" v-show="deviceBackupUploadConfirm" @click.self="deviceBackupUploadConfirmClose()">
+                        <div class="modal-box">
+                            <div class="reboot-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="deviceBackupUploadConfirmClose()">
+                                <img src="/static/icon/upload_green.png" class="modal-alert-icon">
+                                <h3>Import backup file</h3>
+                                <hr>
+                                <div class="small-space-box"></div>
+                                <p class="modal-confirm-text">Are you sure to import this backup file?</p>
+                                <div class="device-upload-json-confirm-box">
+                                    <pre>{{ deviceBackupUploadFileData }}</pre>
+                                </div>
+
+                                <div class="small-space-box"></div>
+                                <div class="button-container button-container-right">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="deviceBackupUploadConfirmClose()">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="modal-update-button">
+                                            <p>Import</p>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </div>
+                        </div>
                     </div>
                     <div class="devices-setting-table-box">
                         <table border="1" class="devices-setting-table">
