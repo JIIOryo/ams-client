@@ -20,7 +20,7 @@ from on_message.device_auto_feeder import device_auto_feeder
 from on_message.sensor_update import sensor_update, sensor_calibration_update
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
-from service.backup import backup_file_name, get_device_backup_file
+from service.backup import backup_file_name, get_device_backup_file, import_device_back_file
 
 app = Flask(__name__)
 server_config = get_config_item('LOCAL_SERVER')
@@ -163,6 +163,10 @@ def device_backup():
     response.mimetype = 'application/json'
     return response
 
+@app.route('/device/backup', methods=['POST'])
+def device_backup_post():
+    import_device_back_file(backup_file = request.json)
+    return empty_response
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=server_config['PORT'])

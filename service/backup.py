@@ -5,7 +5,7 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from lib.config import get_gpio_config
+from lib.config import get_gpio_config, set_gpio_config
 
 def backup_file_now_date_generator() -> str:
     return datetime.datetime.now().strftime('%Y%m%d_%H_%M_%S')
@@ -34,3 +34,9 @@ def backup_file_name(type_: str, ext: str) -> str:
 
 def get_device_backup_file() -> str:
     return get_gpio_config()
+
+def import_device_back_file(backup_file: dict) -> None:
+    # TODO Validation
+
+    set_gpio_config(backup_file)
+    return
