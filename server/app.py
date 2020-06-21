@@ -189,7 +189,11 @@ def device_backup():
 
 @app.route('/device/backup', methods=['POST'])
 def device_backup_post():
-    import_device_back_file(backup_file = request.json)
+    try:
+        import_device_back_file(backup_file = request.json)
+    except FormatInvalid as e:
+        raise InvalidUsage('format is invalid', status_code=400)
+
     return empty_response
 
 if __name__ == '__main__':
