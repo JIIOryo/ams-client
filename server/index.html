@@ -842,33 +842,50 @@
             <div v-else-if="selectedPage == 'Sensors'">
                 <!-- --------------------------------------------------------------------- -->
                 <!-- Sensor -->
-                <div class="sensor-data-last-updated-at-text-box">
-                    <p class="sensor-data-last-updated-at-text">
-                        Sensor data are updated at: {{ sensorDataLastUpdatedAt }}
-                    </p>
+
+                <!-- Sensor main page -->
+                <div v-if="selectedPageStatus == 'main'">
+                    <div @click="selectedPageStatus = 'setting'" class="setting-button sensor-dark-color sensor-dark-color-shadow">
+                        <p>
+                            Sensor Setting
+                        </p>
+                    </div>
+                    <div class="sensor-data-last-updated-at-text-box">
+                        <p class="sensor-data-last-updated-at-text">
+                            Sensor data are updated at: {{ sensorDataLastUpdatedAt }}
+                        </p>
+                    </div>
+                    <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
+                        <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
+                            <div class="sensor-top-box">
+                                <div class="sensor-id-box">
+                                    <p>Sensor ID: {{ sensor.sensor_id }}</p>
+                                </div>
+                                <img src="/static/icon/calibration.png" class="container-update-icon" @click="clickUpdateSensorCalibrationButton(sensor)">
+                                <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateSensorButton(sensor)">
+                                <img src="/static/icon/dustbox.png" class="container-delete-icon">
+                            </div>
+                            <div class="sensor-middle-box">
+                                <img :src="sensorTypes_temp[sensor.sensor.type].iconUrl" class="sensor-icon">
+                                <div class="sensor-name-box">
+                                    <p>{{ sensor.sensor.name }}</p>
+                                </div>
+                                <div class="sensor-value-box">
+                                    <p class="sensor-value-unit-box">
+                                        <span class="sensor-value">{{ sensor.value }}</span>
+                                        <span class="sensor-unit">{{sensorTypes_temp[sensor.sensor.type].unit}}</span>                                    
+                                    </p>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div v-for="(sensor, i) of sensors" :key="sensor.sensor_id">
-                    <div class="sensor-container" v-if="!!Object.keys(sensor.sensor).length">
-                        <div class="sensor-top-box">
-                            <div class="sensor-id-box">
-                                <p>Sensor ID: {{ sensor.sensor_id }}</p>
-                            </div>
-                            <img src="/static/icon/calibration.png" class="container-update-icon" @click="clickUpdateSensorCalibrationButton(sensor)">
-                            <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateSensorButton(sensor)">
-                            <img src="/static/icon/dustbox.png" class="container-delete-icon">
-                        </div>
-                        <div class="sensor-middle-box">
-                            <img :src="sensorTypes_temp[sensor.sensor.type].iconUrl" class="sensor-icon">
-                            <div class="sensor-name-box">
-                                <p>{{ sensor.sensor.name }}</p>
-                            </div>
-                            <div class="sensor-value-box">
-                                <p class="sensor-value-unit-box">
-                                    <span class="sensor-value">{{ sensor.value }}</span>
-                                    <span class="sensor-unit">{{sensorTypes_temp[sensor.sensor.type].unit}}</span>                                    
-                                </p>
-                            </div> 
-                        </div>
+                <div v-else-if="selectedPageStatus =='setting'">
+                    <!-- Sensor setting page -->
+                    <div @click="selectedPageStatus = 'main'" class="setting-button sensor-dark-color sensor-dark-color-shadow">
+                        <p>
+                            back
+                        </p>
                     </div>
                 </div>
 
@@ -1448,6 +1465,13 @@
 
 
         /* sensor */
+
+        .sensor-dark-color {
+            background: #e07f00;
+        }
+        .sensor-dark-color-shadow {
+            box-shadow: 5px 5px 15px 0 #e07f00AA;
+        }
 
         .sensor-data-last-updated-at-text-box {
             text-align: center;
