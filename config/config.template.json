@@ -2,6 +2,8 @@
     "TANK_ID": "tank_id-sample",
     "CLIENT_ID": "client_id-sample",
     "ROOT_PATH": "/home/pi/ams-client",
+    "MAX_DEVICE_NUMBER": 6,
+    "MAX_SENSOR_NUMBER": 8,
     "MQTT": {
         "MQTT_BROKER": "",
         "MQTT_BROKER_PORT": 1883,
