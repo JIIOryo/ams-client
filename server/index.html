@@ -469,7 +469,7 @@
                 <!-- Device main page -->
                 <div v-if="selectedPageStatus == 'main'">
 
-                    <div @click="selectedPageStatus = 'setting'" class="devices-setting-button">
+                    <div @click="selectedPageStatus = 'setting'" class="setting-button device-dark-color device-dark-color-shadow">
                         <p>
                             Devices Setting
                         </p>
@@ -529,7 +529,7 @@
                 </div>
                 <div v-else-if="selectedPageStatus =='setting'">
                     <!-- Device setting page -->
-                    <div @click="selectedPageStatus = 'main'" class="devices-setting-button">
+                    <div @click="selectedPageStatus = 'main'" class="setting-button device-dark-color device-dark-color-shadow">
                         <p>
                             back
                         </p>
@@ -1203,6 +1203,14 @@
 
 
     <style>
+
+        .device-dark-color {
+            background: #1A229CAA;
+        }
+        .device-dark-color-shadow {
+            box-shadow: 5px 5px 15px 0 #1A229CAA;
+        }
+
         .device-container {
             margin: auto;
             margin-bottom: 40px;
@@ -3339,27 +3347,24 @@
             margin: 5px 0px;
         }
 
-        .devices-setting-button {
+        .setting-button {
             width: 700px;
             height: 50px;
             margin: auto;
             margin-bottom: 30px;
-            background: #1A229CAA;
             border-radius: 25px;
             cursor: pointer;
             text-align: center;
             line-height: 50px;
-            box-shadow: 5px 5px 15px 0 #1A229CAA;
             font-size: 30px;
-            /* color: #1A229C; */
             color: white;
             transition: .2s;
         }
-        .devices-setting-button:hover{
-            background: #1A229C88;
+        .setting-button:hover{
+            opacity: 0.8;
         }
         @media screen and (max-width: 480px) { 
-            .devices-setting-button {
+            .setting-button {
                 width: 95%;
                 height: 40px;
                 font-size: 25px;
