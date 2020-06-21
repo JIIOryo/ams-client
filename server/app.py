@@ -8,6 +8,9 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
+from commons.errors import (
+    FormatInvalid,
+)
 from lib.config import get_config_item, get_gpio_config, get_config, set_config, get_sensor_config
 from on_message.device_control import device_control
 from on_message.device_create import device_create
@@ -20,12 +23,33 @@ from on_message.device_auto_feeder import device_auto_feeder
 from on_message.sensor_update import sensor_update, sensor_calibration_update
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
-from service.backup import backup_file_name, get_device_backup_file
+from service.backup import backup_file_name, get_device_backup_file, import_device_back_file
 
 app = Flask(__name__)
 server_config = get_config_item('LOCAL_SERVER')
 
 empty_response = json.dumps({})
+
+class InvalidUsage(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
+
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 @app.route('/')
 def index():
@@ -163,6 +187,14 @@ def device_backup():
     response.mimetype = 'application/json'
     return response
 
+@app.route('/device/backup', methods=['POST'])
+def device_backup_post():
+    try:
+        import_device_back_file(backup_file = request.json)
+    except FormatInvalid as e:
+        raise InvalidUsage('format is invalid', status_code=400)
+
+    return empty_response
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=server_config['PORT'])

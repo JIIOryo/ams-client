@@ -536,9 +536,48 @@
                     </div>
                     <!-- Device menu -->
                     <div class="device-menu-container">
+                        <!-- download -->
                         <a href="/device/backup"><img src="/static/icon/download_blue.png" class="container-update-icon"></a>
                         <!-- まだ使うかは未定 -->
                         <!-- <img src="/static/icon/download_blue.png" class="container-update-icon" @click="deviceBackupDownload"> -->
+                        <!-- upload -->
+                        <label>
+                            <span>
+                                <img src="/static/icon/upload_blue.png" class="container-update-icon">
+                            </span>
+                            <input type="file" id="device-backup-file-upload" style="display: none;" v-model="deviceBackupUploadFileName">
+                        </label>
+                    </div>
+                    <!-- reboot confirm modal -->
+                    <div class="modal-display" v-show="deviceBackupUploadConfirm" @click.self="deviceBackupUploadConfirmClose()">
+                        <div class="modal-box">
+                            <div class="reboot-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="deviceBackupUploadConfirmClose()">
+                                <img src="/static/icon/upload_green.png" class="modal-alert-icon">
+                                <h3>Import backup file</h3>
+                                <hr>
+                                <div class="small-space-box"></div>
+                                <p class="modal-confirm-text">Are you sure to import this backup file?</p>
+                                <div class="device-upload-json-confirm-box">
+                                    <pre>{{ deviceBackupUploadFileData }}</pre>
+                                </div>
+
+                                <div class="small-space-box"></div>
+                                <div class="button-container button-container-right">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="deviceBackupUploadConfirmClose()">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="modal-update-button" @click="deviceBackupUpload">
+                                            <p>Import</p>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </div>
+                        </div>
                     </div>
                     <div class="devices-setting-table-box">
                         <table border="1" class="devices-setting-table">
@@ -1005,6 +1044,16 @@
                     <div class="cp_iptxt">
                         <input class="ef" type="number" placeholder="" v-model.number="setting.NETWORK_CONNECTION_WAIT_TIME">
                         <label>Network connection wait time [sec]</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.MAX_DEVICE_NUMBER">
+                        <label>Max device number</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="number" placeholder="" v-model.number="setting.MAX_SENSOR_NUMBER">
+                        <label>Max sensor number</label>
                         <span class="focus_line"></span>
                     </div>
                 
@@ -1670,6 +1719,11 @@
             link.click()
         };
 
+        const deviceBackupUploadRequest = async backupFile => {
+            console.log(backupFile)
+            await axios.post('/device/backup', JSON.parse(backupFile))
+        }
+
         const updateSensorRequest = async updatedSensor => {
             await axios.post('/sensor/update', {
                 sensor_id: updatedSensor.sensor_id,
@@ -1698,8 +1752,11 @@
                 updateSensorCalibrationModal: false,
                 rebootConfirm: false,
                 deleteDeviceConfirm: false,
+                deviceBackupUploadConfirm: false,
                 devices: [],
                 devicesSetting: [],
+                deviceBackupUploadFileName: '',
+                deviceBackupUploadFileData: '',
                 sensors: [],
                 sensorDataLastUpdatedAt: '',
                 sensorDataPollingPeriod: 5,
@@ -1941,6 +1998,16 @@
                     await deviceBackupDownloadRequest();
                     this.loading = false;
                 },
+                deviceBackupUploadConfirmClose: function() {
+                    this.deviceBackupUploadConfirm = false;
+                    this.deviceBackupUploadFileName = '';
+                    this.deviceBackupUploadFileData = '';
+                },
+                deviceBackupUpload: async function() {
+                    await deviceBackupUploadRequest(this.deviceBackupUploadFileData)
+                    window.location.href = '/'
+
+                },
                 updateSensor: async function () {
                     this.loading = true
                     const sensorState = await updateSensorRequest(this.selectedSensor);
@@ -2089,7 +2156,28 @@
                             this.selectedDevice.options = {};
                             break;
                     }
-                }
+                },
+                deviceBackupUploadFileName: function (val, oldVal) {
+                    if (!this.deviceBackupUploadFileName) {
+                        return;
+                    }
+                    console.log(val);
+                    this.deviceBackupUploadConfirm = true;
+
+                    const files = document.getElementById('device-backup-file-upload').files;
+                    if (files.length <= 0) {
+                        return false;
+                    }
+
+                    const fr = new FileReader();
+
+                    fr.onload = e => {
+                        const result = JSON.parse(e.target.result);
+                        const formatted = JSON.stringify(result, null, 2);
+                        this.deviceBackupUploadFileData = formatted;
+                    }
+                    fr.readAsText(files.item(0));
+                },
             },
             mounted: async function () {
 
@@ -3291,6 +3379,17 @@
             .device-menu-container {
                 width: 95%;
             }
+        }
+
+        .device-upload-json-confirm-box {
+            overflow-y: scroll;
+            margin: auto;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            height: 300px;
+            width: 95%;
+            background-color: #00aaff10;
+            text-align: left;
         }
 
         .devices-setting-table-box {
