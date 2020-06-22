@@ -535,7 +535,7 @@
                         </p>
                     </div>
                     <!-- Device menu -->
-                    <div class="device-menu-container">
+                    <div class="setting-menu-container">
                         <!-- download -->
                         <a href="/device/backup"><img src="/static/icon/download_blue.png" class="container-update-icon"></a>
                         <!-- まだ使うかは未定 -->
@@ -558,7 +558,7 @@
                                 <hr>
                                 <div class="small-space-box"></div>
                                 <p class="modal-confirm-text">Are you sure to import this backup file?</p>
-                                <div class="device-upload-json-confirm-box">
+                                <div class="upload-json-confirm-box device-thin-color">
                                     <pre>{{ deviceBackupUploadFileData }}</pre>
                                 </div>
 
@@ -579,8 +579,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="devices-setting-table-box">
-                        <table border="1" class="devices-setting-table">
+                    <div class="setting-table-box">
+                        <table border="1" class="setting-table setting-table-device">
                             <tr>
                                 <th>device id</th>
                                 <th>BCM</th>
@@ -601,7 +601,7 @@
                         </table>
                     </div>
                     <div class="device-exchange-box">
-                        <div class="device-exchange-box-top"><p>exchange</p></div>
+                        <div class="exchange-box-top device-dark-color"><p>exchange</p></div>
                         <div class="device-exchange-box-bottom">
                             <div><p class="device-exchange-device-id">device_id</p></div>
                             <div class="device-exchange-box-bottom-select-wrapper">
@@ -3396,7 +3396,7 @@
             }
         }
 
-        .device-menu-container {
+        .setting-menu-container {
             width: 700px;
             margin: auto;
             padding-top: 5px;
@@ -3405,36 +3405,36 @@
             justify-content: flex-end;
         }
         @media screen and (max-width: 480px) {
-            .device-menu-container {
+            .setting-menu-container {
                 width: 95%;
             }
         }
 
-        .device-upload-json-confirm-box {
+        .upload-json-confirm-box {
             overflow-y: scroll;
             margin: auto;
             margin-top: 30px;
             margin-bottom: 20px;
             height: 300px;
             width: 95%;
-            background-color: #00aaff10;
+            /* background-color: #00aaff10; */
             text-align: left;
         }
 
-        .devices-setting-table-box {
+        .setting-table-box {
             width: 700px;
             margin: auto;
             padding-top: 30px;
         }
         @media screen and (max-width: 480px) {
-            .devices-setting-table-box {
+            .setting-table-box {
                 width: 95%;
                 font-size: 12px;
                 padding-top: 10px;
             }
         }
 
-        .devices-setting-table {
+        .setting-table {
             width: 100%;
             border-collapse: collapse;
             border: 1px solid #ccc;
@@ -3442,22 +3442,33 @@
             text-align: center;
         }
 
-        .devices-setting-table th {
+        .setting-table th {
             width: 150px;
             padding: 10px;
             font-weight: bold;
             vertical-align: top;
-            background: #1A229CAA;
             color: #ffffff;
         }
-        .devices-setting-table td {
+        .setting-table td {
             width: 350px;
             padding: 10px;
             vertical-align: top;
         }
 
-        .devices-setting-table tr:nth-child(even) {
+        .setting-table-device tr:nth-child(even) {
             background: #00AAFF11;
+        }
+
+        .setting-table-device th {
+            background: #1A229CAA;
+        }
+
+        .setting-table-sensor th {
+            background: #e07f00;
+        }
+
+        .setting-table-sensor tr:nth-child(even) {
+            background: #e07f0017;
         }
 
         .device-exchange-box {
@@ -3479,10 +3490,9 @@
             }
         }
 
-        .device-exchange-box-top {
+        .exchange-box-top {
             padding: 10px;
             padding-left: 50px;
-            background-color: #1A229CAA;
             font-weight: bold;
             color: white;
         }
