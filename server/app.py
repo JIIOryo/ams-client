@@ -17,13 +17,16 @@ from on_message.device_create import device_create
 from on_message.device_update import device_update
 from on_message.device_delete import device_delete
 from on_message.device_exchange import device_exchange
+from on_message.sensor_exchange import sensor_exchange
+from on_message.sensor_create import sensor_create
 from on_message.reboot import reboot
 from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
 from on_message.sensor_update import sensor_update, sensor_calibration_update
+from on_message.sensor_delete import sensor_delete
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
-from service.backup import backup_file_name, get_device_backup_file, import_device_back_file
+from service.backup import backup_file_name, get_device_backup_file, import_device_back_file, get_sensor_backup_file, import_sensor_back_file
 
 app = Flask(__name__)
 server_config = get_config_item('LOCAL_SERVER')
@@ -146,6 +149,17 @@ def get_sensor_value():
     current_sensor_values = get_current_sensor_values()
     return jsonify(current_sensor_values)
 
+@app.route('/sensor/create', methods=['POST'])
+def sensor_create_():
+    print(request.json)
+    sensor_create(message = request.data)
+    return empty_response
+
+@app.route('/sensor/exchange', methods=['POST'])
+def sensor_exchange_():
+    sensor_exchange(message = request.data)
+    return empty_response
+
 @app.route('/sensor/update', methods=['POST'])
 def sensor_update_():
     print(request.json)
@@ -164,6 +178,13 @@ def sensor_calibration_update_(sensor_id):
         sensor_id = sensor_id,
         calibration = request.json['calibration']
     )
+    return empty_response
+
+@app.route('/sensor/delete/<int:sensor_id>', methods=['DELETE'])
+def sensor_delete_(sensor_id: int):
+    sensor_delete(message = json.dumps({
+        'sensor_id': sensor_id,
+    }))
     return empty_response
 
 @app.route('/reboot')
@@ -191,6 +212,31 @@ def device_backup():
 def device_backup_post():
     try:
         import_device_back_file(backup_file = request.json)
+    except FormatInvalid as e:
+        raise InvalidUsage('format is invalid', status_code=400)
+
+    return empty_response
+
+@app.route('/sensor/backup')
+def sensor_backup():
+    downloadFileName = backup_file_name(
+        type_ = 'sensor',
+        ext = 'json',
+    )
+    response = make_response(
+        json.dumps(
+            get_sensor_backup_file(),
+            ensure_ascii = False,
+        )
+    )
+    response.headers['Content-Disposition'] = 'attachment; filename=' + downloadFileName
+    response.mimetype = 'application/json'
+    return response
+
+@app.route('/sensor/backup', methods=['POST'])
+def sensor_backup_post():
+    try:
+        import_sensor_back_file(backup_file = request.json)
     except FormatInvalid as e:
         raise InvalidUsage('format is invalid', status_code=400)
 

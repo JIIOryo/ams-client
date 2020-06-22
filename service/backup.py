@@ -8,7 +8,7 @@ sys.path.append( str(current_dir) + '/../' )
 from commons.errors import (
     FormatInvalid,
 )
-from lib.config import get_gpio_config, set_gpio_config, get_config_item
+from lib.config import get_gpio_config, set_gpio_config, get_config_item, get_sensor_config, set_sensor_config
 
 def backup_file_now_date_generator() -> str:
     return datetime.datetime.now().strftime('%Y%m%d_%H_%M_%S')
@@ -47,4 +47,18 @@ def import_device_back_file(backup_file: list) -> None:
     # TODO Validation
 
     set_gpio_config(backup_file)
+    return
+
+def get_sensor_backup_file() -> str:
+    return get_sensor_config()
+
+def import_sensor_back_file(backup_file: list) -> None:
+    MAX_SENSOR_NUMBER = get_config_item('MAX_SENSOR_NUMBER')
+
+    if len(backup_file) != MAX_SENSOR_NUMBER:
+        raise FormatInvalid('Device number invalid')
+
+    # TODO Validation
+
+    set_sensor_config(backup_file)
     return
