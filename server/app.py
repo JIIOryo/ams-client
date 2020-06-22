@@ -26,7 +26,7 @@ from on_message.sensor_update import sensor_update, sensor_calibration_update
 from on_message.sensor_delete import sensor_delete
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
-from service.backup import backup_file_name, get_device_backup_file, import_device_back_file
+from service.backup import backup_file_name, get_device_backup_file, import_device_back_file, get_sensor_backup_file, import_sensor_back_file
 
 app = Flask(__name__)
 server_config = get_config_item('LOCAL_SERVER')
@@ -212,6 +212,31 @@ def device_backup():
 def device_backup_post():
     try:
         import_device_back_file(backup_file = request.json)
+    except FormatInvalid as e:
+        raise InvalidUsage('format is invalid', status_code=400)
+
+    return empty_response
+
+@app.route('/sensor/backup')
+def sensor_backup():
+    downloadFileName = backup_file_name(
+        type_ = 'sensor',
+        ext = 'json',
+    )
+    response = make_response(
+        json.dumps(
+            get_sensor_backup_file(),
+            ensure_ascii = False,
+        )
+    )
+    response.headers['Content-Disposition'] = 'attachment; filename=' + downloadFileName
+    response.mimetype = 'application/json'
+    return response
+
+@app.route('/sensor/backup', methods=['POST'])
+def sensor_backup_post():
+    try:
+        import_sensor_back_file(backup_file = request.json)
     except FormatInvalid as e:
         raise InvalidUsage('format is invalid', status_code=400)
 
