@@ -887,7 +887,200 @@
                             back
                         </p>
                     </div>
+                    <!-- Setting menu -->
+                    <div class="setting-menu-container">
+                        <!-- download -->
+                        <a href="/sensor/backup"><img src="/static/icon/download_orange.png" class="container-update-icon"></a>
+                        <!-- upload -->
+                        <label>
+                            <span>
+                                <img src="/static/icon/upload_orange.png" class="container-update-icon">
+                            </span>
+                            <input type="file" id="sensor-backup-file-upload" style="display: none;" v-model="sensorBackupUploadFileName">
+                        </label>
+                    </div>
+                    <!-- sensor backup upload confirm modal -->
+                    <div class="modal-display" v-show="sensorBackupUploadConfirm" @click.self="sensorBackupUploadConfirmClose()">
+                        <div class="modal-box">
+                            <div class="reboot-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="sensorBackupUploadConfirmClose()">
+                                <img src="/static/icon/upload_green.png" class="modal-alert-icon">
+                                <h3>Import backup file</h3>
+                                <hr>
+                                <div class="small-space-box"></div>
+                                <p class="modal-confirm-text">Are you sure to import this backup file?</p>
+                                <div class="upload-json-confirm-box sensor-thin-color">
+                                    <pre>{{ sensorBackupUploadFileData }}</pre>
+                                </div>
+                    
+                                <div class="small-space-box"></div>
+                                <div class="button-container button-container-right">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="sensorBackupUploadConfirmClose()">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="modal-update-button" @click="sensorBackupUpload">
+                                            <p>Import</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-table-box">
+                        <table border="1" class="setting-table setting-table-sensor">
+                            <tr>
+                                <th>sensor id</th>
+                                <th>sensor name</th>
+                                <th>sensor type</th>
+                                <th>delete</th>
+                            </tr>
+                            <tr v-for="sensorSetting of sensorsSetting" v-bind:value="sensorSetting.sensor_id">
+                                <td>{{ sensorSetting.sensor_id }}</td>
+                                <td v-if="Object.keys(sensorSetting.sensor).length != 0">{{ sensorSetting.sensor.name }}</td>
+                                <td v-if="Object.keys(sensorSetting.sensor).length === 0" colspan="3">
+                                    <div class="table-new-device-button" @click="clickCreateSensorButton(sensorSetting.sensor_id)">Add new
+                                        sensor</div>
+                                </td>
+                                <td v-if="Object.keys(sensorSetting.sensor).length != 0">{{ sensorSetting.sensor.type }}</td>
+                                <td v-if="Object.keys(sensorSetting.sensor).length != 0">
+                                    <img src="/static/icon/dustbox.png" class="container-delete-icon container-delete-icon-table-small"
+                                        @click="sensorDeleteConfirmOpen(sensorSetting.sensor_id, sensorSetting.sensor)">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="device-exchange-box">
+                        <div class="exchange-box-top sensor-dark-color">
+                            <p>exchange</p>
+                        </div>
+                        <div class="device-exchange-box-bottom">
+                            <div>
+                                <p class="device-exchange-device-id">sensor_id</p>
+                            </div>
+                            <div class="device-exchange-box-bottom-select-wrapper">
+                                <div>
+                                    <p class="device-exchange-box-select-label">from</p>
+                                </div>
+                                <div>
+                                    <select name="sensor_id" v-model="exchangeFrom">
+                                        <option v-for="sensor_id in [...Array(sensorsSetting.length).keys()]" :key="sensor_id"
+                                            :value="sensor_id + 1">
+                                            {{sensor_id + 1}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="device-exchange-box-bottom-select-wrapper">
+                                <div>
+                                    <p class="device-exchange-box-select-label">to</p>
+                                </div>
+                                <div>
+                                    <select name="sensor_id" v-model="exchangeTo">
+                                        <option v-for="sensor_id in [...Array(sensorsSetting.length).keys()]" :key="sensor_id"
+                                            :value="sensor_id + 1">
+                                            {{sensor_id + 1}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-new-device-button" @click="sensorExchange">
+                                exchange
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- delete sensor confirm modal -->
+                    <div class="modal-display" v-show="deleteSensorConfirm" @click.self="sensorDeleteConfirmClose">
+                        <div class="modal-box">
+                            <div class="reboot-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="sensorDeleteConfirmClose">
+                                <img src="/static/icon/alert.png" class="modal-alert-icon">
+                                <h3>Confirmation</h3>
+                                <hr>
+                                <div class="small-space-box"></div>
+                                <p class="modal-confirm-text">Are you sure to delete {{selectedSensor.sensor.name}}?</p>
+                                <div class="small-space-box"></div>
+                                <div class="button-container button-container-right">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="sensorDeleteConfirmClose">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="dangerous-button" @click="deleteSensor()">
+                                            <p>Delete</p>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- create sensor modal start -->
+                <div class="modal-display" v-show="createSensorModal" @click.self="closeCreateSensorModal">
+                    <div class="modal-box update-device-responsive">
+                        <div class="update-confirm-box">
+                            <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeCreateSensorModal">
+                            <img src="/static/icon/create.png" class="modal-update-icon">
+                            <h3 class="modal-title">Create Sensor</h3>
+                            <hr>
+                
+                            <div class="sensor-scroll-box">
+                                <!-- forms -->
+                                <div class="modal-form-container">
+                                    <!-- Name -->
+                                    <div class="cp_iptxt">
+                                        <input class="ef" type="text" placeholder="" v-model="selectedSensor.sensor.name">
+                                        <label>Name</label>
+                                        <span class="focus_line"></span>
+                                    </div>
+                
+                                    <!-- Description -->
+                                    <div class="cp_form">
+                                        <textarea required="required" v-model="selectedSensor.sensor.description" cols="20"
+                                            rows="2"></textarea>
+                                        <label class="cp_label" for="textarea">Description</label>
+                                        <i class="bar"></i>
+                                    </div>
+                                </div>
+                
+                                <!-- Sensor type -->
+                                <div class="modal-select-container">
+                                    <label class="select-label">Sensor type</label>
+                                    <div class="select-box select-box-simple device-update-modal-select-box">
+                                        <select name="sensor_type" v-model="selectedSensor.sensor.type">
+                                            <option value="" hidden>Choose</option>
+                                            <option v-for="sensorType of sensorTypes" v-bind:value="sensorType.sensorType">
+                                                {{ sensorType.sensorType }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                
+                        </div>
+                
+                        <div class="device-update-modal-bottom-container">
+                            <div class="button-container">
+                                <div class="button-wrapper">
+                                    <div class="modal-cancel-button" @click="closeCreateSensorModal">
+                                        <p>Cancel</p>
+                                    </div>
+                                </div>
+                                <div class="button-wrapper">
+                                    <div class="modal-update-button" @click="createSensor()">
+                                        <p>Create</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                    </div>
+                </div>
+                <!-- create device modal end -->
 
                 <!-- update sensor modal start -->
                 <div class="modal-display" v-show="updateSensorModal" @click.self="closeUpdateSensorModal()">
@@ -1672,6 +1865,12 @@
             return res.data
         }
 
+        const getSensorsSetting = async () => {
+            // getSensorsと同じ
+            res = await axios.get('/sensors')
+            return res.data
+        };
+
         const rebootRequest = async () => {
             await axios.get('/reboot')
         };
@@ -1740,6 +1939,26 @@
             });
         };
 
+         const createSensorRequest = async createdSensor => {
+            console.log(createdSensor)
+            await axios.post('/sensor/create', {
+                sensor_id: createdSensor.sensor_id,
+                name: createdSensor.sensor.name,
+                description: createdSensor.sensor.description,
+                type: createdSensor.sensor.type,
+            });
+        }
+
+        const sensorExchangeRequest = async sensorsOrder => {
+            await axios.post('/sensor/exchange', {
+                sensors: sensorsOrder,
+            });
+        };
+
+        const deleteSensorRequest = async deleteSensoreId => {
+            await axios.delete(`/sensor/delete/${deleteSensoreId}`); 
+        };
+
         // TODO まだ使うかは未定
         const deviceBackupDownloadRequest = async () => {
             const response = await axios.get('/device/backup')
@@ -1754,6 +1973,11 @@
         const deviceBackupUploadRequest = async backupFile => {
             console.log(backupFile)
             await axios.post('/device/backup', JSON.parse(backupFile))
+        }
+
+        const sensorBackupUploadRequest = async backupFile => {
+            console.log(backupFile)
+            await axios.post('/sensor/backup', JSON.parse(backupFile))
         }
 
         const updateSensorRequest = async updatedSensor => {
@@ -1780,16 +2004,22 @@
                 loading: false,
                 updateModal: false,
                 createModal: false,
+                createSensorModal: false,
                 updateSensorModal: false,
                 updateSensorCalibrationModal: false,
                 rebootConfirm: false,
                 deleteDeviceConfirm: false,
+                deleteSensorConfirm: false,
                 deviceBackupUploadConfirm: false,
+                sensorBackupUploadConfirm: false,
                 devices: [],
                 devicesSetting: [],
                 deviceBackupUploadFileName: '',
                 deviceBackupUploadFileData: '',
                 sensors: [],
+                sensorsSetting: [],
+                sensorBackupUploadFileName: '',
+                sensorBackupUploadFileData: '',
                 sensorDataLastUpdatedAt: '',
                 sensorDataPollingPeriod: 5,
                 feedPumpsWaterSupplyTime: [],
@@ -2025,6 +2255,32 @@
 
                     window.location.href = '/';
                 },
+                sensorExchange: async function() {
+                    const sensorsOrder = [...Array(this.sensorsSetting.length).keys()].map(v => v+1);
+                    // e.g. sensorsOrder = [1, 2, 3, 4, 5, 6]
+                    const exchangeFrom = this.exchangeFrom;
+                    const exchangeTo = this.exchangeTo;
+
+                    // validation
+                    if (exchangeFrom * exchangeTo === 0) {
+                        alert('Please select sensor id.')
+                        return
+                    }
+                    if (exchangeFrom === exchangeTo) {
+                        alert('Same sensor id can not exchange.')
+                        return
+                    }
+
+                    // exchange
+                    sensorsOrder.splice(exchangeTo - 1, 1, exchangeFrom);
+                    sensorsOrder.splice(exchangeFrom - 1, 1, exchangeTo);
+
+                    this.loading = true;
+                    await sensorExchangeRequest(sensorsOrder);
+                    this.loading = false;
+
+                    window.location.href = '/';
+                },
                 deviceBackupDownload: async function() {
                     this.loading = true;
                     await deviceBackupDownloadRequest();
@@ -2081,6 +2337,87 @@
                     };
                     this.createModal = true;
                 },
+                clickCreateSensorButton: function (sensor_id) {
+                    this.selectedSensor = {
+                        sensor_id: sensor_id,
+                        sensor: {
+                            name: '',
+                            description: '',
+                            type: 'water_temperature',
+                        }
+                    };
+                    this.createSensorModal = true;
+                },
+                createSensor: async function () {
+                    this.loading = true
+                    const deviceState = await createSensorRequest(this.selectedSensor);
+                    this.closeCreateSensorModal();
+                    // TODO not reset
+                    window.location.href = '/'
+                },
+                sensorDeleteConfirmOpen: async function (sensor_id, sensorSetting) {
+                    this.deleteSensorConfirm = true;
+                    this.selectedSensor = {
+                        sensor_id: sensor_id,
+                        sensor: {
+                            name: sensorSetting.name,
+                        }
+                    };
+                    console.log(this.selectedSensor)
+                },
+                sensorDeleteConfirmClose: async function () {
+                    this.deleteSensorConfirm = false;
+                    this.selectedSensor = {
+                        sensor: {},
+                    };
+                },
+                deleteSensor: async function () {
+                    await deleteSensorRequest(this.selectedSensor.sensor_id);
+                    // TODO not reset
+                    this.sensorDeleteConfirmClose();
+                    window.location.href = '/'
+                },
+                sensorExchange: async function () {
+                    const sensorsOrder = [...Array(this.sensorsSetting.length).keys()].map(v => v + 1);
+                    // e.g. sensorsOrder = [1, 2, 3, 4, 5, 6]
+                    const exchangeFrom = this.exchangeFrom;
+                    const exchangeTo = this.exchangeTo;
+
+                    // validation
+                    if (exchangeFrom * exchangeTo === 0) {
+                        alert('Please select sensor id.')
+                        return
+                    }
+                    if (exchangeFrom === exchangeTo) {
+                        alert('Same sensor id can not exchange.')
+                        return
+                    }
+
+                    // exchange
+                    sensorsOrder.splice(exchangeTo - 1, 1, exchangeFrom);
+                    sensorsOrder.splice(exchangeFrom - 1, 1, exchangeTo);
+
+                    this.loading = true;
+                    await sensorExchangeRequest(sensorsOrder);
+                    this.loading = false;
+
+                    window.location.href = '/';
+                },
+                sensorBackupDownload: async function () {
+                    this.loading = true;
+                    await sensorBackupDownloadRequest();
+                    this.loading = false;
+                },
+                sensorBackupUploadConfirmClose: function () {
+                    this.sensorBackupUploadConfirm = false;
+                    this.sensorBackupUploadFileName = '';
+                    this.sensorBackupUploadFileData = '';
+                },
+                sensorBackupUpload: async function () {
+                    await sensorBackupUploadRequest(this.sensorBackupUploadFileData)
+                    window.location.href = '/'
+
+                },
                 closeUpdateDeviceModal: function () {
                     this.updateModal = false;
                     this.selectedDevice = {
@@ -2091,6 +2428,12 @@
                     this.createModal = false;
                     this.selectedDevice = {
                         run_type: "",
+                    };
+                },
+                closeCreateSensorModal: function () {
+                    this.createSensorModal = false;
+                    this.selectedSensor = {
+                        sensor: {}
                     };
                 },
                 clickUpdateSensorButton: function (selectedSensor) {
@@ -2210,20 +2553,43 @@
                     }
                     fr.readAsText(files.item(0));
                 },
+                sensorBackupUploadFileName: function (val, oldVal) {
+                    if (!this.sensorBackupUploadFileName) {
+                        return;
+                    }
+                    console.log(val);
+                    this.sensorBackupUploadConfirm = true;
+
+                    const files = document.getElementById('sensor-backup-file-upload').files;
+                    if (files.length <= 0) {
+                        return false;
+                    }
+
+                    const fr = new FileReader();
+
+                    fr.onload = e => {
+                        const result = JSON.parse(e.target.result);
+                        const formatted = JSON.stringify(result, null, 2);
+                        this.sensorBackupUploadFileData = formatted;
+                    }
+                    fr.readAsText(files.item(0));
+                },
             },
             mounted: async function () {
 
                 this.loading = true
-                const [deviceState, devicesSetting, sensors, setting] = await Promise.all([
+                const [deviceState, devicesSetting, sensors, sensorsSetting, setting] = await Promise.all([
                     getDeviceState(),
                     getDevices(),
                     getSensors(),
+                    getSensorsSetting(),
                     getSetting(),
                 ])
                 this.loading = false
 
                 this.devices = deviceState;
                 this.devicesSetting = devicesSetting;
+                this.sensorsSetting = sensorsSetting;
                 this.sensors = sensors.map(sensor => {
                     sensor.value = 0;
                     return sensor;
