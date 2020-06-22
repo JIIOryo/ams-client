@@ -17,6 +17,7 @@ from on_message.device_create import device_create
 from on_message.device_update import device_update
 from on_message.device_delete import device_delete
 from on_message.device_exchange import device_exchange
+from on_message.sensor_exchange import sensor_exchange
 from on_message.reboot import reboot
 from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
@@ -145,6 +146,11 @@ def get_sensors():
 def get_sensor_value():
     current_sensor_values = get_current_sensor_values()
     return jsonify(current_sensor_values)
+
+@app.route('/sensor/exchange', methods=['POST'])
+def sensor_exchange_():
+    sensor_exchange(message = request.data)
+    return empty_response
 
 @app.route('/sensor/update', methods=['POST'])
 def sensor_update_():
