@@ -23,6 +23,7 @@ from on_message.reboot import reboot
 from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
 from on_message.sensor_update import sensor_update, sensor_calibration_update
+from on_message.sensor_delete import sensor_delete
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
 from service.backup import backup_file_name, get_device_backup_file, import_device_back_file
@@ -177,6 +178,13 @@ def sensor_calibration_update_(sensor_id):
         sensor_id = sensor_id,
         calibration = request.json['calibration']
     )
+    return empty_response
+
+@app.route('/sensor/delete/<int:sensor_id>', methods=['DELETE'])
+def sensor_delete_(sensor_id: int):
+    sensor_delete(message = json.dumps({
+        'sensor_id': sensor_id,
+    }))
     return empty_response
 
 @app.route('/reboot')
