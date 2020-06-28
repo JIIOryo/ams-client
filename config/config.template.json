@@ -12,7 +12,6 @@
         "KEEPALIVE": 60,
         "SUBSCRIBER_QOS": 1
     },
-    "NETWORK_CONNECTION_WAIT_TIME": 23,
     "SLACK": {
         "WEBHOOK_URL": "https://hooks.slack.com/services/.....",
         "ERROR": {

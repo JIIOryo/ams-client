@@ -5,10 +5,13 @@ import traceback
 
 from lib.config import get_config_item
 from lib.notification import post_slack_by_type
+from lib.util import connected_to_internet
 from service.reboot import set_init_device_state
 from service.sensor import publish_sensor_data
 from commons.consts import (
     SLACK_NOTIFICATION_TYPE,
+    NETWORK_CONNECT_CHECK_INTERVAL,
+    NETWORK_CONNECT_CHECK_URL,
 )
 
 PWD = os.getcwd()
@@ -20,13 +23,21 @@ def main() -> None:
     set_init_device_state()
     print('OK.')
 
-    # open subscriber
-    network_connection_wait_time = get_config_item('NETWORK_CONNECTION_WAIT_TIME')
-    print('waiting for network connection ...')
-    time.sleep(network_connection_wait_time)
+    # network connection check
+    print('Network connection check start')
+    no_network_connection = True
+    while no_network_connection:
+        print('Not connected to the Internet. Please wait ...')
+        no_network_connection = not connected_to_internet(
+            url = NETWORK_CONNECT_CHECK_URL,
+            timeout = NETWORK_CONNECT_CHECK_INTERVAL,
+        )
     print('OK.')
-    print('run subscriber ...')
+
+    # open subscriber
+    print('running subscriber ...')
     subprocess.Popen(['python3', SUBSCRIBER_PATH])
+    print('OK')
 
     # open sensor manager
     while True:
