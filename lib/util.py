@@ -1,6 +1,8 @@
 from typing import List, Tuple
 import datetime
 
+import requests
+
 def formated_str_now_date():
     return datetime.datetime.now().strftime('%m/%d %H:%M')
 
@@ -50,3 +52,11 @@ def get_now_device_should_be_on_by_timer(on_hour: int, on_minute: int, off_hour:
     if min(on_and_off_times) <= now_time < max(on_and_off_times):
         return device_on_time < device_off_time
     return device_off_time <= device_on_time
+
+def connected_to_internet(url: str, timeout: int):
+    try:
+        _ = requests.get(url, timeout=timeout)
+        return True
+    except requests.ConnectionError:
+        pass
+    return False
