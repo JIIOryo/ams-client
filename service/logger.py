@@ -1,3 +1,4 @@
+import datetime
 import sys
 
 import pathlib
@@ -35,4 +36,24 @@ LOG_LEVEL = {
     },
 }
 MIN_FILE_OUTPUT_LEVEL = 2
+
+AMS_ROOT_PATH = get_config_item('ROOT_PATH')
+OUTPUT_LOG_FILE_PATH = '/'.join([AMS_ROOT_PATH, 'log', 'logger'])
+
+def today_log_file_name() -> str:
+    """    
+    Returns
+    ----------
+    str
+        log_file_name
+        e.g.
+        /home/pi/ams-client/log/logger/log_2019_10_10.log
+    """
+    prefix, ext = 'log', 'log'
+    file_name = '{prefix}_{date}.{ext}'.format(
+        prefix = prefix,
+        date = datetime.datetime.now().strftime('%Y_%m_%d'),
+        ext = ext
+    )
+    return '/'.join([OUTPUT_LOG_FILE_PATH, file_name])
 
