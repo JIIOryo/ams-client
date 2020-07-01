@@ -6,6 +6,14 @@ import traceback
 from lib.config import get_config_item
 from lib.notification import post_slack_by_type
 from lib.util import connected_to_internet
+from service.logger import (
+    logger,
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR,
+    FATAL
+)
 from service.reboot import set_init_device_state
 from service.sensor import publish_sensor_data
 from commons.consts import (
@@ -19,25 +27,25 @@ SUBSCRIBER_PATH = '/'.join([PWD, 'subscriber', 'subscriber.py'])
 
 def main() -> None:
     # set initial device state
-    print('set initial device states ...')
+    logger(INFO, 'set initial device states ...')
     set_init_device_state()
-    print('OK.')
+    logger(DEBUG, 'OK.')
 
     # network connection check
-    print('Network connection check start')
+    logger(INFO, 'Network connection check start')
     no_network_connection = True
     while no_network_connection:
-        print('Not connected to the Internet. Please wait ...')
+        logger(WARN, 'Not connected to the Internet. Please wait ...')
         no_network_connection = not connected_to_internet(
             url = NETWORK_CONNECT_CHECK_URL,
             timeout = NETWORK_CONNECT_CHECK_INTERVAL,
         )
-    print('OK.')
+    logger(DEBUG, 'OK.')
 
     # open subscriber
-    print('running subscriber ...')
+    logger(INFO, 'running subscriber ...')
     subprocess.Popen(['python3', SUBSCRIBER_PATH])
-    print('OK')
+    logger(DEBUG, 'OK')
 
     # open sensor manager
     while True:
