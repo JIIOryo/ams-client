@@ -82,3 +82,23 @@ def output_log_file(text: str):
         f.write(text)
     return
 
+# logger
+def logger(log_level: str, message: str) -> None:
+
+    prefix = log_message_prefix_generator(log_level)
+
+    # stdout
+    print('{colored_prefix} {message}'.format(
+        colored_prefix = color_text(text=prefix, color=LOG_LEVEL[log_level]['COLOR']),
+        message = message
+    ))
+
+    # out to log file
+    if LOG_LEVEL[log_level]['LEVEL'] >= MIN_FILE_OUTPUT_LEVEL:
+        output_log_file(
+            text = f'{prefix} {message}\n'
+        )
+    
+    # TODO slack message post
+
+    return
