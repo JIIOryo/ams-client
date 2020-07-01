@@ -25,7 +25,7 @@ type: json str
 }
 """
 
-def device_auto_feeder(message: dict) -> None:
+def device_auto_feeder(message: str) -> None:
     auto_feeder_action = json.loads(message)
     
     devices = get_gpio_config()

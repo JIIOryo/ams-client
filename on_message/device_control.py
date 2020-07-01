@@ -29,7 +29,7 @@ type: json str
 }
 """
 
-def device_control(message: dict) -> None:
+def device_control(message: str) -> None:
     target_devices = json.loads(message)['devices']
     devices = get_gpio_config()
 
