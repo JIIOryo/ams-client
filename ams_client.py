@@ -3,6 +3,7 @@ import subprocess
 import time
 import traceback
 
+from lib.assets import get_boot_ascii_art
 from lib.config import get_config_item
 from lib.notification import post_slack_by_type
 from lib.util import connected_to_internet
@@ -26,8 +27,14 @@ PWD = os.getcwd()
 SUBSCRIBER_PATH = '/'.join([PWD, 'subscriber', 'subscriber.py'])
 
 def main() -> None:
+    # AMS Start!
+    logger(INFO, 'AMS start.', True)
+    logger(DEBUG, 'Welcome to AMS!')
+    BOOT_AA = get_boot_ascii_art()
+    logger(INFO, BOOT_AA)
+
     # set initial device state
-    logger(INFO, 'set initial device states ...')
+    logger(INFO, 'set initial device states ...', True)
     set_init_device_state()
     logger(DEBUG, 'OK.')
 
@@ -44,11 +51,12 @@ def main() -> None:
     logger(DEBUG, 'OK.')
 
     # open subscriber
-    logger(INFO, 'running subscriber ...')
+    logger(INFO, 'running subscriber ...', True)
     subprocess.Popen(['python3', SUBSCRIBER_PATH])
     logger(DEBUG, 'OK')
 
     # open sensor manager
+    logger(INFO, 'running sensor manager ...', True)
     while True:
         try:
             publish_sensor_data()
