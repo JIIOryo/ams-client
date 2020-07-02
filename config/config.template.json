@@ -25,6 +25,11 @@
             "USERNAME": "notification",
             "ICON_EMOJI": ":information_desk_person:",
             "MESSAGE_FORMAT": "------------------------------\n{message}\n------------------------------"
+        },
+        "LOG": {
+            "CHANNEL": "#log",
+            "USERNAME": "AMS logger",
+            "ICON_EMOJI": ":pencil:"
         }
     },
     "SENSING": {
