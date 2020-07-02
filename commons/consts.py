@@ -4,6 +4,10 @@ SLACK_NOTIFICATION_TYPE = {
     "NOTIFICATION": "notification",
 }
 
+SLACK_MENTION_TYPE = {
+    "CHANNEL": "<!channel>"
+}
+
 SLACK_CREATE_DEVICE_NOTIFICATION_FORMAT = """
 :new: New device is created at {now}
 ```

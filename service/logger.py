@@ -7,6 +7,7 @@ sys.path.append( str(current_dir) + '/../' )
 
 from commons.consts import (
     SLACK_NOTIFICATION_TYPE,
+    SLACK_MENTION_TYPE,
 )
 from lib.config import get_config_item
 from lib.color import Color, color_text
@@ -114,7 +115,8 @@ def logger(log_level: str, message: str, require_slack: bool = False) -> None:
     if require_slack and slack_notification:
         mention = ''
         if log_level == ERROR or log_level == FATAL:
-            mention = '<!channel>'
+            mention = SLACK_MENTION_TYPE['CHANNEL']
+
         post_log_to_slack(
             pretext = mention,
             color = LOG_LEVEL[log_level]['SLACK_COLOR'],
