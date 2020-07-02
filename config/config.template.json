@@ -14,6 +14,7 @@
     },
     "SLACK": {
         "WEBHOOK_URL": "https://hooks.slack.com/services/.....",
+        "SLACK_NOTIFICATION": true,
         "ERROR": {
             "CHANNEL": "#error",
             "USERNAME": "error notification",
