@@ -74,3 +74,17 @@ def post_slack_by_type(text: str, type_: str) -> None:
     else:
         raise NotificationTypeUndefined('This type does not exist.')
 
+def post_log_to_slack(color: str, title: str, text: str, footer: str) -> None:
+    # get slack config from config
+    slack_config = get_config_item('SLACK')
+    # post slack with attachment
+    post_slack_with_attachment(
+        channel = slack_config['LOG']['CHANNEL'],
+        username = slack_config['LOG']['USERNAME'],
+        text = '',
+        icon_emoji = slack_config['LOG']['ICON_EMOJI'],
+        color = color,
+        attachment_title = title,
+        attachment_text = text,
+        attachment_footer = footer,
+    )
