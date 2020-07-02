@@ -109,7 +109,9 @@ def logger(log_level: str, message: str, require_slack: bool = False) -> None:
         )
     
     # slack
-    if require_slack:
+    slack_notification = get_config_item('SLACK')['SLACK_NOTIFICATION']
+
+    if require_slack and slack_notification:
         mention = ''
         if log_level == ERROR or log_level == FATAL:
             mention = '<!channel>'
