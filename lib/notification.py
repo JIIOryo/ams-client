@@ -24,6 +24,33 @@ def post_slack(channel: str, username: str, text: str, icon_emoji: str) -> None:
     slack_webhook_url = get_config_item('SLACK')['WEBHOOK_URL']
     response = requests.post(slack_webhook_url, data=json.dumps(post_data))
 
+def post_slack_with_attachment(
+    channel: str,
+    username: str,
+    text: str,
+    icon_emoji: str,
+    color: str,
+    attachment_title: str,
+    attachment_text: str,
+    attachment_footer: str,
+) -> None:
+    post_data = {
+        "channel": channel,
+        "username": username,
+        "text": text,
+        "icon_emoji": icon_emoji,
+        "attachments": [
+            {
+                "color": color,
+                "author_name": attachment_title,
+                "text": attachment_text,
+                "footer": attachment_footer,
+            }
+        ]
+    }
+    slack_webhook_url = get_config_item('SLACK')['WEBHOOK_URL']
+    response = requests.post(slack_webhook_url, data=json.dumps(post_data))
+
 def post_slack_by_type(text: str, type_: str) -> None:
 
     slack_config = get_config_item('SLACK')
