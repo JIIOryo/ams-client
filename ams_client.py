@@ -35,11 +35,12 @@ def main() -> None:
     logger(INFO, 'Network connection check start')
     no_network_connection = True
     while no_network_connection:
-        logger(WARN, 'Not connected to the Internet. Please wait ...')
+        logger(INFO, 'Not connected to the Internet. Please wait ...')
         no_network_connection = not connected_to_internet(
             url = NETWORK_CONNECT_CHECK_URL,
             timeout = NETWORK_CONNECT_CHECK_INTERVAL,
         )
+        time.sleep(1)
     logger(DEBUG, 'OK.')
 
     # open subscriber
