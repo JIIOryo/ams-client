@@ -1300,6 +1300,10 @@
                 
                     <h2 class="setting-head">Slack <img src="/static/img/slack_icon.png" class="setting-head-icon"></h2>
                     <div class="cp_iptxt">
+                        <input class="ef" type="checkbox" v-model="setting.SLACK.SLACK_NOTIFICATION">
+                        <label>Slack Notification</label>
+                    </div>
+                    <div class="cp_iptxt">
                         <input class="ef" type="text" placeholder="" v-model="setting.SLACK.WEBHOOK_URL">
                         <label>Webhook URL</label>
                         <span class="focus_line"></span>
@@ -1351,6 +1355,25 @@
                             name="notification-message-format" cols="30" rows="4"></textarea>
                         <label class="cp_label" for="textarea">Message format</label>
                         <i class="bar"></i>
+                    </div>
+                
+                    <br>
+
+                    <h3 class="setting-sub-head">Log <img src="/static/icon/notification.png" class="setting-sub-head-icon"></h3>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.LOG.CHANNEL">
+                        <label>Channel</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.LOG.USERNAME">
+                        <label>UserName</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.SLACK.LOG.ICON_EMOJI">
+                        <label>Icon Emoji</label>
+                        <span class="focus_line"></span>
                     </div>
                 
                     <br>

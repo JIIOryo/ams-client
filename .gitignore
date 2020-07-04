@@ -4,5 +4,7 @@ config/gpio.json
 config/sensor.json
 
 log/current_sensor_value.json
+log/logger
+log/tmp
 
 *.swp
