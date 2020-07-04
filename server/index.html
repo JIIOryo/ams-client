@@ -481,7 +481,6 @@
                                 <p>Device ID: {{ device.device_id }}</p>
                             </div>
                             <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateDeviceButton(device)">
-                            <img src="/static/icon/dustbox.png" class="container-delete-icon">
                         </div>
                         <div class="device-middle-box">
                             <img :src="deviceTypes_temp[device.type].iconUrl" class="device-icon" :class="{'device-icon-feed-pump-responsive': device.type == 'feed_pump'}">
@@ -863,7 +862,6 @@
                                 </div>
                                 <img src="/static/icon/calibration.png" class="container-update-icon" @click="clickUpdateSensorCalibrationButton(sensor)">
                                 <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateSensorButton(sensor)">
-                                <img src="/static/icon/dustbox.png" class="container-delete-icon">
                             </div>
                             <div class="sensor-middle-box">
                                 <img :src="sensorTypes_temp[sensor.sensor.type].iconUrl" class="sensor-icon">
