@@ -28,6 +28,7 @@ from commons.consts import (
 
 PWD = os.getcwd()
 SUBSCRIBER_PATH = '/'.join([PWD, 'subscriber', 'subscriber.py'])
+AMS_LOCAL_SERVER_PATH = '/'.join([PWD, 'server'])
 
 def main() -> None:
     # AMS Start!
@@ -53,6 +54,11 @@ def main() -> None:
         )
         time.sleep(timer.__next__())
     logger(DEBUG, 'OK.')
+
+    # local AMS server
+    logger(INFO, 'running local ams server ...', True)
+    subprocess.Popen(f'cd {AMS_LOCAL_SERVER_PATH}; python3 app.py', shell=True)
+    logger(DEBUG, 'OK')
 
     # open subscriber
     logger(INFO, 'running subscriber ...', True)
