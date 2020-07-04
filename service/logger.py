@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 import sys
+import traceback
 
 import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
@@ -120,13 +121,32 @@ def logger(log_level: str, message: str, require_slack: bool = False) -> None:
         if log_level == ERROR or log_level == FATAL:
             mention = SLACK_MENTION_TYPE['CHANNEL']
 
-        post_log_to_slack(
-            pretext = mention,
-            color = LOG_LEVEL[log_level]['SLACK_COLOR'],
-            title = f'[{log_level}]',
-            text = message,
-            footer = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        )
+        # Error handling is required in HTTP Request
+        try:
+            post_log_to_slack(
+                pretext = mention,
+                color = LOG_LEVEL[log_level]['SLACK_COLOR'],
+                title = f'[{log_level}]',
+                text = message,
+                footer = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            )
+        except Exception as e:
+            error_message = ''.join(traceback.TracebackException.from_exception(e).format())
+            error_message += """
+-----------------------------------------------
+This message can not post to slack.
+
+{message} 
+-----------------------------------------------
+""".format(message = message)
+            logger(ERROR, error_message)
+            add_unsent_message(
+                log_level = log_level,
+                message = message,
+            )
+            pass
+
+    return
 
 def unsent_file_exist() -> bool:
     return os.path.isfile(UNSENT_LOG_FILE_PATH)
