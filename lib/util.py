@@ -60,3 +60,14 @@ def connected_to_internet(url: str, timeout: int):
     except requests.ConnectionError:
         pass
     return False
+
+def timeout_time_generator(default: float, default_repeat_times: int, r: float, th: int) -> float:
+    timeout = default
+    # step 1
+    for _ in range(default_repeat_times): yield timeout
+    # step 2
+    while timeout < th:
+        timeout *= r
+        yield timeout
+    # step 3
+    while True: yield timeout

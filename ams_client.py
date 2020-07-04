@@ -6,7 +6,10 @@ import traceback
 from lib.assets import get_boot_ascii_art
 from lib.config import get_config_item
 from lib.notification import post_slack_by_type
-from lib.util import connected_to_internet
+from lib.util import (
+    connected_to_internet,
+    timeout_time_generator,
+)
 from service.logger import (
     logger,
     DEBUG,
@@ -40,6 +43,7 @@ def main() -> None:
 
     # network connection check
     logger(INFO, 'Network connection check start')
+    timer = timeout_time_generator(default=0.5, default_repeat_times=20, r=2, th=60)
     no_network_connection = True
     while no_network_connection:
         logger(INFO, 'Not connected to the Internet. Please wait ...')
@@ -47,7 +51,7 @@ def main() -> None:
             url = NETWORK_CONNECT_CHECK_URL,
             timeout = NETWORK_CONNECT_CHECK_INTERVAL,
         )
-        time.sleep(1)
+        time.sleep(timer.__next__())
     logger(DEBUG, 'OK.')
 
     # open subscriber
