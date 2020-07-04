@@ -10,6 +10,7 @@ from commons.consts import (
     CRON_START_TEXT,
     CRON_END_TEXT,
     CRON_COMMENT_FORMAT,
+    CRON_FORMAT_CONTINUOUS,
     CRON_FORMAT_DAILY,
     CRON_FORMAT_DISCREATE,
     DEVICE_RUN_TYPE,
@@ -64,6 +65,14 @@ def cron_text_generator() -> str:
         
         # if the device runs continuously like a wave pump
         if device['device']['run_type'] == DEVICE_RUN_TYPE['CONTINUOUS']:
+            # add comment
+            cron_text += CRON_COMMENT_FORMAT.format(
+                device_id = device['device_id'],
+                device_name = device['device']['name'].replace('\n', ' '),
+            )
+            # add cron entries
+            cron_text += CRON_FORMAT_CONTINUOUS.format(BCM = device['BCM'])
+            cron_text += '\n\n'
             continue
 
         timer = device['device']['options']['timer']

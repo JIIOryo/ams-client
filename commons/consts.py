@@ -176,6 +176,10 @@ CRON_FORMAT_DISCREATE = \
 """
 {minute} {hour} * * * {cmd}"""
 
+CRON_FORMAT_CONTINUOUS = \
+"""
+@reboot gpio -g mode {BCM} out && gpio -g write {BCM} 1"""
+
 # CRONTAB TEMP FILE PATH
 CRONTAB_TEMP_FILE_PATH = 'ams_crontab_temp.txt'
 
