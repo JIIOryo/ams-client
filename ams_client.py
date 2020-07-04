@@ -56,7 +56,7 @@ def main() -> None:
     logger(DEBUG, 'OK')
 
     # AMS start successfully
-    logger(INFO, 'AMS start successfully!🎉🎉', True)
+    logger(INFO, 'AMS start successfully!🎉🎉', True, True)
 
     # open sensor manager
     logger(INFO, 'running sensor manager ...', True)

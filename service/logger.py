@@ -97,7 +97,7 @@ def output_log_file(text: str):
     return
 
 # logger
-def logger(log_level: str, message: str, require_slack: bool = False) -> None:
+def logger(log_level: str, message: str, require_slack: bool = False, mention_required: bool = False) -> None:
 
     prefix = log_message_prefix_generator(log_level)
 
@@ -118,7 +118,7 @@ def logger(log_level: str, message: str, require_slack: bool = False) -> None:
 
     if require_slack and slack_notification:
         mention = ''
-        if log_level == ERROR or log_level == FATAL:
+        if log_level == ERROR or log_level == FATAL or mention_required:
             mention = SLACK_MENTION_TYPE['CHANNEL']
 
         # Error handling is required in HTTP Request
