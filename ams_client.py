@@ -13,7 +13,7 @@ from service.logger import (
     INFO,
     WARN,
     ERROR,
-    FATAL
+    FATAL,
 )
 from service.reboot import set_init_device_state
 from service.sensor import publish_sensor_data
@@ -28,13 +28,13 @@ SUBSCRIBER_PATH = '/'.join([PWD, 'subscriber', 'subscriber.py'])
 
 def main() -> None:
     # AMS Start!
-    logger(INFO, 'AMS start.', True)
+    logger(INFO, 'AMS start.')
     logger(DEBUG, 'Welcome to AMS!')
     BOOT_AA = get_boot_ascii_art()
     logger(INFO, BOOT_AA)
 
     # set initial device state
-    logger(INFO, 'set initial device states ...', True)
+    logger(INFO, 'set initial device states ...')
     set_init_device_state()
     logger(DEBUG, 'OK.')
 
@@ -54,6 +54,9 @@ def main() -> None:
     logger(INFO, 'running subscriber ...', True)
     subprocess.Popen(['python3', SUBSCRIBER_PATH])
     logger(DEBUG, 'OK')
+
+    # AMS start successfully
+    logger(INFO, 'AMS start successfully!🎉🎉', True)
 
     # open sensor manager
     logger(INFO, 'running sensor manager ...', True)
