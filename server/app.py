@@ -65,7 +65,7 @@ def flask_logger_message(method: str, path: str, data: str, remote_addr: str, us
         logger_message += f'    Body {data}' 
     return logger_message
 
-def logger_(req, log_level: str, notification: bool = False):
+def ams_logger(req, log_level: str, notification: bool = False):
     message = flask_logger_message(
         method = req.method,
         path = req.path,
@@ -83,14 +83,14 @@ def handle_invalid_usage(error):
 
 @app.route('/')
 def index():
-    logger_(request, INFO)
+    ams_logger(request, INFO)
     with open('index.html') as f:
         html = f.read()
     return html
 
 @app.route('/ping')
 def ping():
-    logger_(request, DEBUG)
+    ams_logger(request, DEBUG)
     return empty_response
 
 @app.route('/favicon.ico')
@@ -99,49 +99,49 @@ def favicon():
 
 @app.route('/setting', methods=['GET'])
 def get_setting():
-    logger_(request, DEBUG)
+    ams_logger(request, DEBUG)
     config = get_config()
     return json.dumps(config)
 
 @app.route('/setting', methods=['POST'])
 def set_setting():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     set_config(request.json)
     return empty_response
 
 @app.route('/devices')
 def get_devices():
-    logger_(request, DEBUG)
+    ams_logger(request, DEBUG)
     devices = get_gpio_config()
     return json.dumps(devices)
 
 @app.route('/devices/state')
 def get_all_device_state_():
-    logger_(request, DEBUG)
+    ams_logger(request, DEBUG)
     devices = get_all_device_state()
     return json.dumps(devices)
 
 @app.route('/device/create', methods=['POST'])
 def device_create_():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     device_create(message = request.data)
     return empty_response
 
 @app.route('/device/update', methods=['POST'])
 def device_update_():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     device_update(message = request.data)
     return empty_response
 
 @app.route('/device/control', methods=['POST'])
 def device_control_():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     device_control(message = request.data)
     return empty_response
 
 @app.route('/device/delete/<int:device_id>', methods=['DELETE'])
 def device_delete_(device_id: int):
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     device_delete(message = json.dumps({
         'device_id': device_id,
     }))
@@ -149,7 +149,7 @@ def device_delete_(device_id: int):
 
 @app.route('/device/exchange', methods=['POST'])
 def device_exchange_():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     device_exchange(message = request.data)
     return empty_response
 
@@ -159,7 +159,7 @@ def add_water(device_id):
     request example
     {"warter_supply_time": 120}
     '''
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     water_supply_time = request.json['water_supply_time']
     device_feed_pump(json.dumps({
         "device_id": device_id,
@@ -173,7 +173,7 @@ def feed(device_id):
     request example
     {}
     '''
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     device_auto_feeder(json.dumps({
         "device_id": device_id,
     }))
@@ -181,31 +181,31 @@ def feed(device_id):
 
 @app.route('/sensors')
 def get_sensors():
-    logger_(request, DEBUG)
+    ams_logger(request, DEBUG)
     sensors = get_sensor_config()
     return jsonify(sensors)
 
 @app.route('/sensors/value')
 def get_sensor_value():
-    logger_(request, DEBUG)
+    ams_logger(request, DEBUG)
     current_sensor_values = get_current_sensor_values()
     return jsonify(current_sensor_values)
 
 @app.route('/sensor/create', methods=['POST'])
 def sensor_create_():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     sensor_create(message = request.data)
     return empty_response
 
 @app.route('/sensor/exchange', methods=['POST'])
 def sensor_exchange_():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     sensor_exchange(message = request.data)
     return empty_response
 
 @app.route('/sensor/update', methods=['POST'])
 def sensor_update_():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     sensor_update(message = request.data)
     return empty_response
 
@@ -217,7 +217,7 @@ def sensor_calibration_update_(sensor_id):
         "calibration": [[1900, 21], [1910, 21.3], [2010, 23.8]]
     }
     '''
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     sensor_calibration_update(
         sensor_id = sensor_id,
         calibration = request.json['calibration']
@@ -226,7 +226,7 @@ def sensor_calibration_update_(sensor_id):
 
 @app.route('/sensor/delete/<int:sensor_id>', methods=['DELETE'])
 def sensor_delete_(sensor_id: int):
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     sensor_delete(message = json.dumps({
         'sensor_id': sensor_id,
     }))
@@ -234,13 +234,13 @@ def sensor_delete_(sensor_id: int):
 
 @app.route('/reboot')
 def reboot_():
-    logger_(request, WARN, True)
+    ams_logger(request, WARN, True)
     reboot()
     return empty_response
 
 @app.route('/device/backup')
 def device_backup():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     downloadFileName = backup_file_name(
         type_ = 'device',
         ext = 'json',
@@ -257,7 +257,7 @@ def device_backup():
 
 @app.route('/device/backup', methods=['POST'])
 def device_backup_post():
-    logger_(request, WARN, True)
+    ams_logger(request, WARN, True)
     try:
         import_device_back_file(backup_file = request.json)
     except FormatInvalid as e:
@@ -267,7 +267,7 @@ def device_backup_post():
 
 @app.route('/sensor/backup')
 def sensor_backup():
-    logger_(request, INFO, True)
+    ams_logger(request, INFO, True)
     downloadFileName = backup_file_name(
         type_ = 'sensor',
         ext = 'json',
@@ -284,7 +284,7 @@ def sensor_backup():
 
 @app.route('/sensor/backup', methods=['POST'])
 def sensor_backup_post():
-    logger_(request, WARN, True)
+    ams_logger(request, WARN, True)
     try:
         import_sensor_back_file(backup_file = request.json)
     except FormatInvalid as e:
