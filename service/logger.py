@@ -1,4 +1,6 @@
 import datetime
+import json
+import os
 import sys
 
 import pathlib
@@ -50,6 +52,7 @@ MIN_FILE_OUTPUT_LEVEL = 2
 
 AMS_ROOT_PATH = get_config_item('ROOT_PATH')
 OUTPUT_LOG_FILE_PATH = '/'.join([AMS_ROOT_PATH, 'log', 'logger'])
+UNSENT_LOG_FILE_PATH = '/'.join([AMS_ROOT_PATH, 'log', 'tmp', 'unsent.json'])
 
 def log_message_prefix_generator(log_level: str) -> str:
     """
@@ -125,4 +128,31 @@ def logger(log_level: str, message: str, require_slack: bool = False) -> None:
             footer = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         )
 
+def unsent_file_exist() -> bool:
+    return os.path.isfile(UNSENT_LOG_FILE_PATH)
+
+def output_unsent_log_file(new_messges: list) -> None:
+    with open(UNSENT_LOG_FILE_PATH, 'w') as f:
+        json.dump(new_messges, f, indent = 4)
+
+def get_unsent_log_file() -> list:
+    with open(UNSENT_LOG_FILE_PATH) as f:
+        return json.load(f)
+
+def add_unsent_message(log_level: str, message: str) -> None:
+
+    new_message = [{
+        "log_level": log_level,
+        "message": message,
+        "footer_timestamp": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+    }]
+
+    # generate unsent log file if it does not exist
+    if not unsent_file_exist():
+        output_unsent_log_file(new_message)
+        return
+    
+    unsent_messages = get_unsent_log_file()
+    unsent_messages.extend(new_message)
+    output_unsent_log_file(unsent_messages)
     return
