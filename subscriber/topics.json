@@ -3,7 +3,8 @@
         "ACK":"tank/{tank_id}/{client_id}/ack",
         "DEVICE_STATE":"tank/{tank_id}/devices/state",
         "SENSOR_DATA":"tank/{tank_id}/sensor/data",
-        "SENSOR_CONFIG":"tank/{tank_id}/sensor/config"
+        "SENSOR_CONFIG":"tank/{tank_id}/sensor/config",
+        "CAMERA_LATEST_PICTURE":"tank/{tank_id}/camera/picture"
     },
     "SUBSCRIBE":{
         "PING":"user/{tank_id}/{client_id}/ping",
@@ -16,6 +17,10 @@
         "DEVICE_AUTO_FEEDER":"user/{tank_id}/device/auto_feeder",
         "SENSOR_CREATE":"user/{tank_id}/sensor/create",
         "SENSOR_UPDATE":"user/{tank_id}/sensor/update",
-        "SENSOR_DELETE":"user/{tank_id}/sensor/delete"
+        "SENSOR_DELETE":"user/{tank_id}/sensor/delete",
+        "CAMERA_TAKE_PICTURE":"user/{tank_id}/camera/picture",
+        "CAMERA_CREATE":"user/{tank_id}/camera/create",
+        "CAMERA_UPDATE":"user/{tank_id}/camera/update",
+        "CAMERA_DELETE": "user/{tank_id}/camera/delete"
     }
 }
