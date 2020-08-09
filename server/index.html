@@ -1411,6 +1411,11 @@
 
                     <h2 class="setting-head">Camera <img src="/static/icon/camera.png" class="setting-head-icon"></h2>
                     <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model.number="setting.CAMERA.CAMERA_WARM_UP_TIME">
+                        <label>Camera warm up time</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
                         <input class="ef" type="text" placeholder="" v-model="setting.CAMERA.AWS_ACCESS_KEY_ID">
                         <label>AWS AccessKeyId</label>
                         <span class="focus_line"></span>
