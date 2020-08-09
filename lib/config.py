@@ -6,6 +6,8 @@ WTMS_ROOT_PATH = os.path.join(os.path.dirname(__file__), '../')
 CONFIG_PATH = WTMS_ROOT_PATH + 'config/config.json'
 GPIO_CONFIG_PATH = WTMS_ROOT_PATH + 'config/gpio.json'
 SENSOR_CONFIG_PATH = WTMS_ROOT_PATH + 'config/sensor.json'
+CAMERA_CONFIG_PATH = WTMS_ROOT_PATH + 'config/camera.json'
+CAMERA_DEVICE_CONFIG_PATH = WTMS_ROOT_PATH + 'config/camera_device.json'
 
 class KeyNotExist(Exception):
     pass
@@ -26,6 +28,12 @@ def get_gpio_config() -> dict:
 
 def get_sensor_config() -> dict:
     return read_config_file(SENSOR_CONFIG_PATH)
+
+def get_camera_config() -> dict:
+    return read_config_file(CAMERA_CONFIG_PATH)
+
+def get_camera_device_config() -> dict:
+    return read_config_file(CAMERA_DEVICE_CONFIG_PATH)
 
 def get_config_items(keys: List[str]) -> dict:
     config = get_config()
