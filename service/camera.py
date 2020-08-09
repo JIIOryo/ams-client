@@ -160,7 +160,7 @@ def take_picture(camera_id: str) -> None:
         object_name = object_name,
         resolution = camera['resolution'],
         trimming = camera['trimming'],
-        camera_warm_up_time = 2.5, # TODO use setting value
+        camera_warm_up_time = config['CAMERA']['CAMERA_WARM_UP_TIME'],
         aws = {
             'aws_access_key_id': config['CAMERA']['AWS_ACCESS_KEY_ID'],
             'aws_secret_access_key': config['CAMERA']['AWS_SECRET_ACCESS_KEY'],
