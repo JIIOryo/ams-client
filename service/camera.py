@@ -8,6 +8,9 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
+from commons.errors import (
+    CameraNotFound
+)
 from lib.config import (
     get_config_items,
     get_camera_config,
@@ -98,9 +101,15 @@ def generate_object_name(tank_id: str, camera_id: str, ext: str):
 def take_picture(camera_id: str) -> None:
     camera = get_camera_config_by_id(camera_id)
 
-    # TODO
-    # if camera == {}:
-    #     raise CameraNotFound
+    if camera == {}:
+        logger(
+            WARN,
+            'Camera not found.\n' + 
+            f'camera_id = {camera_id}',
+            True,
+            False
+        )
+        raise CameraNotFound
 
     config = get_config_items([
         'TANK_ID',

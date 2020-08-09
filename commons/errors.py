@@ -23,6 +23,9 @@ class DeviceRunTypeUndefined(Exception):
 class DeviceOtherError(Exception):
     pass
 
+class CameraNotFound(Exception):
+    pass
+
 class FormatInvalid(Exception):
     pass
 
