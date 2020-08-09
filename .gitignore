@@ -2,6 +2,8 @@ __pycache__
 config/config.json
 config/gpio.json
 config/sensor.json
+config/camera.json
+config/camera_device.json
 
 log/current_sensor_value.json
 log/logger
