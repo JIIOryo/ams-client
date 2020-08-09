@@ -17,11 +17,18 @@ from commons.errors import (
     UnknownError,
 )
 from lib.config import (
+    get_config_item,
     get_config_items,
     get_camera_config,
     get_camera_device_config,
 )
 from lib.topic import get_publish_topics
+from lib.util import (
+    is_exist_file,
+    get_json_file,
+    make_dir,
+    set_json_file,
+)
 from service.logger import (
     logger,
     DEBUG,
@@ -30,6 +37,8 @@ from service.logger import (
     ERROR,
     FATAL,
 )
+
+AMS_ROOT_PATH = get_config_item('ROOT_PATH').rstrip('/')
 
 def get_camera_config_by_id(camera_id: str) -> dict:
     cameras = get_camera_config()
@@ -45,6 +54,34 @@ def get_camera_device_config_by_id(camera_device_id: int) -> dict:
             return camera_device
     return {}
 
+def register_picture(object_name: str) -> None:
+    # object_name example: 'tank_id-sample/sample_camera_id/2020/01/01/00_00_00.jpg'
+    object_name_elements = object_name.split('/')
+    camera_id = object_name_elements[1] # sample_camera_id
+    year = object_name_elements[2] # 2020
+    month = object_name_elements[3] # 01
+    day = object_name_elements[4] # 01
+    file_name = object_name_elements[5] # 00_00_00.jpg
+
+    target_dir_path = f'{AMS_ROOT_PATH}/pictures/{camera_id}/{year}/{month}'
+    target_file_path = f'{target_dir_path}/{day}.json'
+
+    # make new directory
+    make_new_dir = make_dir(target_dir_path)
+    if make_new_dir: logger(INFO, f'make new directory: {target_dir_path}', True)
+    
+    target_day_pictures = {'pictures': []}
+    if is_exist_file(target_file_path):
+        target_day_pictures = get_json_file(target_file_path)
+    
+    # register new picture
+    target_day_pictures['pictures'].append(file_name)
+    set_json_file(
+        file_path = target_file_path,
+        data = target_day_pictures
+    )
+    return
+    
 def camera_request(
     host: str,
     port: int,
@@ -186,5 +223,7 @@ def take_picture(camera_id: str) -> None:
         True,
         False
     )
+
+    register_picture(object_name)
 
     return
