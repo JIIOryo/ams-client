@@ -1,5 +1,7 @@
 from typing import List, Tuple
 import datetime
+import json
+import os
 
 import requests
 
@@ -71,3 +73,23 @@ def timeout_time_generator(default: float, default_repeat_times: int, r: float, 
         yield timeout
     # step 3
     while True: yield timeout
+
+def make_dir(dir_path: str) -> bool:
+    # dir already exist
+    if os.path.isdir(dir_path):
+        return False
+    
+    # make new dir
+    os.makedirs(dir_path)
+    return True
+
+def is_exist_file(file_path: str) -> bool:
+    return os.path.isfile(file_path)
+
+def get_json_file(file_path: str) -> dict:
+    with open(file_path) as f:
+        return json.load(f)
+
+def set_json_file(file_path: str, data: dict) -> None:
+    with open(file_path, 'w') as f:
+        json.dump(data, f, indent = 4)
