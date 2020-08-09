@@ -9,4 +9,7 @@ log/current_sensor_value.json
 log/logger
 log/tmp
 
+pictures/*
+!sample_camera_id
+
 *.swp
