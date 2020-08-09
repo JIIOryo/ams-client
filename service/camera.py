@@ -9,7 +9,12 @@ current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
 from commons.errors import (
-    CameraNotFound
+    CameraNotFound,
+    CameraServerNotRunningError,
+    S3UploadFailedError,
+    MqttNotAuthorisedError,
+    MqttNoRouteToHostError,
+    UnknownError,
 )
 from lib.config import (
     get_config_items,
@@ -87,10 +92,34 @@ def camera_request(
             'topic': mqtt['topic'],
         }
 
-    _ = requests.post(
-        url = f'http://{host}:{port}/picture',
-        json = request_json
-    )
+    # request to camera api server
+    try:
+        res = requests.post(
+            url = f'http://{host}:{port}/picture',
+            json = request_json
+        )
+    except requests.exceptions.RequestException:
+        logger(ERROR, 'camera is not running', True)
+        raise CameraServerNotRunningError
+    except Exception:
+        logger(FATAL, '[camera.request] Unknown Error', True)
+        raise UnknownError
+
+    status_code = res.status_code
+
+    # error response from camera api
+    if status_code != 200:
+        response_json = json.loads(res.text)
+
+        error_text = f'Status code from camera: {status_code}\n'
+        error_text += res.text
+        logger(ERROR, error_text, True)
+    
+        if response_json['error'] == 'S3UploadFailedError': raise S3UploadFailedError
+        elif response_json['error'] == 'MqttNotAuthorisedError': raise MqttNotAuthorisedError
+        elif response_json['error'] == 'MqttNoRouteToHostError': raise MqttNoRouteToHostError
+        else: raise UnknownError
+    
     return
 
 def generate_object_name(tank_id: str, camera_id: str, ext: str):
