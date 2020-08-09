@@ -31,8 +31,6 @@ from service.logger import (
     FATAL,
 )
 
-# publish_topics = get_publish_topics()
-
 def get_camera_config_by_id(camera_id: str) -> dict:
     cameras = get_camera_config()
     for camera in cameras:
