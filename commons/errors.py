@@ -26,8 +26,23 @@ class DeviceOtherError(Exception):
 class CameraNotFound(Exception):
     pass
 
+class CameraServerNotRunningError(Exception):
+    pass
+
+class S3UploadFailedError(Exception):
+    pass
+
+class MqttNotAuthorisedError(Exception):
+    pass
+
+class MqttNoRouteToHostError(Exception):
+    pass
+
 class FormatInvalid(Exception):
     pass
 
 class NotificationTypeUndefined(Exception):
+    pass
+
+class UnknownError(Exception):
     pass
