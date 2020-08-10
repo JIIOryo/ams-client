@@ -281,3 +281,47 @@ def create_camera(name: str, camera_device_id: int, resolution: dict, trimming: 
         False
     )
     return
+
+def update_camera(
+    camera_id: str,
+    name: str,
+    camera_device_id: int,
+    resolution: dict,
+    trimming: dict
+) -> None:
+    cameras = get_camera_config()
+
+    updated_camera = {
+        'camera_id': camera_id,
+        'name': name,
+        'camera_device_id': camera_device_id,
+        'resolution': {
+            'x': resolution['x'],
+            'y': resolution['y'],
+        },
+        'trimming': {
+            'top': trimming['top'],
+            'bottom': trimming['bottom'],
+            'left': trimming['left'],
+            'right': trimming['right'],
+        },
+        'latest_picture_url': ''
+    }
+
+    for camera in cameras:
+        if camera['camera_id'] == camera_id:
+            camera['name'] = name
+            camera['camera_device_id'] = camera_device_id
+            camera['resolution'] = resolution
+            camera['trimming'] = trimming
+            updated_camera['latest_picture_url'] = camera['latest_picture_url']
+        
+    set_camera_config(cameras)
+
+    logger(
+        INFO,
+        f'Update camera 📸\ncamera_id = {camera_id}\n' + json.dumps(updated_camera),
+        True,
+        False
+    )
+    return
