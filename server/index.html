@@ -1382,6 +1382,107 @@
                         </div>
                     </div>
                     <!-- create camera modal end -->
+
+                    <!-- update camera modal start -->
+                    <div class="modal-display" v-show="updateCameraModal" @click.self="closeUpdateCameraModal">
+                        <div class="modal-box create-device-responsive">
+                            <div class="update-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateCameraModal">
+                                <img src="/static/icon/update.png" class="modal-update-icon">
+                                <h3 class="modal-title">Update Camera</h3>
+                                <hr>
+                    
+                                <div class="sensor-scroll-box">
+                                    <!-- forms -->
+                                    <div class="modal-form-container">
+                                        <!-- Name -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="text" placeholder="" v-model="selectedCamera.name">
+                                            <label>Name</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                    
+                                        <!-- Camera device -->
+                                        <div class="camera-select-box-container-wrapper">
+                                            <div class="modal-select-container">
+                                                <label class="select-label">Camera Device</label>
+                                                <div class="select-box select-box-simple device-update-modal-select-box">
+                                                    <select name="device_type" v-model="selectedCamera.camera_device_id">
+                                                        <option v-for="cameraDevice of cameraDevices"
+                                                            v-bind:value="cameraDevice.camera_device_id">
+                                                            {{ cameraDevice.camera_device_id }}&nbsp;&nbsp;&nbsp;({{ cameraDevice.host }}:{{ cameraDevice.port }})
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <h2 class="modal-h2">Resolution</h2>
+                    
+                                        <!-- x -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.resolution.x">
+                                            <label>x</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- y -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.resolution.y">
+                                            <label>y</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                    
+                                        <h2 class="modal-h2">Trimming</h2>
+                    
+                                        <!-- top -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.top">
+                                            <label>top</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- bottom -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.bottom">
+                                            <label>bottom</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- left -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.left">
+                                            <label>left</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- right -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.right">
+                                            <label>right</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                    
+                                    </div>
+                    
+                                </div>
+                    
+                            </div>
+                    
+                            <div class="device-update-modal-bottom-container">
+                                <div class="button-container">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="closeUpdateCameraModal">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="modal-update-button" @click="updateCamera()">
+                                            <p>Update</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                        </div>
+                    </div>
+                    <!-- update camera modal end -->
                 </div>
             </div>
             <div v-else-if="selectedPage == 'Setting'">
@@ -2360,6 +2461,16 @@
             });
         }
 
+        const updateCameraRequest = async updatedCamera => {
+            await axios.post('/camera/update', {
+                camera_id: updatedCamera.camera_id,
+                name: updatedCamera.name,
+                camera_device_id: updatedCamera.camera_device_id,
+                resolution: updatedCamera.resolution,
+                trimming: updatedCamera.trimming,
+            });
+        }
+
         const sensorExchangeRequest = async sensorsOrder => {
             await axios.post('/sensor/exchange', {
                 sensors: sensorsOrder,
@@ -2419,6 +2530,7 @@
                 updateSensorModal: false,
                 updateSensorCalibrationModal: false,
                 createCameraModal: false,
+                updateCameraModal: false,
                 rebootConfirm: false,
                 deleteDeviceConfirm: false,
                 deleteSensorConfirm: false,
@@ -2844,6 +2956,14 @@
                     this.cameras = cameras
                     this.loading = false
                 },
+                updateCamera: async function () {
+                    this.loading = true
+                    await updateCameraRequest(this.selectedCamera);
+                    this.closeUpdateCameraModal();
+                    const cameras = await getCameras();
+                    this.cameras = cameras
+                    this.loading = false
+                },
                 takePicture: async function(camera_id) {
                     this.loading = true;
                     newCameras = await takePictureRequest(camera_id);
@@ -2875,6 +2995,13 @@
                         trimming: {},
                     };
                 },
+                closeUpdateCameraModal: function () {
+                    this.updateCameraModal = false;
+                    this.selectedCamera = {
+                        resolution: {},
+                        trimming: {},
+                    };
+                },
                 clickUpdateSensorButton: function (selectedSensor) {
                     this.updateSensorModal = true;
                     this.selectedSensor = JSON.parse(JSON.stringify(selectedSensor));
@@ -2888,6 +3015,10 @@
                 },
                 clickCreateCameraButton: function () {
                     this.createCameraModal = true;
+                },
+                clickUpdateCameraButton: function (selectedCamera) {
+                    this.updateCameraModal = true;
+                    this.selectedCamera = selectedCamera
                 },
                 closeUpdateSensorModal: function () {
                     this.updateSensorModal = false;
