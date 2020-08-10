@@ -25,6 +25,7 @@ from on_message.device_auto_feeder import device_auto_feeder
 from on_message.sensor_update import sensor_update, sensor_calibration_update
 from on_message.sensor_delete import sensor_delete
 from on_message.camera_get import get_cameras
+from on_message.camera_create import camera_create
 from on_message.camera_device_get import get_camera_devices
 from on_message.camera_take_picture import camera_take_picture
 from service.device import get_all_device_state
@@ -304,6 +305,12 @@ def get_cameras_():
 def get_camera_devices_():
     camera_devices = get_camera_devices()
     return jsonify(camera_devices), 200
+
+@app.route('/camera/create', methods=['POST'])
+def camera_create_():
+    ams_logger(request, INFO, True)
+    camera_create(message = request.data)
+    return empty_response
 
 @app.route('/camera/picture/<string:camera_id>')
 def take_picture_(camera_id: str):
