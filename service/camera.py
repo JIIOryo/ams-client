@@ -1,6 +1,7 @@
 import datetime
 import json
 import sys
+import time
 
 import requests
 
@@ -26,6 +27,7 @@ from lib.config import (
 from lib.topic import get_publish_topics
 from lib.util import (
     is_exist_file,
+    generate_md5_hash,
     get_json_file,
     make_dir,
     set_json_file,
@@ -171,6 +173,11 @@ def generate_object_name(tank_id: str, camera_id: str, ext: str):
     now = datetime.datetime.now().strftime('%Y/%m/%d/%H_%M_%S')
     return f'{tank_id}/{camera_id}/{now}.{ext}'
     
+def generate_camera_id(tank_id: str) -> str:
+    now_unix = time.time()
+    key = f'{tank_id}_{now_unix}'
+    return generate_md5_hash(key)
+    
 def take_picture(camera_id: str) -> None:
     camera = get_camera_config_by_id(camera_id)
 
@@ -239,4 +246,38 @@ def take_picture(camera_id: str) -> None:
 
     register_picture(object_name)
 
+    return
+
+def create_camera(name: str, camera_device_id: int, resolution: dict, trimming: dict) -> None:
+    cameras = get_camera_config()
+    tank_id = get_config_item('TANK_ID')
+
+    camera_id = generate_camera_id(tank_id)
+
+    new_camera = {
+        'camera_id': camera_id,
+        'name': name,
+        'camera_device_id': camera_device_id,
+        'resolution': {
+            'x': resolution['x'],
+            'y': resolution['y'],
+        },
+        'trimming': {
+            'top': trimming['top'],
+            'bottom': trimming['bottom'],
+            'left': trimming['left'],
+            'right': trimming['right'],
+        },
+        'latest_picture_url': ''
+    }
+    cameras.append(new_camera)
+
+    set_camera_config(cameras)
+
+    logger(
+        INFO,
+        'Create new camera 📸\n' + json.dumps(new_camera),
+        True,
+        False
+    )
     return
