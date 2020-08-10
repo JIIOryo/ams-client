@@ -21,6 +21,7 @@ from lib.config import (
     get_config_items,
     get_camera_config,
     get_camera_device_config,
+    set_camera_config,
 )
 from lib.topic import get_publish_topics
 from lib.util import (
@@ -80,6 +81,14 @@ def register_picture(object_name: str) -> None:
         file_path = target_file_path,
         data = target_day_pictures
     )
+    return
+
+def add_latest_picture_url(camera_id: str, url: str) -> None:
+    cameras = gcameras = get_camera_config()
+    for camera in cameras:
+        if camera['camera_id'] == camera_id:
+            camera['latest_picture_url'] = url
+    set_camera_config(new_camera_config = cameras)
     return
     
 def camera_request(
@@ -215,6 +224,10 @@ def take_picture(camera_id: str) -> None:
     )
 
     picture_url = config['CAMERA']['PICTURE_URL'] + '/' + object_name
+    add_latest_picture_url(
+        camera_id = camera_id,
+        url = picture_url
+    )
 
     logger(
         INFO,
