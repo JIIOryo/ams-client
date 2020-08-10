@@ -28,6 +28,7 @@ from on_message.camera_get import get_cameras
 from on_message.camera_create import camera_create
 from on_message.camera_update import camera_update
 from on_message.camera_device_get import get_camera_devices
+from on_message.camera_album_get import get_album
 from on_message.camera_take_picture import camera_take_picture
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
@@ -330,6 +331,20 @@ def take_picture_(camera_id: str):
     }))
     cameras = get_cameras()
     return jsonify(cameras), 200
+
+@app.route('/camera/album/<string:camera_id>')
+def get_album_(camera_id: str):
+    year = int(request.args.get('year')) if request.args.get('year') is not None else None
+    month = int(request.args.get('month')) if request.args.get('month') is not None else None
+    day = int(request.args.get('day')) if request.args.get('day') is not None else None
+
+    albums = get_album(message = json.dumps({
+        'camera_id': camera_id,
+        'year': year,
+        'month': month,
+        'day': day,
+    }))
+    return jsonify(albums), 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=server_config['PORT'])
