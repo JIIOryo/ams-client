@@ -24,6 +24,8 @@ from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
 from on_message.sensor_update import sensor_update, sensor_calibration_update
 from on_message.sensor_delete import sensor_delete
+from on_message.camera_get import get_cameras
+from on_message.camera_take_picture import camera_take_picture
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
 from service.backup import backup_file_name, get_device_backup_file, import_device_back_file, get_sensor_backup_file, import_sensor_back_file
@@ -291,6 +293,23 @@ def sensor_backup_post():
         raise InvalidUsage('format is invalid', status_code=400)
 
     return empty_response
+
+@app.route('/camera')
+def get_cameras_():
+    cameras = get_cameras()
+    return jsonify(cameras), 200
+
+@app.route('/camera/picture/<string:camera_id>')
+def take_picture_(camera_id: str):
+    camera_take_picture(message = json.dumps({
+        'cameras': [
+            {
+                'camera_id': camera_id
+            }
+        ]
+    }))
+    cameras = get_cameras()
+    return jsonify(cameras), 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=server_config['PORT'])
