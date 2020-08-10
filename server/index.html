@@ -1240,12 +1240,17 @@
                             </div>
                             <!-- camera middle box -->
                             <div class="camera-middle-box">
-                                <img :src="camera.latest_picture_url" class="camera-picture">
+                                <img :src="camera.latest_picture_url" class="camera-picture" v-if="camera.latest_picture_url">
+                                <div class="no-picture" v-else>
+                                    <p class="no-picture-text">
+                                        No picture.
+                                    </p>
+                                </div>
                             </div>
                             <!-- camera bottom box -->
                             <div class="camera-bottom-box">
                                 <div class="camera-bottom-top-box">
-                                    <p class="picture-taken-at-text">
+                                    <p class="picture-taken-at-text" v-if="camera.latest_picture_url">
                                         taken at
                                         {{
                                             camera.latest_picture_url.split('/').reverse()[3]
@@ -1978,6 +1983,26 @@
             .camera-name-box {
                 margin-top: 17px;
                 font-size: 27px;
+            }
+        }
+
+        .no-picture {
+            margin: auto;
+            width: 90%;
+            height: 200px;
+            background-color: #DDD;
+        }
+        .no-picture-text {
+            color: white;
+            font-size: 20px;
+            line-height: 200px;
+        }
+        @media screen and (max-width: 480px) {
+            .no-picture {
+                height: 100px;
+            }
+            .no-picture-text {
+                line-height: 100px;
             }
         }
 
