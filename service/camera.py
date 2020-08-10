@@ -10,6 +10,7 @@ current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
 from commons.errors import (
+    AlbumNotFound,
     CameraNotFound,
     CameraServerNotRunningError,
     S3UploadFailedError,
@@ -29,8 +30,11 @@ from lib.util import (
     is_exist_file,
     generate_md5_hash,
     get_json_file,
+    ls,
     make_dir,
     set_json_file,
+    zero_padding,
+    zero_padding_month,
 )
 from service.logger import (
     logger,
@@ -177,7 +181,22 @@ def generate_camera_id(tank_id: str) -> str:
     now_unix = time.time()
     key = f'{tank_id}_{now_unix}'
     return generate_md5_hash(key)
-    
+
+def generate_picture_url(camera_id: str, year: int, month: int, day: int, file_name: str) -> str:
+    config = get_config_items([
+        'TANK_ID',
+        'CAMERA'
+    ])
+    return '/'.join([
+        config['CAMERA']['PICTURE_URL'],
+        config['TANK_ID'],
+        camera_id,
+        str(year),
+        zero_padding_month(month),
+        zero_padding(day, 2),
+        file_name,
+    ])
+
 def take_picture(camera_id: str) -> None:
     camera = get_camera_config_by_id(camera_id)
 
@@ -325,3 +344,93 @@ def update_camera(
         False
     )
     return
+
+def get_album_exist_years(camera_id: str) -> dict:
+    taeget_path = '/'.join([AMS_ROOT_PATH, 'pictures', camera_id])
+    try:
+        list_ = ls(taeget_path)
+    except FileNotFoundError:
+        logger(
+            ERROR,
+            f'camera not found. camera_id = {camera_id}',
+            True,
+            False
+        )
+        raise CameraNotFound
+    
+    return {
+        'camera_id': camera_id,
+        'list': list_,
+        'type': 'year',
+    }
+
+def get_album_exist_months(camera_id: str, year: int) -> dict:
+    # to raise CameraNotFound if camera_id is invalid
+    album_exist_years = get_album_exist_years(camera_id)['list']
+
+    if str(year) not in album_exist_years:
+        raise AlbumNotFound
+
+    taeget_path = '/'.join([AMS_ROOT_PATH, 'pictures', camera_id, str(year)])
+    
+    return {
+        'camera_id': camera_id,
+        'list': ls(taeget_path),
+        'type': 'month',
+    }
+
+def get_album_exist_days(camera_id: str, year: int, month: int) -> dict:
+    # to raise CameraNotFound if camera_id is invalid
+    # and 
+    # to raise AlbumNotFound if album is not found at taeget year
+    album_exist_months = get_album_exist_months(camera_id, year)['list']
+
+    if zero_padding_month(month) not in album_exist_months:
+        raise AlbumNotFound
+
+    taeget_path = '/'.join([AMS_ROOT_PATH, 'pictures', camera_id, str(year), zero_padding_month(month)])
+    
+    file_list = ls(taeget_path)
+    return {
+        'camera_id': camera_id,
+        'list': [f.split('.')[0] for f in file_list], # remove '.json'
+        'type': 'day',
+    }
+
+def get_album_pictures(camera_id: str, year: int, month: int, day: int) -> dict:
+    # to raise CameraNotFound if camera_id is invalid
+    # and 
+    # to raise AlbumNotFound if album is not found at taeget year
+    # and
+    # to raise AlbumNotFound if album is not found at taeget month
+    album_exist_days = get_album_exist_days(camera_id, year, month)['list']
+
+    _day = zero_padding(day, 2)
+
+    if _day not in album_exist_days:
+        raise AlbumNotFound
+
+    target_file = '/'.join([
+        AMS_ROOT_PATH,
+        'pictures',
+        camera_id,
+        str(year),
+        zero_padding_month(month),
+        _day + '.json'
+    ])
+
+    pictures = get_json_file(target_file)['pictures']
+
+    return {
+        'camera_id': camera_id,
+        'list': [
+            generate_picture_url(
+                camera_id = camera_id,
+                year = year,
+                month = month,
+                day = day,
+                file_name = picture,
+            ) for picture in pictures
+        ],
+        'type': 'url',
+    }
