@@ -29,6 +29,9 @@ class CameraNotFound(Exception):
 class CameraServerNotRunningError(Exception):
     pass
 
+class AlbumNotFound(Exception):
+    pass
+
 class S3UploadFailedError(Exception):
     pass
 
