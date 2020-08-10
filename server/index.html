@@ -1223,6 +1223,57 @@
                     </div>
                 </div>
             </div>
+            <div v-else-if="selectedPage == 'Camera'">
+                <!-- --------------------------------------------------------------------- -->
+                <!-- Camera -->
+            
+                <!-- Camera main page -->
+                <div v-if="selectedPageStatus == 'main'">
+                    <div v-for="(camera, i) of cameras" :key="camera.camera_id">
+                        <div class="camera-container">
+                            <!-- camera top box -->
+                            <div class="camera-top-box">
+                                <div class="camera-name-box">
+                                    <p>{{ camera.name }}</p>
+                                </div>
+                                <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateCameraButton(camera)">
+                            </div>
+                            <!-- camera middle box -->
+                            <div class="camera-middle-box">
+                                <img :src="camera.latest_picture_url" class="camera-picture">
+                            </div>
+                            <!-- camera bottom box -->
+                            <div class="camera-bottom-box">
+                                <div class="camera-bottom-top-box">
+                                    <p class="picture-taken-at-text">
+                                        taken at
+                                        {{
+                                            camera.latest_picture_url.split('/').reverse()[3]
+                                        }}/{{
+                                            camera.latest_picture_url.split('/').reverse()[2]
+                                        }}/{{
+                                            camera.latest_picture_url.split('/').reverse()[1]
+                                        }}
+
+                                        {{
+                                            camera.latest_picture_url.split('/').reverse()[0].split(/[_.]/)[0]
+                                        }}:{{
+                                            camera.latest_picture_url.split('/').reverse()[0].split(/[_.]/)[1]
+                                        }}:{{
+                                            camera.latest_picture_url.split('/').reverse()[0].split(/[_.]/)[2]
+                                        }}
+                                    </p>
+                                </div>
+                                <div class="camera-bottom-bottom-box">
+                                    <div class="take-picture-button" @click="takePicture(camera.camera_id)">
+                                        <img src="/static/icon/camera_white.png" class="take-picture-button-icon">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div v-else-if="selectedPage == 'Setting'">
                 <!-- Setting -->
                 
@@ -1859,6 +1910,109 @@
         }
 
 
+        /* camera */
+
+
+        .camera-container {
+            margin: auto;
+            margin-bottom: 40px;
+            width: 700px;
+            background: #FFFFFF;
+            box-shadow: 10px 10px 20px 0 #ae00ff33;
+            border-radius: 20px;
+            border: 1px solid #ae00ff55;
+        }
+        @media screen and (max-width: 480px) {
+            .camera-container {
+                width: 92%;
+                border-radius: 10px;
+            }
+        }
+
+        .camera-top-box {
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+        }
+
+        .camera-middle-box {
+            padding-top: 20px;
+            padding-bottom: 5px;
+            text-align: center;
+        }
+
+        .camera-bottom-box {
+            display: flex;
+            flex-direction: column;
+            margin-top: 4px;
+        }
+
+        .camera-bottom-top-box {
+            text-align: right;
+            padding: 0 30px;
+        }
+        .camera-bottom-bottom-box {
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 20px;
+        }
+
+        .camera-picture {
+            width: 90%;
+        }
+
+        .camera-name-box {
+            margin: auto;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 45px;
+            color: #500075;
+            text-shadow: 
+                0px 0px 5px #ffffff,
+                0px 0px 20px #1A229C11,
+                0px 0px 40px #1A229C11,
+                0px 0px 60px #e07f0055,
+                0px 0px 80px #e07f0055;
+        }
+        @media screen and (max-width: 480px) {
+            .camera-name-box {
+                margin-top: 17px;
+                font-size: 27px;
+            }
+        }
+
+        .picture-taken-at-text {
+            font-size: 20px;
+            color: #500075;
+        }
+
+        .take-picture-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 10px 60px;
+            text-decoration: none;
+            color: white;
+            background: #4fb845;
+            border-radius: 17px;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+            transition: 0.3s;
+        }
+        @media screen and (max-width: 480px) {
+            .take-picture-button {
+                padding: 4px 14px;
+            }
+        }
+        .take-picture-button:hover{
+            background: #73db69;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+        }
+
+
+        .take-picture-button-icon {
+            width: 30px;
+        }
+
+
 
 
 
@@ -1927,6 +2081,16 @@
             return res.data
         };
 
+        const getCameras = async () => {
+            res = await axios.get('/camera')
+            return res.data
+        };
+
+        const takePictureRequest = async camera_id => {
+            res = await axios.get(`/camera/picture/${camera_id}`)
+            return res.data
+        };
+        
         const rebootRequest = async () => {
             await axios.get('/reboot')
         };
@@ -2078,6 +2242,7 @@
                 sensorBackupUploadFileData: '',
                 sensorDataLastUpdatedAt: '',
                 sensorDataPollingPeriod: 5,
+                cameras: [],
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
@@ -2474,6 +2639,12 @@
                     window.location.href = '/'
 
                 },
+                takePicture: async function(camera_id) {
+                    this.loading = true;
+                    newCameras = await takePictureRequest(camera_id);
+                    this.cameras = newCameras;
+                    this.loading = false;
+                },
                 closeUpdateDeviceModal: function () {
                     this.updateModal = false;
                     this.selectedDevice = {
@@ -2634,11 +2805,12 @@
             mounted: async function () {
 
                 this.loading = true
-                const [deviceState, devicesSetting, sensors, sensorsSetting, setting] = await Promise.all([
+                const [deviceState, devicesSetting, sensors, sensorsSetting, cameras, setting] = await Promise.all([
                     getDeviceState(),
                     getDevices(),
                     getSensors(),
                     getSensorsSetting(),
+                    getCameras(),
                     getSetting(),
                 ])
                 this.loading = false
@@ -2650,6 +2822,7 @@
                     sensor.value = 0;
                     return sensor;
                 });
+                this.cameras = cameras;
                 this.setting = setting;
                 this.sensorDataPollingPeriod = this.setting.SENSING.WEB_SENSOR_DATA_POLLING_PERIOD;
                 this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(this.setting.DEVICE.FEED_PUMP_DEFAULT_TIME);
