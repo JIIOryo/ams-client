@@ -87,6 +87,9 @@ def make_dir(dir_path: str) -> bool:
 def is_exist_file(file_path: str) -> bool:
     return os.path.isfile(file_path)
 
+def ls(path: str) -> list:
+    return os.listdir(path)
+
 def get_json_file(file_path: str) -> dict:
     with open(file_path) as f:
         return json.load(f)
