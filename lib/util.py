@@ -100,3 +100,12 @@ def set_json_file(file_path: str, data: dict) -> None:
 
 def generate_md5_hash(key: str) -> str:
     return hashlib.md5(key.encode()).hexdigest()
+
+def zero_padding(num: int, length: int) -> str:
+    return str(num).zfill(length)
+
+def zero_padding_month(month: int) -> str:
+    if not 1 <= month <= 12:
+        raise ValueError('This month does not meet 1 <= month <= 12')
+
+    return zero_padding(month, 2)
