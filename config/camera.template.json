@@ -2,6 +2,7 @@
     {
         "camera_id": "82900309bfb57e7c6173cad57daefba9",
         "name": "main_camera",
+        "latest_picture_url": "https://placehold.jp/1024x1024.png",
         "camera_device_id": 1,
         "resolution": {
             "x": 1700,
