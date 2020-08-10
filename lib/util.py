@@ -1,5 +1,6 @@
 from typing import List, Tuple
 import datetime
+import hashlib
 import json
 import os
 
@@ -93,3 +94,6 @@ def get_json_file(file_path: str) -> dict:
 def set_json_file(file_path: str, data: dict) -> None:
     with open(file_path, 'w') as f:
         json.dump(data, f, indent = 4)
+
+def generate_md5_hash(key: str) -> str:
+    return hashlib.md5(key.encode()).hexdigest()
