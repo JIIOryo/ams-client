@@ -1236,7 +1236,7 @@
                                 <div class="camera-name-box">
                                     <p>{{ camera.name }}</p>
                                 </div>
-                                <img src="/static/icon/album.png" class="container-update-icon">
+                                <img src="/static/icon/album.png" class="container-update-icon" @click="switchAlbumPage(camera)">
                                 <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateCameraButton(camera)">
                             </div>
                             <!-- camera middle box -->
@@ -1484,6 +1484,60 @@
                         </div>
                     </div>
                     <!-- update camera modal end -->
+                </div>
+                <div v-else-if="selectedPageStatus == 'album'">
+                    <h2>
+                        This is {{ selectedCamera.name }} album page! {{ albumListType }} list.
+                        {{ selectedAlbumDate }}
+                    </h2>
+                    <div v-if="albumListType == 'year'">
+                        <!-- year list page -->
+                        <div class="album-directory-box-container">
+                            <div v-for="year of selectedCameraAlbumList" :key="year" class="album-directory-box" @click="getAlbumsByYear(year)">
+                                <img src="/static/icon/directory_purple.png" class="album-directory-icon">
+                                <div>{{ year }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else-if="albumListType == 'month'">
+                        <!-- month list page -->
+                        <div class="album-directory-box-container">
+                            <div v-for="month of selectedCameraAlbumList" :key="month" class="album-directory-box" @click="getAlbumsByMonth(selectedAlbumDate.year, month)">
+                                <img src="/static/icon/directory_purple.png" class="album-directory-icon">
+                                <div>{{ month }}</div>
+                            </div>
+                        </div>
+                        <div @click="switchAlbumPage(selectedCamera)">
+                            back to all year page
+                        </div>
+                    </div>
+                    <div v-else-if="albumListType == 'day'">
+                        <!-- day list page -->
+                        <div class="album-directory-box-container">
+                            <div v-for="day of selectedCameraAlbumList" :key="day" class="album-directory-box" @click="getAlbumsByDay(selectedAlbumDate.year, selectedAlbumDate.month, day)">
+                                <img src="/static/icon/directory_purple.png" class="album-directory-icon">
+                                <div>{{ day }}</div>
+                            </div>
+                        </div>
+                        <div @click="getAlbumsByYear(selectedAlbumDate.year)">
+                            back to {{selectedAlbumDate.year}}
+                        </div>
+                    </div>
+                    <div v-else-if="albumListType == 'url'">
+                        <!-- day list page -->
+                        <div>
+                            <div v-for="url of selectedCameraAlbumList" :key="url">
+                                <img :src="url">
+                            </div>
+                        </div>
+                        <div @click="getAlbumsByMonth(selectedAlbumDate.year, selectedAlbumDate.month)">
+                            back to {{selectedAlbumDate.year}}/{{selectedAlbumDate.month}}
+                        </div>
+                    </div>
+                    <div @click="selectedPageStatus = 'main'">
+                        back to top page
+                    </div>
+
                 </div>
             </div>
             <div v-else-if="selectedPage == 'Setting'">
@@ -2291,6 +2345,28 @@
             margin-left: -45px;
         }
 
+        /* album */
+
+        .album-directory-box-container {
+            background: orange;
+        }
+
+        .album-directory-box {
+            margin: auto;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            width: 90%;
+            height: 90px;
+        }
+        .album-directory-box:hover{
+            background-color: #DDD;
+        }
+
+        .album-directory-icon {
+            width: 40px;
+            height: 40px;
+        }
 
 
 
@@ -2472,6 +2548,23 @@
             });
         }
 
+        const getAlbumRequest = async (cameraId, year, month, day) => {
+            const option = {
+                params: {}
+            }
+            if (year) {
+                option.params.year = year;
+            }
+            if (month) {
+                option.params.month = month;
+            }
+            if (day) {
+                option.params.day = day;
+            }
+            res = await axios.get(`camera/album/${cameraId}`, option);
+            return res.data;
+        }
+
         const sensorExchangeRequest = async sensorsOrder => {
             await axios.post('/sensor/exchange', {
                 sensors: sensorsOrder,
@@ -2549,6 +2642,13 @@
                 sensorDataPollingPeriod: 5,
                 cameras: [],
                 cameraDevices: [],
+                selectedCameraAlbumList: [],
+                selectedAlbumDate: {
+                    year: 0,
+                    month: 0,
+                    day: 0
+                }, 
+                albumListType: 'year',
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
@@ -3002,6 +3102,42 @@
                         resolution: {},
                         trimming: {},
                     };
+                },
+                switchAlbumPage: async function(selectedCamera) {
+                    this.selectedCamera = selectedCamera;
+                    this.selectedPageStatus = 'album';
+                    this.loading = true;
+                    const albumData = await getAlbumRequest(selectedCamera.camera_id)
+                    this.selectedCameraAlbumList = albumData.list;
+                    this.albumListType = albumData.type;
+                    this.loading = false;
+                },
+                getAlbumsByYear: async function(year) {
+                    this.selectedAlbumDate.year = Number(year);
+                    this.loading = true;
+                    const albumData = await getAlbumRequest(this.selectedCamera.camera_id, year)
+                    this.selectedCameraAlbumList = albumData.list;
+                    this.albumListType = albumData.type;
+                    this.loading = false;
+                },
+                getAlbumsByMonth: async function(year, month) {
+                    this.selectedAlbumDate.year = Number(year);
+                    this.selectedAlbumDate.month = Number(month);
+                    this.loading = true;
+                    const albumData = await getAlbumRequest(this.selectedCamera.camera_id, year, month)
+                    this.selectedCameraAlbumList = albumData.list;
+                    this.albumListType = albumData.type;
+                    this.loading = false;
+                },
+                getAlbumsByDay: async function(year, month, day) {
+                    this.selectedAlbumDate.year = Number(year);
+                    this.selectedAlbumDate.month = Number(month);
+                    this.selectedAlbumDate.day = Number(day);
+                    this.loading = true;
+                    const albumData = await getAlbumRequest(this.selectedCamera.camera_id, year, month, day)
+                    this.selectedCameraAlbumList = albumData.list;
+                    this.albumListType = albumData.type;
+                    this.loading = false;
                 },
                 clickUpdateSensorButton: function (selectedSensor) {
                     this.updateSensorModal = true;
