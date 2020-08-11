@@ -42,6 +42,14 @@
         "AUTO_FEEDER_RUN_TIME": 6,
         "FEED_PUMP_DEFAULT_TIME": 30
     },
+    "CAMERA": {
+        "CAMERA_WARM_UP_TIME": 2.5,
+        "AWS_ACCESS_KEY_ID": "",
+        "AWS_SECRET_ACCESS_KEY": "",
+        "S3_BUCKET": "",
+        "REGION": "ap-northeast-1",
+        "PICTURE_URL": "https://********.cloudfront.net"
+    },
     "LOCAL_SERVER": {
         "PORT": 3321
     }

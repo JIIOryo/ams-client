@@ -1223,6 +1223,323 @@
                     </div>
                 </div>
             </div>
+            <div v-else-if="selectedPage == 'Camera'">
+                <!-- --------------------------------------------------------------------- -->
+                <!-- Camera -->
+            
+                <!-- Camera main page -->
+                <div v-if="selectedPageStatus == 'main'">
+                    <div v-for="(camera, i) of cameras" :key="camera.camera_id">
+                        <div class="camera-container">
+                            <!-- camera top box -->
+                            <div class="camera-top-box">
+                                <div class="camera-name-box">
+                                    <p>{{ camera.name }}</p>
+                                </div>
+                                <img src="/static/icon/album.png" class="container-update-icon" @click="switchAlbumPage(camera)">
+                                <img src="/static/icon/update3.png" class="container-update-icon" @click="clickUpdateCameraButton(camera)">
+                            </div>
+                            <!-- camera middle box -->
+                            <div class="camera-middle-box">
+                                <img :src="camera.latest_picture_url" class="camera-picture" v-if="camera.latest_picture_url">
+                                <div class="no-picture" v-else>
+                                    <p class="no-picture-text">
+                                        No picture.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- camera bottom box -->
+                            <div class="camera-bottom-box">
+                                <div class="camera-bottom-top-box">
+                                    <p class="picture-taken-at-text" v-if="camera.latest_picture_url">
+                                        taken at
+                                        {{
+                                            camera.latest_picture_url.split('/').reverse()[3]
+                                        }}/{{
+                                            camera.latest_picture_url.split('/').reverse()[2]
+                                        }}/{{
+                                            camera.latest_picture_url.split('/').reverse()[1]
+                                        }}
+
+                                        {{
+                                            camera.latest_picture_url.split('/').reverse()[0].split(/[_.]/)[0]
+                                        }}:{{
+                                            camera.latest_picture_url.split('/').reverse()[0].split(/[_.]/)[1]
+                                        }}:{{
+                                            camera.latest_picture_url.split('/').reverse()[0].split(/[_.]/)[2]
+                                        }}
+                                    </p>
+                                </div>
+                                <div class="camera-bottom-bottom-box">
+                                    <div class="take-picture-button" @click="takePicture(camera.camera_id)">
+                                        <img src="/static/icon/camera_white.png" class="take-picture-button-icon">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- create new camera -->
+                    <div class="create-camera-wrapper">
+                        <div class="create-camera-button" @click="clickCreateCameraButton">
+                            <p>+ New camera</p>
+                        </div>
+                    </div>
+
+                    <!-- create camera modal start -->
+                    <div class="modal-display" v-show="createCameraModal" @click.self="closeCreateCameraModal">
+                        <div class="modal-box create-device-responsive">
+                            <div class="update-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeCreateCameraModal">
+                                <img src="/static/icon/create.png" class="modal-update-icon">
+                                <h3 class="modal-title">Create Camera</h3>
+                                <hr>
+                    
+                                <div class="sensor-scroll-box">
+                                    <!-- forms -->
+                                    <div class="modal-form-container">
+                                        <!-- Name -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="text" placeholder="" v-model="selectedCamera.name">
+                                            <label>Name</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+
+                                        <!-- Camera device -->
+                                        <div class="camera-select-box-container-wrapper">
+                                            <div class="modal-select-container">
+                                                <label class="select-label">Camera Device</label>
+                                                <div class="select-box select-box-simple device-update-modal-select-box">
+                                                    <select name="device_type" v-model="selectedCamera.camera_device_id">
+                                                        <option v-for="cameraDevice of cameraDevices" v-bind:value="cameraDevice.camera_device_id">
+                                                            {{ cameraDevice.camera_device_id }}&nbsp;&nbsp;&nbsp;({{ cameraDevice.host }}:{{ cameraDevice.port }})</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h2 class="modal-h2">Resolution</h2>
+
+                                        <!-- x -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.resolution.x">
+                                            <label>x</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- y -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.resolution.y">
+                                            <label>y</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+
+                                        <h2 class="modal-h2">Trimming</h2>
+
+                                        <!-- top -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.top">
+                                            <label>top</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- bottom -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.bottom">
+                                            <label>bottom</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- left -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.left">
+                                            <label>left</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- right -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.right">
+                                            <label>right</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                    
+                                    </div>
+                    
+                                </div>
+                    
+                            </div>
+                    
+                            <div class="device-update-modal-bottom-container">
+                                <div class="button-container">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="closeCreateCameraModal">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="modal-update-button" @click="createCamera()">
+                                            <p>Create</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                        </div>
+                    </div>
+                    <!-- create camera modal end -->
+
+                    <!-- update camera modal start -->
+                    <div class="modal-display" v-show="updateCameraModal" @click.self="closeUpdateCameraModal">
+                        <div class="modal-box create-device-responsive">
+                            <div class="update-confirm-box">
+                                <img src="/static/icon/x.png" class="modal-close-x-icon" @click="closeUpdateCameraModal">
+                                <img src="/static/icon/update.png" class="modal-update-icon">
+                                <h3 class="modal-title">Update Camera</h3>
+                                <hr>
+                    
+                                <div class="sensor-scroll-box">
+                                    <!-- forms -->
+                                    <div class="modal-form-container">
+                                        <!-- Name -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="text" placeholder="" v-model="selectedCamera.name">
+                                            <label>Name</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                    
+                                        <!-- Camera device -->
+                                        <div class="camera-select-box-container-wrapper">
+                                            <div class="modal-select-container">
+                                                <label class="select-label">Camera Device</label>
+                                                <div class="select-box select-box-simple device-update-modal-select-box">
+                                                    <select name="device_type" v-model="selectedCamera.camera_device_id">
+                                                        <option v-for="cameraDevice of cameraDevices"
+                                                            v-bind:value="cameraDevice.camera_device_id">
+                                                            {{ cameraDevice.camera_device_id }}&nbsp;&nbsp;&nbsp;({{ cameraDevice.host }}:{{ cameraDevice.port }})
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <h2 class="modal-h2">Resolution</h2>
+                    
+                                        <!-- x -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.resolution.x">
+                                            <label>x</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- y -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.resolution.y">
+                                            <label>y</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                    
+                                        <h2 class="modal-h2">Trimming</h2>
+                    
+                                        <!-- top -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.top">
+                                            <label>top</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- bottom -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.bottom">
+                                            <label>bottom</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- left -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.left">
+                                            <label>left</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                                        <!-- right -->
+                                        <div class="cp_iptxt">
+                                            <input class="ef" type="number" placeholder="" v-model.number="selectedCamera.trimming.right">
+                                            <label>right</label>
+                                            <span class="focus_line"></span>
+                                        </div>
+                    
+                                    </div>
+                    
+                                </div>
+                    
+                            </div>
+                    
+                            <div class="device-update-modal-bottom-container">
+                                <div class="button-container">
+                                    <div class="button-wrapper">
+                                        <div class="modal-cancel-button" @click="closeUpdateCameraModal">
+                                            <p>Cancel</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <div class="modal-update-button" @click="updateCamera()">
+                                            <p>Update</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                        </div>
+                    </div>
+                    <!-- update camera modal end -->
+                </div>
+                <div v-else-if="selectedPageStatus == 'album'">
+                    <h2>
+                        This is {{ selectedCamera.name }} album page! {{ albumListType }} list.
+                        {{ selectedAlbumDate }}
+                    </h2>
+                    <div v-if="albumListType == 'year'">
+                        <!-- year list page -->
+                        <div class="album-directory-box-container">
+                            <div v-for="year of selectedCameraAlbumList" :key="year" class="album-directory-box" @click="getAlbumsByYear(year)">
+                                <img src="/static/icon/directory_purple.png" class="album-directory-icon">
+                                <div>{{ year }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else-if="albumListType == 'month'">
+                        <!-- month list page -->
+                        <div class="album-directory-box-container">
+                            <div v-for="month of selectedCameraAlbumList" :key="month" class="album-directory-box" @click="getAlbumsByMonth(selectedAlbumDate.year, month)">
+                                <img src="/static/icon/directory_purple.png" class="album-directory-icon">
+                                <div>{{ month }}</div>
+                            </div>
+                        </div>
+                        <div @click="switchAlbumPage(selectedCamera)">
+                            back to all year page
+                        </div>
+                    </div>
+                    <div v-else-if="albumListType == 'day'">
+                        <!-- day list page -->
+                        <div class="album-directory-box-container">
+                            <div v-for="day of selectedCameraAlbumList" :key="day" class="album-directory-box" @click="getAlbumsByDay(selectedAlbumDate.year, selectedAlbumDate.month, day)">
+                                <img src="/static/icon/directory_purple.png" class="album-directory-icon">
+                                <div>{{ day }}</div>
+                            </div>
+                        </div>
+                        <div @click="getAlbumsByYear(selectedAlbumDate.year)">
+                            back to {{selectedAlbumDate.year}}
+                        </div>
+                    </div>
+                    <div v-else-if="albumListType == 'url'">
+                        <!-- day list page -->
+                        <div>
+                            <div v-for="url of selectedCameraAlbumList" :key="url">
+                                <img :src="url">
+                            </div>
+                        </div>
+                        <div @click="getAlbumsByMonth(selectedAlbumDate.year, selectedAlbumDate.month)">
+                            back to {{selectedAlbumDate.year}}/{{selectedAlbumDate.month}}
+                        </div>
+                    </div>
+                    <div @click="selectedPageStatus = 'main'">
+                        back to top page
+                    </div>
+
+                </div>
+            </div>
             <div v-else-if="selectedPage == 'Setting'">
                 <!-- Setting -->
                 
@@ -1404,6 +1721,40 @@
                     <div class="cp_iptxt">
                         <input class="ef" type="number" placeholder="" v-model.number="setting.DEVICE.FEED_PUMP_DEFAULT_TIME">
                         <label>Feed pump default time</label>
+                        <span class="focus_line"></span>
+                    </div>
+
+                    <br>
+
+                    <h2 class="setting-head">Camera <img src="/static/icon/camera.png" class="setting-head-icon"></h2>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model.number="setting.CAMERA.CAMERA_WARM_UP_TIME">
+                        <label>Camera warm up time</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.CAMERA.AWS_ACCESS_KEY_ID">
+                        <label>AWS AccessKeyId</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.CAMERA.AWS_SECRET_ACCESS_KEY">
+                        <label>AWS SecretAccessKey</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.CAMERA.S3_BUCKET">
+                        <label>AWS S3 bucket name</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.CAMERA.REGION">
+                        <label>AWS region</label>
+                        <span class="focus_line"></span>
+                    </div>
+                    <div class="cp_iptxt">
+                        <input class="ef" type="text" placeholder="" v-model="setting.CAMERA.PICTURE_URL">
+                        <label>Picture base URL</label>
                         <span class="focus_line"></span>
                     </div>
                 
@@ -1825,6 +2176,198 @@
         }
 
 
+        /* camera */
+
+
+        .camera-container {
+            margin: auto;
+            margin-bottom: 40px;
+            width: 700px;
+            background: #FFFFFF;
+            box-shadow: 10px 10px 20px 0 #ae00ff33;
+            border-radius: 20px;
+            border: 1px solid #ae00ff55;
+        }
+        @media screen and (max-width: 480px) {
+            .camera-container {
+                width: 92%;
+                border-radius: 10px;
+            }
+        }
+
+        .camera-top-box {
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+        }
+
+        .camera-middle-box {
+            padding-top: 20px;
+            padding-bottom: 5px;
+            text-align: center;
+        }
+
+        .camera-bottom-box {
+            display: flex;
+            flex-direction: column;
+            margin-top: 4px;
+        }
+
+        .camera-bottom-top-box {
+            text-align: right;
+            padding: 0 30px;
+        }
+        .camera-bottom-bottom-box {
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 20px;
+        }
+
+        .camera-picture {
+            width: 90%;
+        }
+
+        .camera-name-box {
+            margin: auto;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 45px;
+            color: #500075;
+            text-shadow: 
+                0px 0px 5px #ffffff,
+                0px 0px 20px #1A229C11,
+                0px 0px 40px #1A229C11,
+                0px 0px 60px #e07f0055,
+                0px 0px 80px #e07f0055;
+        }
+        @media screen and (max-width: 480px) {
+            .camera-name-box {
+                margin-top: 17px;
+                font-size: 27px;
+            }
+        }
+
+        .no-picture {
+            margin: auto;
+            width: 90%;
+            height: 200px;
+            background-color: #DDD;
+        }
+        .no-picture-text {
+            color: white;
+            font-size: 20px;
+            line-height: 200px;
+        }
+        @media screen and (max-width: 480px) {
+            .no-picture {
+                height: 100px;
+            }
+            .no-picture-text {
+                line-height: 100px;
+            }
+        }
+
+        .picture-taken-at-text {
+            font-size: 20px;
+            color: #500075;
+        }
+        @media screen and (max-width: 480px) {
+            .picture-taken-at-text {
+                font-size: 13px;
+            }
+        }
+
+        .take-picture-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 10px 60px;
+            text-decoration: none;
+            color: white;
+            background: #4fb845;
+            border-radius: 17px;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+            transition: 0.1s;
+        }
+        @media screen and (max-width: 480px) {
+            .take-picture-button {
+                padding: 7px 35px;
+            }
+        }
+        .take-picture-button:hover{
+            background: #73db69;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+        }
+
+
+        .take-picture-button-icon {
+            width: 30px;
+        }
+        @media screen and (max-width: 480px) {
+            .take-picture-button-icon {
+                width: 20px;
+            }
+        }
+
+        .create-camera-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 10px 60px;
+            text-decoration: none;
+            color: white;
+            background: #4fb845;
+            border-radius: 17px;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+            transition: 0.1s;
+        }
+        @media screen and (max-width: 480px) {
+            .create-camera-button {
+                padding: 7px 35px;
+            }
+        }
+        .create-camera-button:hover{
+            background: #73db69;
+            box-shadow: 5px 5px 10px 0 #4fb845A0;
+        }
+
+        .create-camera-wrapper {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 100px;
+        }
+
+        .modal-h2 {
+            margin-left: 30px;
+            font-size: 20px;
+            color: #777;
+        }
+
+        .camera-select-box-container-wrapper {
+            margin-left: -45px;
+        }
+
+        /* album */
+
+        .album-directory-box-container {
+            background: orange;
+        }
+
+        .album-directory-box {
+            margin: auto;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            width: 90%;
+            height: 90px;
+        }
+        .album-directory-box:hover{
+            background-color: #DDD;
+        }
+
+        .album-directory-icon {
+            width: 40px;
+            height: 40px;
+        }
+
 
 
 
@@ -1893,6 +2436,21 @@
             return res.data
         };
 
+        const getCameras = async () => {
+            res = await axios.get('/camera')
+            return res.data
+        };
+
+        const getCameraDevices = async () => {
+            res = await axios.get('/camera/devices')
+            return res.data
+        };
+
+        const takePictureRequest = async camera_id => {
+            res = await axios.get(`/camera/picture/${camera_id}`)
+            return res.data
+        };
+        
         const rebootRequest = async () => {
             await axios.get('/reboot')
         };
@@ -1971,6 +2529,42 @@
             });
         }
 
+        const createCameraRequest = async createdCamera => {
+            await axios.post('/camera/create', {
+                name: createdCamera.name,
+                camera_device_id: createdCamera.camera_device_id,
+                resolution: createdCamera.resolution,
+                trimming: createdCamera.trimming,
+            });
+        }
+
+        const updateCameraRequest = async updatedCamera => {
+            await axios.post('/camera/update', {
+                camera_id: updatedCamera.camera_id,
+                name: updatedCamera.name,
+                camera_device_id: updatedCamera.camera_device_id,
+                resolution: updatedCamera.resolution,
+                trimming: updatedCamera.trimming,
+            });
+        }
+
+        const getAlbumRequest = async (cameraId, year, month, day) => {
+            const option = {
+                params: {}
+            }
+            if (year) {
+                option.params.year = year;
+            }
+            if (month) {
+                option.params.month = month;
+            }
+            if (day) {
+                option.params.day = day;
+            }
+            res = await axios.get(`camera/album/${cameraId}`, option);
+            return res.data;
+        }
+
         const sensorExchangeRequest = async sensorsOrder => {
             await axios.post('/sensor/exchange', {
                 sensors: sensorsOrder,
@@ -2029,6 +2623,8 @@
                 createSensorModal: false,
                 updateSensorModal: false,
                 updateSensorCalibrationModal: false,
+                createCameraModal: false,
+                updateCameraModal: false,
                 rebootConfirm: false,
                 deleteDeviceConfirm: false,
                 deleteSensorConfirm: false,
@@ -2044,12 +2640,25 @@
                 sensorBackupUploadFileData: '',
                 sensorDataLastUpdatedAt: '',
                 sensorDataPollingPeriod: 5,
+                cameras: [],
+                cameraDevices: [],
+                selectedCameraAlbumList: [],
+                selectedAlbumDate: {
+                    year: 0,
+                    month: 0,
+                    day: 0
+                }, 
+                albumListType: 'year',
                 feedPumpsWaterSupplyTime: [],
                 selectedDevice: {
                     run_type: ""
                 },
                 selectedSensor: {
                     sensor: {}
+                },
+                selectedCamera: {
+                    resolution: {},
+                    trimming: {},
                 },
                 exchangeFrom: 0,
                 exchangeTo: 0,
@@ -2440,6 +3049,28 @@
                     window.location.href = '/'
 
                 },
+                createCamera: async function () {
+                    this.loading = true
+                    await createCameraRequest(this.selectedCamera);
+                    this.closeCreateCameraModal();
+                    const cameras = await getCameras();
+                    this.cameras = cameras
+                    this.loading = false
+                },
+                updateCamera: async function () {
+                    this.loading = true
+                    await updateCameraRequest(this.selectedCamera);
+                    this.closeUpdateCameraModal();
+                    const cameras = await getCameras();
+                    this.cameras = cameras
+                    this.loading = false
+                },
+                takePicture: async function(camera_id) {
+                    this.loading = true;
+                    newCameras = await takePictureRequest(camera_id);
+                    this.cameras = newCameras;
+                    this.loading = false;
+                },
                 closeUpdateDeviceModal: function () {
                     this.updateModal = false;
                     this.selectedDevice = {
@@ -2458,6 +3089,56 @@
                         sensor: {}
                     };
                 },
+                closeCreateCameraModal: function () {
+                    this.createCameraModal = false;
+                    this.selectedCamera = {
+                        resolution: {},
+                        trimming: {},
+                    };
+                },
+                closeUpdateCameraModal: function () {
+                    this.updateCameraModal = false;
+                    this.selectedCamera = {
+                        resolution: {},
+                        trimming: {},
+                    };
+                },
+                switchAlbumPage: async function(selectedCamera) {
+                    this.selectedCamera = selectedCamera;
+                    this.selectedPageStatus = 'album';
+                    this.loading = true;
+                    const albumData = await getAlbumRequest(selectedCamera.camera_id)
+                    this.selectedCameraAlbumList = albumData.list;
+                    this.albumListType = albumData.type;
+                    this.loading = false;
+                },
+                getAlbumsByYear: async function(year) {
+                    this.selectedAlbumDate.year = Number(year);
+                    this.loading = true;
+                    const albumData = await getAlbumRequest(this.selectedCamera.camera_id, year)
+                    this.selectedCameraAlbumList = albumData.list;
+                    this.albumListType = albumData.type;
+                    this.loading = false;
+                },
+                getAlbumsByMonth: async function(year, month) {
+                    this.selectedAlbumDate.year = Number(year);
+                    this.selectedAlbumDate.month = Number(month);
+                    this.loading = true;
+                    const albumData = await getAlbumRequest(this.selectedCamera.camera_id, year, month)
+                    this.selectedCameraAlbumList = albumData.list;
+                    this.albumListType = albumData.type;
+                    this.loading = false;
+                },
+                getAlbumsByDay: async function(year, month, day) {
+                    this.selectedAlbumDate.year = Number(year);
+                    this.selectedAlbumDate.month = Number(month);
+                    this.selectedAlbumDate.day = Number(day);
+                    this.loading = true;
+                    const albumData = await getAlbumRequest(this.selectedCamera.camera_id, year, month, day)
+                    this.selectedCameraAlbumList = albumData.list;
+                    this.albumListType = albumData.type;
+                    this.loading = false;
+                },
                 clickUpdateSensorButton: function (selectedSensor) {
                     this.updateSensorModal = true;
                     this.selectedSensor = JSON.parse(JSON.stringify(selectedSensor));
@@ -2468,6 +3149,13 @@
                 clickUpdateSensorCalibrationButton: function (selectedSensor) {
                     this.updateSensorCalibrationModal = true;
                     this.selectedSensor = JSON.parse(JSON.stringify(selectedSensor));
+                },
+                clickCreateCameraButton: function () {
+                    this.createCameraModal = true;
+                },
+                clickUpdateCameraButton: function (selectedCamera) {
+                    this.updateCameraModal = true;
+                    this.selectedCamera = selectedCamera
                 },
                 closeUpdateSensorModal: function () {
                     this.updateSensorModal = false;
@@ -2600,11 +3288,21 @@
             mounted: async function () {
 
                 this.loading = true
-                const [deviceState, devicesSetting, sensors, sensorsSetting, setting] = await Promise.all([
+                const [
+                    deviceState,
+                    devicesSetting,
+                    sensors,
+                    sensorsSetting,
+                    cameras,
+                    cameraDevices,
+                    setting
+                ] = await Promise.all([
                     getDeviceState(),
                     getDevices(),
                     getSensors(),
                     getSensorsSetting(),
+                    getCameras(),
+                    getCameraDevices(),
                     getSetting(),
                 ])
                 this.loading = false
@@ -2616,6 +3314,8 @@
                     sensor.value = 0;
                     return sensor;
                 });
+                this.cameras = cameras;
+                this.cameraDevices = cameraDevices;
                 this.setting = setting;
                 this.sensorDataPollingPeriod = this.setting.SENSING.WEB_SENSOR_DATA_POLLING_PERIOD;
                 this.feedPumpsWaterSupplyTime = new Array(deviceState.length).fill(this.setting.DEVICE.FEED_PUMP_DEFAULT_TIME);
@@ -3263,7 +3963,7 @@
             left: 0px;
             width: 100%;
             height: 100%;
-            z-index: 2;
+            z-index: 10;
             /* background: rgba(255, 255, 255, 0.8); */
         }
 

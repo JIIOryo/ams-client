@@ -24,6 +24,12 @@ from on_message.device_feed_pump import device_feed_pump
 from on_message.device_auto_feeder import device_auto_feeder
 from on_message.sensor_update import sensor_update, sensor_calibration_update
 from on_message.sensor_delete import sensor_delete
+from on_message.camera_get import get_cameras
+from on_message.camera_create import camera_create
+from on_message.camera_update import camera_update
+from on_message.camera_device_get import get_camera_devices
+from on_message.camera_album_get import get_album
+from on_message.camera_take_picture import camera_take_picture
 from service.device import get_all_device_state
 from service.sensor import get_current_sensor_values
 from service.backup import backup_file_name, get_device_backup_file, import_device_back_file, get_sensor_backup_file, import_sensor_back_file
@@ -291,6 +297,54 @@ def sensor_backup_post():
         raise InvalidUsage('format is invalid', status_code=400)
 
     return empty_response
+
+@app.route('/camera')
+def get_cameras_():
+    cameras = get_cameras()
+    return jsonify(cameras), 200
+
+@app.route('/camera/devices')
+def get_camera_devices_():
+    camera_devices = get_camera_devices()
+    return jsonify(camera_devices), 200
+
+@app.route('/camera/create', methods=['POST'])
+def camera_create_():
+    ams_logger(request, INFO, True)
+    camera_create(message = request.data)
+    return empty_response
+
+@app.route('/camera/update', methods=['POST'])
+def camera_update_():
+    ams_logger(request, INFO, True)
+    camera_update(message = request.data)
+    return empty_response
+
+@app.route('/camera/picture/<string:camera_id>')
+def take_picture_(camera_id: str):
+    camera_take_picture(message = json.dumps({
+        'cameras': [
+            {
+                'camera_id': camera_id
+            }
+        ]
+    }))
+    cameras = get_cameras()
+    return jsonify(cameras), 200
+
+@app.route('/camera/album/<string:camera_id>')
+def get_album_(camera_id: str):
+    year = int(request.args.get('year')) if request.args.get('year') is not None else None
+    month = int(request.args.get('month')) if request.args.get('month') is not None else None
+    day = int(request.args.get('day')) if request.args.get('day') is not None else None
+
+    albums = get_album(message = json.dumps({
+        'camera_id': camera_id,
+        'year': year,
+        'month': month,
+        'day': day,
+    }))
+    return jsonify(albums), 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=server_config['PORT'])

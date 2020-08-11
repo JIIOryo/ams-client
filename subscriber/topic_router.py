@@ -16,6 +16,9 @@ from on_message.reboot import reboot
 from on_message.sensor_create import sensor_create
 from on_message.sensor_update import sensor_update
 from on_message.sensor_delete import sensor_delete
+from on_message.camera_take_picture import camera_take_picture
+from on_message.camera_create import camera_create
+from on_message.camera_update import camera_update
 from on_message.publish_ack import publish_ack
 
 subscribe_topics = get_subscribe_topics()
@@ -55,4 +58,16 @@ def topic_router(topic: str, message: str):
     
     elif topic == subscribe_topics['SENSOR_DELETE']:
         sensor_delete(message)
+
+    elif topic == subscribe_topics['CAMERA_TAKE_PICTURE']:
+        camera_take_picture(message)
+
+    elif topic == subscribe_topics['CAMERA_CREATE']:
+        camera_create(message)
+
+    elif topic == subscribe_topics['CAMERA_UPDATE']:
+        camera_update(message)
+    
+    # elif topic == subscribe_topics['CAMERA_DELETE']:
+    #     camera_delete(message)
     
