@@ -307,6 +307,7 @@ def update_camera(
     name: str,
     camera_device_id: int,
     resolution: dict,
+    timer: list,
     trimming: dict
 ) -> None:
     cameras = get_camera_config()
@@ -319,6 +320,7 @@ def update_camera(
             'x': resolution['x'],
             'y': resolution['y'],
         },
+        'timer': list(timer),
         'trimming': {
             'top': trimming['top'],
             'bottom': trimming['bottom'],
@@ -333,6 +335,7 @@ def update_camera(
             camera['name'] = name
             camera['camera_device_id'] = camera_device_id
             camera['resolution'] = resolution
+            camera['timer'] = timer
             camera['trimming'] = trimming
             updated_camera['latest_picture_url'] = camera['latest_picture_url']
         
