@@ -1486,16 +1486,22 @@
                     <!-- update camera modal end -->
                 </div>
                 <div v-else-if="selectedPageStatus == 'album'">
-                    <h2>
-                        This is {{ selectedCamera.name }} album page! {{ albumListType }} list.
-                        {{ selectedAlbumDate }}
-                    </h2>
+                    <div class="album-page-title-wrapper">
+                        <span class="album-page-title">{{ selectedCamera.name }}</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="albun-page-title-date-text" v-if="albumListType == 'year'"></span>
+                        <span class="albun-page-title-date-text" v-else-if="albumListType == 'month'">{{ selectedAlbumDate.year }}</span>
+                        <span class="albun-page-title-date-text" v-else-if="albumListType == 'day'">{{ selectedAlbumDate.year }}/{{ selectedAlbumDate.month }}</span>
+                        <span class="albun-page-title-date-text" v-else-if="albumListType == 'url'">{{ selectedAlbumDate.year }}/{{ selectedAlbumDate.month }}/{{ selectedAlbumDate.day }}</span>
+                    </div>
                     <div v-if="albumListType == 'year'">
                         <!-- year list page -->
                         <div class="album-directory-box-container">
                             <div v-for="year of selectedCameraAlbumList" :key="year" class="album-directory-box" @click="getAlbumsByYear(year)">
                                 <img src="/static/icon/directory_purple.png" class="album-directory-icon">
-                                <div>{{ year }}</div>
+                                <div class="directory-text-box">
+                                    <p>{{ year }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1504,11 +1510,15 @@
                         <div class="album-directory-box-container">
                             <div v-for="month of selectedCameraAlbumList" :key="month" class="album-directory-box" @click="getAlbumsByMonth(selectedAlbumDate.year, month)">
                                 <img src="/static/icon/directory_purple.png" class="album-directory-icon">
-                                <div>{{ month }}</div>
+                                <div class="directory-text-box">
+                                    <p>{{ month }}</p>
+                                </div>
                             </div>
                         </div>
-                        <div @click="switchAlbumPage(selectedCamera)">
-                            back to all year page
+                        <div class="album-button-wrapper">
+                            <div class="album-button" @click="switchAlbumPage(selectedCamera)">
+                                <p>back</p>
+                            </div>
                         </div>
                     </div>
                     <div v-else-if="albumListType == 'day'">
@@ -1516,11 +1526,15 @@
                         <div class="album-directory-box-container">
                             <div v-for="day of selectedCameraAlbumList" :key="day" class="album-directory-box" @click="getAlbumsByDay(selectedAlbumDate.year, selectedAlbumDate.month, day)">
                                 <img src="/static/icon/directory_purple.png" class="album-directory-icon">
-                                <div>{{ day }}</div>
+                                <div class="directory-text-box">
+                                    <p>{{ day }}</p>
+                                </div>
                             </div>
                         </div>
-                        <div @click="getAlbumsByYear(selectedAlbumDate.year)">
-                            back to {{selectedAlbumDate.year}}
+                        <div class="album-button-wrapper">
+                            <div class="album-button" @click="getAlbumsByYear(selectedAlbumDate.year)">
+                                <p>back</p>
+                            </div>
                         </div>
                     </div>
                     <div v-else-if="albumListType == 'url'">
@@ -1530,14 +1544,18 @@
                                 <img :src="url">
                             </div>
                         </div>
-                        <div @click="getAlbumsByMonth(selectedAlbumDate.year, selectedAlbumDate.month)">
-                            back to {{selectedAlbumDate.year}}/{{selectedAlbumDate.month}}
+                        <div class="album-button-wrapper">
+                            <div class="album-button" @click="getAlbumsByMonth(selectedAlbumDate.year, selectedAlbumDate.month)">
+                                <p>back</p>
+                            </div>
                         </div>
                     </div>
-                    <div @click="selectedPageStatus = 'main'">
-                        back to top page
+                    <div class="album-button-wrapper">
+                        <div class="album-button" @click="selectedPageStatus = 'main'">
+                            <p>camera top page</p>
+                        </div>
                     </div>
-
+                    <div class="medium-space-box"></div>
                 </div>
             </div>
             <div v-else-if="selectedPage == 'Setting'">
@@ -2347,8 +2365,29 @@
 
         /* album */
 
+        .album-page-title-wrapper {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .album-page-title {
+            color: #500075;
+            font-size: 50px;
+        }
+
+        .albun-page-title-date-text {
+            color: #500075;
+            font-size: 30px;
+        }
+
         .album-directory-box-container {
-            background: orange;
+            background: white;
+            box-shadow: 10px 10px 20px 0 #ae00ff33;
+            border-radius: 20px;
+            border: 1px solid #ae00ff55;
+            padding: 30px 3px;
+            width: 70%;
+            margin: auto;
         }
 
         .album-directory-box {
@@ -2356,17 +2395,57 @@
             cursor: pointer;
             display: flex;
             flex-direction: row;
-            width: 90%;
+            width: 80%;
             height: 90px;
         }
         .album-directory-box:hover{
-            background-color: #DDD;
+            background-color: #F5F5F5;
         }
 
         .album-directory-icon {
             width: 40px;
             height: 40px;
+            margin: auto 0;
+            margin-left: 20px;
         }
+
+        .directory-text-box {
+            line-height: 90px;
+            margin-left: 40px;
+            font-size: 30px;
+            color: #500075;
+        }
+
+
+
+        .album-button {
+            cursor: pointer;
+            display: inline-block;
+            padding: 10px 0px;
+            width: 300px;
+            text-decoration: none;
+            color: #ae00ff;
+            background: white;
+            border-radius: 17px;
+            box-shadow: 3px 3px 10px 0 #ae00ffA0;
+            transition: 0.1s;
+        }
+        @media screen and (max-width: 480px) {
+            .album-button {
+                padding: 7px 0px;
+            }
+        }
+        .album-button:hover{
+            background: #ae00ff;
+            color: white;
+        }
+
+        .album-button-wrapper {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 0px;
+        }
+
 
 
 
