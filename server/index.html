@@ -1541,7 +1541,28 @@
                         <!-- day list page -->
                         <div>
                             <div v-for="url of selectedCameraAlbumList" :key="url">
-                                <img :src="url">
+                                <div class="camera-container">
+                                    <!-- album picture middle box -->
+                                    <div class="camera-middle-box">
+                                        <img :src="url" class="camera-picture">
+                                    </div>
+                                    <!-- album picture bottom box -->
+                                    <div class="camera-bottom-box">
+                                        <div class="camera-bottom-top-box">
+                                            <p class="picture-taken-at-text">
+                                                taken at
+                                                {{
+                                                    url.split('/').reverse()[0].split(/[_.]/)[0]
+                                                }}:{{
+                                                    url.split('/').reverse()[0].split(/[_.]/)[1]
+                                                }}:{{
+                                                    url.split('/').reverse()[0].split(/[_.]/)[2]
+                                                }}
+                                            </p>
+                                        </div>
+                                        <div class="small-small-space-box"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="album-button-wrapper">
@@ -4365,6 +4386,10 @@
     </style>
 
     <style>
+        .small-small-space-box {
+            margin-bottom: 25px;
+        }
+
         .small-space-box {
             margin-bottom: 50px;
         }
