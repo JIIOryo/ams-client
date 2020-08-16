@@ -1488,7 +1488,8 @@
                 <div v-else-if="selectedPageStatus == 'album'">
                     <div class="album-page-title-wrapper">
                         <span class="album-page-title">{{ selectedCamera.name }}</span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <span v-if="isSmallDisplay"><br><br></span>
+                        <span v-else>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         <span class="albun-page-title-date-text" v-if="albumListType == 'year'"></span>
                         <span class="albun-page-title-date-text" v-else-if="albumListType == 'month'">{{ selectedAlbumDate.year }}</span>
                         <span class="albun-page-title-date-text" v-else-if="albumListType == 'day'">{{ selectedAlbumDate.year }}/{{ selectedAlbumDate.month }}</span>
@@ -2395,6 +2396,11 @@
             color: #500075;
             font-size: 50px;
         }
+        @media screen and (max-width: 480px) {
+            .album-page-title {
+                font-size: 30px;
+            }
+        }
 
         .albun-page-title-date-text {
             color: #500075;
@@ -2410,6 +2416,11 @@
             width: 70%;
             margin: auto;
         }
+        @media screen and (max-width: 480px) {
+            .album-directory-box-container {
+                width: 90%;
+            }
+        }
 
         .album-directory-box {
             margin: auto;
@@ -2422,6 +2433,12 @@
         .album-directory-box:hover{
             background-color: #F5F5F5;
         }
+        @media screen and (max-width: 480px) {
+            .album-directory-box {
+                height: 70px;
+            }
+        }
+
 
         .album-directory-icon {
             width: 40px;
@@ -2429,12 +2446,23 @@
             margin: auto 0;
             margin-left: 20px;
         }
+        @media screen and (max-width: 480px) {
+            .album-directory-icon {
+                width: 30px;
+                height: 30px;
+            }
+        }
 
         .directory-text-box {
             line-height: 90px;
             margin-left: 40px;
             font-size: 30px;
             color: #500075;
+        }
+        @media screen and (max-width: 480px) {
+            .directory-text-box {
+                line-height: 70px;
+            }
         }
 
 
@@ -2465,6 +2493,11 @@
             text-align: center;
             margin-top: 50px;
             margin-bottom: 0px;
+        }
+        @media screen and (max-width: 480px) {
+            .album-button-wrapper {
+                margin-top: 20px;
+            }
         }
 
 
