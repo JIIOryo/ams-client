@@ -360,7 +360,7 @@ def get_album_exist_years(camera_id: str) -> dict:
     
     return {
         'camera_id': camera_id,
-        'list': list_,
+        'list': sorted(list_),
         'type': 'year',
     }
 
@@ -375,7 +375,7 @@ def get_album_exist_months(camera_id: str, year: int) -> dict:
     
     return {
         'camera_id': camera_id,
-        'list': ls(taeget_path),
+        'list': sorted(ls(taeget_path)),
         'type': 'month',
     }
 
@@ -393,7 +393,9 @@ def get_album_exist_days(camera_id: str, year: int, month: int) -> dict:
     file_list = ls(taeget_path)
     return {
         'camera_id': camera_id,
-        'list': [f.split('.')[0] for f in file_list], # remove '.json'
+        'list': sorted(
+            [f.split('.')[0] for f in file_list] # remove '.json'
+        ),
         'type': 'day',
     }
 
