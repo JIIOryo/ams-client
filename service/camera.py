@@ -267,7 +267,7 @@ def take_picture(camera_id: str) -> None:
 
     return
 
-def create_camera(name: str, camera_device_id: int, resolution: dict, trimming: dict) -> None:
+def create_camera(name: str, camera_device_id: int, timer: list, resolution: dict, trimming: dict) -> None:
     cameras = get_camera_config()
     tank_id = get_config_item('TANK_ID')
 
@@ -281,6 +281,7 @@ def create_camera(name: str, camera_device_id: int, resolution: dict, trimming: 
             'x': resolution['x'],
             'y': resolution['y'],
         },
+        'timer': list(timer),
         'trimming': {
             'top': trimming['top'],
             'bottom': trimming['bottom'],

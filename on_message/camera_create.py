@@ -18,6 +18,16 @@ type: json str
         "x": 1700,
         "y": 1024
     },
+    "timer": [
+        {
+            "hour": 10,
+            "minute": 0
+        },
+        {
+            "hour": 13,
+            "minute": 0
+        }
+    ],
     "trimming": {
         "top": 100,
         "bottom": 1024,
@@ -31,6 +41,7 @@ def camera_create(message: str) -> None:
     cameras = create_camera(
         name = new_camera['name'],
         camera_device_id = new_camera['camera_device_id'],
+        timer = new_camera['timer'],
         resolution = new_camera['resolution'],
         trimming = new_camera['trimming']
     )
