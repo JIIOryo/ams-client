@@ -109,3 +109,7 @@ def zero_padding_month(month: int) -> str:
         raise ValueError('This month does not meet 1 <= month <= 12')
 
     return zero_padding(month, 2)
+
+# foo[bar]baz -> foo{bar}baz
+def bracket_to_brace(text: str) -> str:
+    return text.replace('[', '{').replace(']', '}')
