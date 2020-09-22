@@ -1652,7 +1652,7 @@
                         </div>
                     </div>
                     <div class="album-button-wrapper">
-                        <div class="album-button" @click="selectedPageStatus = 'main'">
+                        <div class="album-button" @click="cameraTopPage">
                             <p>camera top page</p>
                         </div>
                     </div>
@@ -3314,6 +3314,14 @@
                 },
                 closeUpdateCameraModal: function () {
                     this.updateCameraModal = false;
+                    this.selectedCamera = {
+                        resolution: {},
+                        trimming: {},
+                        timer: []
+                    };
+                },
+                cameraTopPage: function() {
+                    this.selectedPageStatus = 'main';
                     this.selectedCamera = {
                         resolution: {},
                         trimming: {},
