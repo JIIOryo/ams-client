@@ -4,7 +4,7 @@
         "DEVICE_STATE":"tank/{tank_id}/devices/state",
         "SENSOR_DATA":"tank/{tank_id}/sensor/data",
         "SENSOR_CONFIG":"tank/{tank_id}/sensor/config",
-        "CAMERA_LATEST_PICTURE":"tank/{tank_id}/camera/picture"
+        "CAMERA_LATEST_PICTURE":"tank/{tank_id}/[camera_id]/latest_picture"
     },
     "SUBSCRIBE":{
         "PING":"user/{tank_id}/{client_id}/ping",
