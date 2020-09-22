@@ -96,29 +96,34 @@ def add_latest_picture_url(camera_id: str, url: str) -> None:
             camera['latest_picture_url'] = url
     set_camera_config(new_camera_config = cameras)
     return
-    
+
 def camera_request(
     host: str,
     port: int,
-    object_name: str,
+    cameras: list,
     resolution: dict,
-    trimming: dict,
     camera_warm_up_time: float,
     aws: dict = {},
     mqtt: dict = {},
 ) -> None:
 
     request_json = {
-        'objectName': object_name,
+        'cameras': [
+            {
+                'objectName': camera['object_name'],
+                'topic': camera['topic'],
+                'trimming': {
+                    'top': camera['trimming']['top'],
+                    'bottom': camera['trimming']['bottom'],
+                    'left': camera['trimming']['left'],
+                    'right': camera['trimming']['right'],
+                },
+            }
+            for camera in cameras
+        ],
         'resolution': {
             'x': resolution['x'],
             'y': resolution['y'],
-        },
-        'trimming': {
-            'top': trimming['top'],
-            'bottom': trimming['bottom'],
-            'left': trimming['left'],
-            'right': trimming['right'],
         },
         'cameraWarmUpTime': camera_warm_up_time,
         'uploader': {}
@@ -139,7 +144,6 @@ def camera_request(
             'userName': mqtt['user_name'],
             'password': mqtt['password'],
             'retain': mqtt['retain'],
-            'topic': mqtt['topic'],
         }
 
     # request to camera api server
@@ -198,76 +202,159 @@ def generate_picture_url(camera_id: str, year: int, month: int, day: int, file_n
     ])
 
 def take_picture(camera_id: str) -> None:
-    camera = get_camera_config_by_id(camera_id)
+    take_pictures([camera_id])
+    return
 
-    if camera == {}:
-        logger(
-            WARN,
-            'Camera not found.\n' + 
-            f'camera_id = {camera_id}',
-            True,
-            False
-        )
-        raise CameraNotFound
+# take_pictures用のfunction
+# camera_deviceの配列のcamerasにcameraを追加
+def __append_camera_to_camera_device(camera_devices: list, camera: dict) -> None:
+    # camera_devicesはrequest_camera_devicesと同じスキーマ
+    # cameraはconfigと同じスキーマ
+    for camera_device in camera_devices:
+        if camera_device['camera_device_id'] == camera['camera_device_id']:
+            camera_device['cameras'].append(camera)
+            return
+    return
 
+def take_pictures(camera_id_list: list) -> None:
+
+    if len(camera_id_list) == 0:
+        return
+    
     config = get_config_items([
         'TANK_ID',
         'MQTT',
         'CAMERA'
     ])
 
-    camera_device = get_camera_device_config_by_id(camera['camera_device_id'])
+    camera_device_config = get_camera_device_config()
 
-    object_name = generate_object_name(
-        tank_id = config['TANK_ID'],
-        camera_id = camera['camera_id'],
-        ext = 'jpg'
-    )
-    latest_picture_topic = get_publish_topics()['CAMERA_LATEST_PICTURE']
-
-    # take a picture
-    camera_request(
-        host = camera_device['host'],
-        port = camera_device['port'],
-        object_name = object_name,
-        resolution = camera['resolution'],
-        trimming = camera['trimming'],
-        camera_warm_up_time = config['CAMERA']['CAMERA_WARM_UP_TIME'],
-        aws = {
-            'aws_access_key_id': config['CAMERA']['AWS_ACCESS_KEY_ID'],
-            'aws_secret_access_key': config['CAMERA']['AWS_SECRET_ACCESS_KEY'],
-            's3_bucket': config['CAMERA']['S3_BUCKET'],
-            'region': config['CAMERA']['REGION'],
-        },
-        mqtt = {
-            'host': config['MQTT']['MQTT_BROKER'],
-            'port': config['MQTT']['MQTT_BROKER_PORT'],
-            'user_name': config['MQTT']['MQTT_BROKER_USERNAME'],
-            'password': config['MQTT']['MQTT_BROKER_PASSWORD'],
-            'retain': False, # TODO this is true
-            'topic': latest_picture_topic,
+    # camera_device一覧と、今回撮影するカメラが紐づいた配列request_camera_devicesを作成
+    """
+    example
+    request_camera_devices = [
+        {
+            'camera_device_id': 1,
+            'host': CAMERA_HOST,
+            'port': CAMERA_PORT,
+            'cameras': [
+                {
+                    'camera_id',
+                    'name': 'sump_sub_box',
+                    'camera_device_id'
+                    'resolution': {'x': 1700, 'y': 1024},
+                    'trimming': {'bottom': 750, 'left': 1000, 'right': 1300, 'top': 620},
+                    'timer': [{'hour': 10, 'minute': 0}, {'hour': 12, 'minute': 0}, {'hour': 18, 'minute': 0}],
+                    'latest_picture_url': 'https://hoge.cloudfront.net/tank_id-sample/fuga/2020/08/16/12_05_10.jpg',
+                    'object_name': 'tank_id-sample/camera_id_hoge/2020/09/22/14_15_51.jpg',
+                    'latest_picture_topic': 'tank/tank_id-sample/camera_id_hoge/latest_picture'
+                }
+            ]
         }
-    )
+    ]
+    """
+    request_camera_devices = []
+    # camera_device_configのスキーマにcamerasフィールドを追加したものをrequest_camera_devicesとする
+    for camera_device in camera_device_config:
+        camera_device['cameras'] = []
+        request_camera_devices.append(camera_device)
 
-    picture_url = config['CAMERA']['PICTURE_URL'] + '/' + object_name
-    add_latest_picture_url(
-        camera_id = camera_id,
-        url = picture_url
-    )
+    # 今回撮影するcamera_id全てに対して以下を行う
+    for camera_id in camera_id_list:
+        camera = get_camera_config_by_id(camera_id)
 
-    logger(
-        INFO,
-        'Take a tank picture 📸\n' + 
-        f'ObjectName is {picture_url}',
-        True,
-        False
-    )
+        # cameraが存在しない場合はエラー
+        if camera == {}:
+            logger(
+                WARN,
+                'Camera not found.\n' + 
+                f'camera_id = {camera_id}',
+                True,
+                False
+            )
+            raise CameraNotFound
+        
+        # cameraにobject_nameを追加
+        object_name = generate_object_name(
+            tank_id = config['TANK_ID'],
+            camera_id = camera['camera_id'],
+            ext = 'jpg'
+        )
+        camera['object_name'] = object_name
+        
+        # cameraにpublish用のtopicを追加
+        latest_picture_topic = get_publish_topics()['CAMERA_LATEST_PICTURE']
+        # camera_idをtopicに反映
+        camera['latest_picture_topic'] = latest_picture_topic.format(camera_id = camera['camera_id'])
+        
+        # cameraが指定するcamera_device_idのcamera_deviceのところに追加
+        __append_camera_to_camera_device(
+            camera_devices = request_camera_devices,
+            camera = camera
+        )
 
-    register_picture(object_name)
+    # 対象のcamera_deviceに対して以下を行う
+    for request_camera_device in request_camera_devices:
+        # 撮影したいカメラがない場合は次へ
+        if len(request_camera_device['cameras']) == 0:
+            continue
+        
+        # take a picture
+        camera_request(
+            host = request_camera_device['host'],
+            port = request_camera_device['port'],
+            cameras = [
+                {
+                    'object_name': camera['object_name'],
+                    'topic': camera['latest_picture_topic'],
+                    'trimming': camera['trimming'],
+                }
+                for camera in request_camera_device['cameras']
+            ],
+            resolution = request_camera_device['cameras'][0]['resolution'], # TODO resolution はcamera deviceごとに設定するのが理想 仮でcameraの先頭のresolutionを利用する
+            camera_warm_up_time = config['CAMERA']['CAMERA_WARM_UP_TIME'],
+            aws = {
+                'aws_access_key_id': config['CAMERA']['AWS_ACCESS_KEY_ID'],
+                'aws_secret_access_key': config['CAMERA']['AWS_SECRET_ACCESS_KEY'],
+                's3_bucket': config['CAMERA']['S3_BUCKET'],
+                'region': config['CAMERA']['REGION'],
+            },
+            mqtt = {
+                'host': config['MQTT']['MQTT_BROKER'],
+                'port': config['MQTT']['MQTT_BROKER_PORT'],
+                'user_name': config['MQTT']['MQTT_BROKER_USERNAME'],
+                'password': config['MQTT']['MQTT_BROKER_PASSWORD'],
+                'retain': False, # TODO this is true
+            }
+        )
 
+        # 以降撮影後の処理
+
+        # 撮影した画像のURL(logger用)
+        picture_urls = []
+
+        # 撮影した画像それぞれに対して、latest_pictureを登録、アルバム用ディレクトリに追加する処理を行う
+        for camera in request_camera_device['cameras']:
+            picture_url = config['CAMERA']['PICTURE_URL'] + '/' + camera['object_name']
+            picture_urls.append(picture_url)
+            # 撮影した画像のURLをconfigのlatest_picture_urlに登録
+            add_latest_picture_url(
+                camera_id = camera['camera_id'],
+                url = picture_url
+            )
+            # picturesディレクトリに追加
+            register_picture(camera['object_name'])
+
+        logger(
+            INFO,
+            'Take a tank picture 📸\n' + 
+            f'pictures: {picture_urls}',
+            True,
+            False
+        )
     return
 
-def create_camera(name: str, camera_device_id: int, resolution: dict, trimming: dict) -> None:
+def create_camera(name: str, camera_device_id: int, timer: list, resolution: dict, trimming: dict) -> None:
     cameras = get_camera_config()
     tank_id = get_config_item('TANK_ID')
 
@@ -281,6 +368,7 @@ def create_camera(name: str, camera_device_id: int, resolution: dict, trimming: 
             'x': resolution['x'],
             'y': resolution['y'],
         },
+        'timer': list(timer),
         'trimming': {
             'top': trimming['top'],
             'bottom': trimming['bottom'],
@@ -306,6 +394,7 @@ def update_camera(
     name: str,
     camera_device_id: int,
     resolution: dict,
+    timer: list,
     trimming: dict
 ) -> None:
     cameras = get_camera_config()
@@ -318,6 +407,7 @@ def update_camera(
             'x': resolution['x'],
             'y': resolution['y'],
         },
+        'timer': list(timer),
         'trimming': {
             'top': trimming['top'],
             'bottom': trimming['bottom'],
@@ -332,6 +422,7 @@ def update_camera(
             camera['name'] = name
             camera['camera_device_id'] = camera_device_id
             camera['resolution'] = resolution
+            camera['timer'] = timer
             camera['trimming'] = trimming
             updated_camera['latest_picture_url'] = camera['latest_picture_url']
         

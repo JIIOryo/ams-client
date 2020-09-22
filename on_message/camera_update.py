@@ -19,6 +19,16 @@ type: json str
         "x": 1700,
         "y": 1024
     },
+    "timer": [
+        {
+            "hour": 10,
+            "minute": 0
+        },
+        {
+            "hour": 13,
+            "minute": 0
+        }
+    ],
     "trimming": {
         "top": 100,
         "bottom": 1024,
@@ -34,6 +44,7 @@ def camera_update(message: str) -> None:
         name = updated_camera['name'],
         camera_device_id = updated_camera['camera_device_id'],
         resolution = updated_camera['resolution'],
+        timer = updated_camera['timer'],
         trimming = updated_camera['trimming']
     )
     return

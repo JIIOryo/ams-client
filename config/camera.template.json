@@ -8,6 +8,16 @@
             "x": 1700,
             "y": 1024
         },
+        "timer": [
+            {
+                "hour": 10,
+                "minute": 0
+            },
+            {
+                "hour": 13,
+                "minute": 0
+            }
+        ],
         "trimming": {
             "top": 100,
             "bottom": 1024,
