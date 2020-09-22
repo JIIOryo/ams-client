@@ -1227,8 +1227,6 @@
                 <!-- --------------------------------------------------------------------- -->
                 <!-- Camera -->
 
-                {{selectedCamera}}
-            
                 <!-- Camera main page -->
                 <div v-if="selectedPageStatus == 'main'">
                     <div v-for="(camera, i) of cameras" :key="camera.camera_id">
@@ -1501,6 +1499,45 @@
                                             <label>right</label>
                                             <span class="focus_line"></span>
                                         </div>
+
+                                        <h2 class="modal-h2">Timer</h2>
+                                        
+                                        <!-- discreate -->
+                                        <table class="update-form-table">
+                                            <tr v-for="(timer, index) of selectedCamera.timer" :key="index">
+                                                <td>
+                                                    <div class="timer-label-box">
+                                                        <p>timer {{index + 1}}</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="timer-box">
+                                                        <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                            <select name="hour" v-model="timer.hour">
+                                                                <option value="" hidden>Choose</option>
+                                                                <option v-for="hour in [...Array(24).keys()]" :key="hour" :value="hour">
+                                                                    {{hour| zeroPadding}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <p class="timer-colon">:</p>
+                                                        <div class="select-box select-box-simple select-box-timer device-update-modal-select-box">
+                                                            <select name="minite" v-model="timer.minute">
+                                                                <option value="" hidden>Choose</option>
+                                                                <option v-for="minute in [...Array(60).keys()]" :key="minute" :value="minute">
+                                                                    {{minute | zeroPadding}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <img src="/static/icon/delete.png" @click="selectedCamera.timer.splice(index, 1)" class="delete-icon">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <center>
+                                            <img src="/static/img/button/add_button.png" @click="selectedCamera.timer.push({hour: 0, minute: 0})"
+                                                class="add-button">
+                                        </center>
                     
                                     </div>
                     
@@ -2721,6 +2758,7 @@
                 camera_device_id: updatedCamera.camera_device_id,
                 resolution: updatedCamera.resolution,
                 trimming: updatedCamera.trimming,
+                timer: updatedCamera.timer,
             });
         }
 
@@ -3279,6 +3317,7 @@
                     this.selectedCamera = {
                         resolution: {},
                         trimming: {},
+                        timer: []
                     };
                 },
                 switchAlbumPage: async function(selectedCamera) {
