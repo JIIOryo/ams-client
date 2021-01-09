@@ -17,7 +17,7 @@ from commons.consts import (
     DEVICE_TYPE,
 )
 
-from lib.config import get_gpio_config, get_config_item
+from lib.config import get_gpio_config, get_config_item, get_root_path
 from lib.cron import get_crontab, write_to_crontab
 
 FEED_PUMP_DEFAULT_TIME = get_config_item('DEVICE')['FEED_PUMP_DEFAULT_TIME']
@@ -155,7 +155,7 @@ def set_new_timer() -> None:
 
 def cron_cmd_generator_by_type(type_: str, device_id: int) -> None:
 
-    PWD = os.getcwd()
+    PWD = get_root_path()
 
     if type_ == DEVICE_TYPE['FEED_PUMP']:
         entry_point = '/'.join([PWD, 'entry_points', 'feed_pump.py'])
